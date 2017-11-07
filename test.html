@@ -1,33 +1,58 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset= "UTF-8"/>
-<title>Angular Demo</title>
+	<meta charset="UTF-8" />
+	<title>Angular Demo</title>
 	<script type="text/javascript" src="angular/angular.min.js"></script>
 	<script type="text/javascript" src="js/myApp.js"></script>
-	
-<link rel="stylesheet" type="text/css"
-href="bootstrap-3.3.4/css/bootstrap.min.css" />
 
-<link rel="stylesheet" type="text/css" href="css/myStyle.css" />
-<script type= "text/javascript" src="js/myAngularApp.js"></script>
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/myStyle.css" />
+	<script type="text/javascript" src="js/myAngularApp.js"></script>
 </head>
-<body ng-app= "angularApp" ng-controller="myController">	
-  
-<input type="text" ng-model = "textname">
-<p>Enter Text : {{textname}}</p>
-<p>
-choose your service : 
-<select ng-options="item as item.label for item in items track by item.id" ng-model="selected"></select><br>
-	<div ng-if="selected">
-element du service N: {{selected.id}} <select ng-options="i as i.name for i in selected.subItem " ng-model="select"></select><br>
-<form ng-if="select">
-	<div ng-repeat ="s in select.data">
-					 {{s.desc}} <input type="{{s.var1}}">
+
+<body ng-app="angularApp" ng-controller="myController">
+
+	<!-- <div>Enter Text : <input type="text" ng-model = "textname"> {{textname}} </div> -->
+	<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="panel panel-info spacer">
+				<div class="panel-heading"><center><h3>Démo Application Cliente WPS</h3></center></div>
+			</div>
+		</div>
+
+
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-info spacer">
+			<div class="panel-heading">Choose your WPS:</div>
+			<div class="panel-body">
+				<select ng-options="item as item.label for item in items track by item.id" ng-model="selected"></select>
+			</div>
+		</div>
 	</div>
-Name : <input type="text" ng-model="noom">
-</form>
-</div>
-</p>
+
+	<div ng-if="selected">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="panel panel-info spacer">
+				<div class="panel-heading"> Vous avez sélectionner le WPS {{selected.label}}:</div>
+				<div class="panel-body">
+					<div> Selectionnez un Process: </div> 
+					<select ng-options="i as i.name for i in selected.subItem " ng-model="select"></select>
+				    
+					<br>
+					<form ng-if="select">
+						<div ng-repeat="s in select.data">
+							{{s.desc}}
+							<input type="{{s.var1}}">
+						</div>
+						Name :
+						<input type="text" ng-model="noom">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </body>
+
 </html>

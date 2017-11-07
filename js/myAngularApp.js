@@ -1,7 +1,8 @@
-var myApp= angular.module("angularApp",[]); //declaration du module
+
+var myApp= angular.module("angularApp",[]);    //declaration du module
 
 myApp.controller("myController", function($scope){
-$scope.txtname = ""; 
+$scope.textname = ""; 
 
 $scope.items = [{
 id: 1,
