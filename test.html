@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset= "UTF-8"/>
+<title>Angular Demo</title>
+	<script type="text/javascript" src="angular/angular.min.js"></script>
+	<script type="text/javascript" src="js/myApp.js"></script>
+	
+<link rel="stylesheet" type="text/css"
+href="bootstrap-3.3.4/css/bootstrap.min.css" />
+
+<link rel="stylesheet" type="text/css" href="css/myStyle.css" />
+<script type= "text/javascript" src="js/myAngularApp.js"></script>
+</head>
+<body ng-app= "angularApp" ng-controller="myController">	
+  
+<input type="text" ng-model = "textname">
+<p>Enter Text : {{textname}}</p>
+<p>
+choose your service : 
+<select ng-options="item as item.label for item in items track by item.id" ng-model="selected"></select><br>
+	<div ng-if="selected">
+element du service N: {{selected.id}} <select ng-options="i as i.name for i in selected.subItem " ng-model="select"></select><br>
+<form ng-if="select">
+	<div ng-repeat ="s in select.data">
+					 {{s.desc}} <input type="{{s.var1}}">
+	</div>
+Name : <input type="text" ng-model="noom">
+</form>
+</div>
+</p>
+</body>
+</html>
