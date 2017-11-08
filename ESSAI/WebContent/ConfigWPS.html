@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<script src="js/deps.wps-js.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="wps-js-all.min.js"></script>
+
+
+<title>wps-js example</title>
+<link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body>
+		<form id="choix" style="display:block">
+        <input type="button" value="Retour choix process"
+               onclick="initConfig(3);" />
+        </form>
+          
+	<div id="wrapper">
+	<h1> Appel WPS </h1>
+		<hl>
+		 
+		
+		<form id="capabilities" style="display:block">
+		
+		
+		
+		
+		<div>
+			<h3>
+				Capabilities
+			</h3>
+			
+						<!--liste déroulante serveur -->
+			<div class="wps-container">
+				<select id="wps">
+					<option>Select a WPS</option>
+					
+					<option>http://envision-wps.brgm-rec.fr/WPS.NET/WPService.asmx/WPS?</option>
+					<option>http://geoprocessing.demo.52north.org:8080/wps/WebProcessingService</option>
+					<option>http://localhost:8080/geoserver/ows?</option>
+					<option>https://geobretagne.fr/geoserver/ows?</option>
+					<!-- 
+					<option>http://geostatistics.demo.52north.org/wps/WebProcessingService</option>
+					<option>http://test.indigeo.fr/wps/cgiwps.sh?</option>
+					<option>http://zoo-project.org/zoo</option>-->
+
+				</select>
+			</div>
+			
+			
+			<!-- réponse getCapabilities -->
+			
+			<h1></h1>
+			<div class="wps-container">
+				<textarea rows="20" cols="100" id="capabilitiesText">empty</textarea>
+			</div>
+		</div>
+		</form>
+		<div>
+		<form id="describe" style="display:block">
+			<h3>
+				DescribeProcess
+			</h3>
+			<!--liste déroulante process -->
+			
+			
+			<div class="wps-container">
+				<select id="processes"><option>Select a Process</option></select>
+			</div>
+			</form>
+			<h1></h1>
+			
+						<!-- réponse Describeprocess-->
+			
+			<div class="wps-container">
+				<textarea rows="20" cols="100" id="processDescriptionText">empty</textarea>
+			</div>
+		</div>
+		<div>
+		<div class="divName" id="divName" name="divName"></div>
+					<!--liste déroulante execute process -->
+		 <input type="button" id="processes_execute" value="Execute Process" onclick="executeLaunch();" />
+                
+                <!-- 
+                
+			<h3>Execute Process</h3>
+			<div class="wps-container">
+				<select id="processes_execute"><option>Select a Process</option></select>
+				<span id="processDescriptionLink"></span>
+				<div class="wps-execute-container" id="wps-execute-container"></div>
+			</div>
+			<p></p>
+			<div class="wps-container">
+			    <div id="auto-update-container"></div>
+				<div id="executeProcess"></div>
+				
+				
+			</div>
+			-->
+			
+
+			
+		</div>
+	</div>
+	
+	
+	    <!-- import du code javascript fichiers config et WSAPI-->
+	   
+    <script type="text/javascript" src="WSAPI.js"></script>
+    <script type="text/javascript" src="ViewController.js"></script>
+   
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript" src="ConfigWPS.js"></script>
+  
+	
+</body>
+</html>

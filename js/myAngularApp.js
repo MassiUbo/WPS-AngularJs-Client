@@ -1,8 +1,8 @@
 
-var myApp = angular.module("angularApp", [])   //declaration du module
-myApp.controller("myController", function ($scope) {
+var myApp = angular.module("angularApp", [])           //declaration du module
+myApp.controller("myController", function ($scope) {   // controller 
     
-    $scope.txtname = ""; 
+    //$scope.txtname = ""; 
     $scope.items = [{
       id: 1,
       label: 'degree',
