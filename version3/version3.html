@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Angular Demo</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/myStyle.css" />
+	<script src="wps-js-all.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+</head>
+
+<body ng-app="angularApp" ng-controller="myController">
+	<!-- <div>Enter Text : <input type="text" ng-model = "textname"> {{textname}} </div> -->
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-info spacer">
+			<div class="panel-heading">
+				<center>
+					<h3>Démo Application WPS Cofigurable</h3>
+				</center>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-12 col-sm-6 col-xs-6">
+		<div class="panel panel-info spacer">
+			<div class="panel-heading">Choose your WPS:</div>
+			<div class="panel-body">
+				<select id="wps" ng-options="item as item.label for item in items track by item.id" ng-model="selected"></select>
+			</div>
+		</div>
+	</div>
+	
+	<!-- réponse getCapabilities -->
+	<div ng-if="selected" ng-show="affichage()">
+			
+		<div class="col-md-6 col-sm-6 col-xs-6">
+			<div class="panel panel-info spacer">
+				<div class="panel-heading">Discription WPS:</div>
+
+				<div class="panel-body">
+					<textarea rows="20" cols="80" id="capabilitiesText">Chargement...</textarea>
+					<input value='download' type='button'onclick='doDL(document.getElementById("capabilitiesText").value)' />
+				</div>
+			</div>
+		</div>
+	</div>
+	
+		<!--liste déroulante process -->
+       <div ng-show="visible"> 
+		<div class="col-md-6 col-sm-6 col-xs-6">
+			<div class="panel panel-info spacer">
+				<div class="panel-heading">Liste de Process:</div>
+				<div class="panel-body">
+					<select id="processes" ng-model="select">
+						<option>Select a Process</option>
+					</select>	
+				</div>
+			</div>
+		</div>
+
+		<div ng-if="select">
+
+			<div class="col-md-6 col-sm-6 col-xs-6">
+				<div class="panel panel-info spacer">
+					<div class="panel-heading">
+						<p>Discription du Process</p>
+						<div class="wps-container">
+							<textarea rows="15" cols="80" id="processDescriptionText">empty</textarea>
+							<input value='download' type='button'onclick='doDL(document.getElementById("processDescriptionText").value)' />
+						</div>
+					<!--	<p><input type="file" onchange="loadfile(this)"></p>-->
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<!-- import du code javascript fichiers config et WSAPI-->
+	<script type="text/javascript" src="b.js"></script>
+
+	<script type="text/javascript" src="angular/angular.min.js"></script>
+	<script type="text/javascript" src="js/myAngularApp.js"></script>
+
+
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-info spacer">
+			<div class="panel-heading">
+				<center>
+					<p>PROJET MPA M2 ILIADE </p>
+				</center>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
