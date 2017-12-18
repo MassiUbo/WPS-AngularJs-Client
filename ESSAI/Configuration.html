@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<script src="wps-js-all.min.js"></script>
+	<script src="lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<script src="lib/jquery/jquery-1.9.1.js"></script>
+	<script src="lib/ol.js"></script>
+	<script src="lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+	<script src="js/xmlToJSON.js"></script>
+	<link rel="stylesheet" href="lib/jquery/jquery-ui-1.10.3.custom.min.css" />
+	<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="//localhost:8081"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="js/rangeslider.js"></script>
+
+
+	<script src="Leaflet-WFST-master/dist/Leaflet-WFST.src.js"></script>
+
+	<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+	<script src="lib/ol.js"></script>
+
+	<link rel="stylesheet" href="lib/opacity/Control.Opacity.css" />
+	<script src="lib/opacity/Control.Opacity.js"></script>
+
+	<script type="text/javascript" src="js/example.js"></script>
+
+	<title>wps-js example</title>
+
+</head>
+
+
+</head>
+
+<body>
+
+
+	<!-- bouton retour -->
+	<form id="map" style="display:none">
+		<input type="button" value="Retour Map" onclick="initConfig(2);" />
+	</form>
+
+  <!--	<div class="valeur" id="valeur"></div>-->
+
+	<form id="retour" style="display:none">
+		<input type="button" value="Retour " onclick="initConfig(2); "/>
+	</form>    
+
+
+
+	<form id="slider" style="display:none">
+		<div id="js-example-change-attributes">
+			<h2> </h2>
+			<input type="range" min="10" max="100" step="5" data-rangeslider>
+			<output></output>
+			<br>
+			<br>
+		</div>
+	</form>
+
+	<form id="label" style="display:none">
+		<label>
+			<input type="number" name="min" id="min" value=vmin>
+			<code>min</code>
+		</label>
+		<br>
+		<label>
+			<input type="number" name="max" id="max" value=vmax>
+			<code>max</code>
+		</label>
+		<br>
+		<label>
+			<input type="number" name="step" id="step" value=vstep>
+			<code>step</code>
+		</label>
+		<br>
+		<br>
+		<input type="button" value="Modif" onclick="change();" />
+	</form>
+
+
+	<form id="choix" style="display:none">
+
+		<input type="button" value="Retour Map" onclick="initConfig(3); document.getElementById('processDescription').style.display ='form'; initConfig(2);document.getElementById('processesfavoris').options[0].selected = 'selected';"
+		/>
+	</form>
+
+	<form id="accueil" style="display:block">
+		<input type="button" value="ConfigMap" onclick="document.getElementById('listecouchemap').style.display = 'block'; document.getElementById('reinitialiser').style.visibility = 'hidden'; document.getElementById('mapid').style.visibility = 'hidden'; document.getElementById('wmsfavform').style.display = 'block'; document.getElementById('wfsfavform').style.display = 'block'; document.getElementById('accueil').style.display = 'none'; document.getElementById('map').style.display = 'block';"
+		/>
+
+		<input type="button" value="WPS" onclick="document.getElementById('reinitialiser').style.visibility = 'hidden'; document.getElementById('mapid').style.visibility = 'hidden';document.getElementById('retour').style.display = 'none'; document.getElementById('wpsfavform').style.display = 'block'; document.getElementById('accueil').style.display = 'none'; document.getElementById('map').style.display = 'block'; document.getElementById('wps').style.visibility = 'visible';"
+		/>
+
+		<input type="button" value="Config Favoris WMS" onclick="maptemp=1;  document.getElementById('listeWMS').style.display = 'block';     mapinit(2); document.getElementById('wmsfavform').style.display = 'block'; document.getElementById('accueil').style.display = 'none'; document.getElementById('map').style.display = 'block'; document.getElementById('htmlfavwms').style.visibility = 'visible';"
+		/>
+
+		<input type="button" value="Config Favoris WFS" onclick="maptemp=1;initConfig(12); setCurrentIndex(this.id);     mapinit(2); document.getElementById('reinit').style.display = 'none'; document.getElementById('retour').style.display = 'none'; document.getElementById('accueil').style.display = 'none'; document.getElementById('map').style.display = 'block';document.getElementById('htmlfavwfs').style.visibility = 'visible';"
+		/>
+
+		<input type="button" value="Config Favoris WPS" onclick="document.getElementById('wrapper').style.display = 'block'; document.getElementById('adresse').style.display = 'block';  document.getElementById('reinitialiser').style.visibility = 'hidden'; document.getElementById('mapid').style.visibility = 'hidden'; document.getElementById('processes').options[0].selected = 'selected'; document.getElementById('wps').style.display = 'block'; document.getElementById('wps').style.visibility = 'visible';document.getElementById('wrapper').style.visibility = 'visible'; document.getElementById('describe').style.display = 'block'; document.getElementById('capabilities').style.display = 'block';document.getElementById('accueil').style.display = 'none'; document.getElementById('map').style.display = 'block';"
+		/>
+
+
+	</form>
+
+
+	<div id="htmlfavwfs" style="visibility:hidden"></div>
+
+	<div id="htmlfavwms" style="visibility:hidden"></div>
+
+
+
+
+	<form name="wpsfavform" id="wpsfavform" style="display:none">
+		<SELECT NAME="wpsfav" id="wpsfav" onChange='initConfig(11);'>
+			<OPTION VALUE="Choisir un favori WPS">Choisir un favori WPS
+		</SELECT>
+		<input type='button' value="Supprimer favori WPS" onclick='supfavwps();' />
+		<!--         $("#wpsfav option:selected").remove();'/>-->
+
+	</form>
+
+	<div class="divS" id="divS"></div>
+	<div class="divSlider" id="divSlider"></div>
+
+
+
+
+
+	<div id="wpsexe" style="display:none">
+		<input type='button' name='wpsexe' id='wpsexe' value="Executer" onclick="executeLaunch(); document.getElementById('retour').style.display = 'none';document.getElementById('retour').style.visibility = 'hidden'; document.getElementById('choix').style.display = 'none';">
+	</div>
+
+
+
+
+
+
+
+	<div id="wrapper" style="display:none">
+		<!-- <form id="intro" style="display:block">
+		<div>
+		<h1>wps-js example</h1>
+			<p>wps-js is an <a href="https://github.com/52North/wps-js/" title="wps-js on GitHub">open source client library</a> for connecting Javascript client to <a href="http://www.opengeospatial.org/standards/wps" title="WPS @ Open Geospatial Consortium">OGC Web Processing</a> services. This page demonstrates how you can use it. More documentation is available in the <a href="https://wiki.52north.org/bin/view/Geoprocessing/Wps-js" title="wps-js wiki page">52&deg;North Wiki</a> and on <a href="https://github.com/52North/wps-js/blob/master/README.md" title="wps-js readme">GitHub</a>.</p>
+		</div> 
+		</form> -->
+		<hl>
+
+			<form id="adresse" style="display:block">
+				Adresse:
+				<input type='text' name='newWpsAdresse' id='newWpsAdresse' value="http://envision-wps.brgm-rec.fr/WPS.NET/WPService.asmx/WPS?"
+				 style="width:500px;">
+				<input type="button" id="verifadd" value="Verification Adresse" onclick="verificationWPS();" />
+
+			</form>
+
+			<form id="verificationRunning" style="display:none">
+				verification
+			</form>
+
+			<form id="capabilities" style="display:block">
+
+				<div>
+					<h3>
+						Configuration favoris WPS
+					</h3>
+
+					<!--liste déroulante serveur -->
+					<div class="wps-container">
+
+
+
+						Processus favoris:
+						<select id="processesfavoris">
+							<option>Select a process</option>
+							<option>http://geoprocessing.demo.52north.org:8080/wps/WebProcessingService^org.n52.wps.server.algorithm.r.AnnotationValidation</option>
+							<option>http://geoprocessing.demo.52north.org:8080/wps/WebProcessingService^org.n52.wps.server.algorithm.test.EchoProcess</option>
+							<option>https://geobretagne.fr/geoserver/ows?^vec:Centroid</option>
+						</select>
+						<br/>
+						<br/>
+
+						<h3>
+							Liste des sites
+						</h3>
+
+						<select id="wps">
+							<option>Select a WPS</option>
+							<option>http://geoprocessing.demo.52north.org:8080/wps/WebProcessingService</option>
+							<option>http://localhost:8080/geoserver/ows?</option>
+							<option>http://envision-wps.brgm-rec.fr/WPS.NET/WPService.asmx/WPS?</option>
+							<option>https://geobretagne.fr/geoserver/ows?</option>
+							<!-- 
+					<option>http://geostatistics.demo.52north.org/wps/WebProcessingService</option>
+					<option>http://test.indigeo.fr/wps/cgiwps.sh?</option>
+					<option>http://zoo-project.org/zoo</option>-->
+
+						</select>
+						<label>
+							<input type="checkbox" id="wps-version" value="2.0.0"> use version '2.0.0'?
+						</label>
+					</div>
+					<!-- réponse getCapabilities -->
+
+					<h1></h1>
+
+				</div>
+			</form>
+			<div>
+				<form id="describe" style="display:block">
+					<h3>
+						Liste des processus
+					</h3>
+					<!--liste déroulante process -->
+
+
+					<div class="wps-container">
+						<select id="processes">
+							<option>Select a Process</option>
+						</select>
+					</div>
+				</form>
+				<h1>Massi</h1>
+
+				<!-- réponse Describeprocess-->
+			</div>
+			<div>
+				<form id="execute" style="display:none">
+					<input type="button" id="processes_execute" value="Execute Process" onclick="executeLaunch();" />
+				</form>
+
+
+
+				<div class="divName" id="divName" name="divName"></div>
+				<!--liste déroulante execute process -->
+
+
+
+				<form id="wfsConfig" style="display:none">
+
+					<div class="wps-container">
+						<select id="wps">
+							<option>Select a WPS</option>
+
+							<option>http://geoprocessing.demo.52north.org:8080/wps/WebProcessingService</option>
+							<option>https://geobretagne.fr/geoserver/ows?</option>
+							<option>http://envision-wps.brgm-rec.fr/WPS.NET/WPService.asmx/WPS?</option>
+							<option>http://localhost:8080/geoserver/ows?</option>
+							<!-- 
+					<option>http://geostatistics.demo.52north.org/wps/WebProcessingService</option>
+					<option>http://test.indigeo.fr/wps/cgiwps.sh?</option>
+					<option>http://zoo-project.org/zoo</option>-->
+
+						</select>
+					</div>
+				</form>
+
+
+			</div>
+			<form id="info" style="display:none">
+				<input type="button" id="infob" value="Info" onclick="document.getElementById('processDescriptionDiv').style.visibility='visible'; document.getElementById('info').style.display = 'none' "
+				/>
+			</form>
+
+			<form id="processDescription" style="display:none">
+				<input type="button" id="next" value="Add" onclick="addfavwps();  " />
+				<br />
+				<div class="wps-container" id="processDescriptionDiv" style="visibility:hidden">
+					<textarea rows="20" cols="100" id="processDescriptionText">empty</textarea>
+
+				</div>
+			</form>
+
+			<form id="affiche" style="display:none">
+				<input type="button" id='boutonCharger'>Afficher
+			</form>
+
+
+	</div>
+
+
+
+
+	<!-- 	<div id="configmap" style="visibility:hidden">
+
+		<input type='button' name='affichemap'  id='affichemap' value="Afficher" onclick="initConfig(2);" >
+</div> -->
+
+
+	<form name="formu" id="listeWFS" style="display:none">
+		<br> Ajouter site
+		<input type='text' name='newWfsAdresse' id='newWfsAdresse' value="https://geobretagne.fr/geoserver/dreal_b/ows?" style="width:500px;">
+		<input type="button" id="verifaddwfs" value="Verification Adresse" onclick="verificationWFS();" />
+		<div id="verificationRunningWfs" style="visibility:hidden">
+			verification
+		</div>
+
+
+		<SELECT NAME="wfsformat" id="wfsformat" onChange='setFormatWFS(this.value);'>
+			<OPTION VALUE="application/json">application/json
+				<OPTION VALUE="text/xml">text/xml
+					<OPTION VALUE="text/javascript">text/javascript
+		</SELECT>
+
+
+		<br>
+		<SELECT NAME="wfs" id="wfs" onChange="addwfs();">
+			<OPTION VALUE="Choisir un site">Choisir un site
+				<OPTION VALUE="https://geobretagne.fr/geoserver/dreal_b/ows?">https://geobretagne.fr/geoserver/dreal_b/ows?
+					<OPTION VALUE="https://geobretagne.fr/geoserver/insee/ows?">https://geobretagne.fr/geoserver/insee/ows?
+						<OPTION VALUE="https://geobretagne.fr/geoserver/ows?">https://geobretagne.fr/geoserver/ows?
+							<OPTION VALUE="http://geoserver.ics.perm.ru/geoserver/topp/ows?">http://geoserver.ics.perm.ru/geoserver/topp/ows?
+								<OPTION VALUE="http://geoserver.ics.perm.ru/geoserver/tiger/ows?">http://geoserver.ics.perm.ru/geoserver/tiger/ows?
+									<OPTION VALUE="http://geoserver.ics.perm.ru/geoserver/sf/ows?">http://geoserver.ics.perm.ru/geoserver/sf/ows?
+		</SELECT>
+		<br>
+
+		<SELECT NAME="wfscouche" id="wfscouche" onChange='recuperationCouche(this.value);'>
+			<OPTION VALUE="Choisir une couche">Choisir une couche
+		</SELECT>
+
+		<input type="button" value="Ajouter favoris" onclick="addfavwfs();" />
+
+
+		<INPUT type="checkbox" id="checktelecharger" name="checktelecharger"> telecharger?
+
+		<div id="chargementwfs" style="display:block">
+			<br> </div>
+	</form>
+
+
+
+	<form name="formuwms" id="listeWMS" style="display:none">
+		<br>Ajouter site
+		<input type='text' name='newWmsAdresse' id='newWmsAdresse' value="https://geobretagne.fr/geoserver/ign/ows?wps?" style="width:500px;">
+		<input type="button" id="verifaddwms" value="Verification Adresse" onclick="verificationWMS();" />
+		<div id="verificationRunningWms" style="visibility:hidden">
+			verification
+		</div>
+
+
+		<SELECT NAME="wmsformat" id="wmsformat" onChange='setFormatWMS(this.value);'>
+			<OPTION VALUE="jpeg">jpeg
+				<OPTION VALUE="png">png
+		</SELECT>
+
+
+		<br>
+		<SELECT NAME="wms" id="wms" onChange="addwms();">
+			<OPTION VALUE="Choisir un site">Choisir un site
+				<OPTION VALUE="https://public.sig.rennesmetropole.fr/geoserver/ref_fonds/ows?">https://public.sig.rennesmetropole.fr/geoserver/ref_fonds/ows?
+					<OPTION VALUE="https://geobretagne.fr/geoserver/dir_ouest/ows?">https://geobretagne.fr/geoserver/dir_ouest/ows?
+						<OPTION VALUE="https://geobretagne.fr/geoserver/megalis/ows?"> https://geobretagne.fr/geoserver/megalis/ows?
+							<OPTION VALUE="https://geobretagne.fr/geoserver/photo/ows?"> https://geobretagne.fr/geoserver/photo/ows?
+								<OPTION VALUE="https://public.sig.rennesmetropole.fr/geoserver/ows?">https://public.sig.rennesmetropole.fr/geoserver/ows?
+									<OPTION VALUE="https://geobretagne.fr/geoserver/ows?">https://geobretagne.fr/geoserver/ows?
+		</SELECT>
+		<br>
+
+		<SELECT NAME="wmscouche" id="wmscouche" onChange='recuperationCoucheWms(this.value);'>
+			<OPTION VALUE="Choisir une couche">Choisir une couche
+		</SELECT>
+
+		<input type="button" value="Ajouter favoris" onclick="addfavwms();" />
+
+		<div id="chargementwms" style="display:block">
+			<br> </div>
+	</form>
+
+
+
+	<form name="wfsfavform" id="wfsfavform" style="display:none">
+		<SELECT NAME="wfsfav" id="wfsfav" onChange='wfsFav();'>
+			<OPTION VALUE="Choisir un favori WFS">Choisir un favori WFS
+				<OPTION VALUE="https://geobretagne.fr/geoserver/ows?^insee:zone_emploi_bretagne">https://geobretagne.fr/geoserver/ows?^insee:zone_emploi_bretagne
+					<OPTION VALUE="https://geobretagne.fr/geoserver/ows?^dreal_b:stationnement_littoral">https://geobretagne.fr/geoserver/ows?^dreal_b:stationnement_littoral
+						<OPTION VALUE="https://geobretagne.fr/geoserver/ows?^dreal_b:FRegion">https://geobretagne.fr/geoserver/ows?^dreal_b:FRegion
+							<OPTION VALUE="https://geobretagne.fr/geoserver/ows?^dreal_b:n_zde_eolien_s_r53">https://geobretagne.fr/geoserver/ows?^dreal_b:n_zde_eolien_s_r53
+								<OPTION VALUE="http://geoserver.ics.perm.ru/geoserver/ows?^topp:tasmania_state_boundaries">http://geoserver.ics.perm.ru/geoserver/ows?^topp:tasmania_state_boundaries
+									<OPTION VALUE="http://geoserver.ics.perm.ru/geoserver/ows?^topp:states">http://geoserver.ics.perm.ru/geoserver/ows?^topp:states
+		</SELECT>
+
+		<input type="button" value="Supprimer favori WFS" onclick='supfavwfs();' />
+
+	</form>
+
+
+
+
+
+	<form name="wmsfavform" id="wmsfavform" style="display:none">
+		<SELECT NAME="wmsfav" id="wmsfav" onChange='wmsFav();'>
+			<OPTION VALUE="Choisir un favori WMS">Choisir un favori WMS
+				<OPTION VALUE="https://geobretagne.fr/geoserver/ign/ows?^ign_scan">https://geobretagne.fr/geoserver/ign/ows?^ign_scan
+					<OPTION VALUE="https://portail.indigeo.fr/geoserver/LETG-BREST/wfs?^30min_Le_conquet_parcelle">https://portail.indigeo.fr/geoserver/LETG-BREST/wfs?^30min_Le_conquet_parcelle
+						<OPTION VALUE="https://portail.indigeo.fr/geoserver/LETG-BREST/wfs?^Activite_maritimes_encadrees_2009_L93">https://portail.indigeo.fr/geoserver/LETG-BREST/wfs?^Activite_maritimes_encadrees_2009_L93
+							<OPTION VALUE="https://public.sig.rennesmetropole.fr/geoserver/ref_fonds/ows?^pvci_nb">https://public.sig.rennesmetropole.fr/geoserver/ref_fonds/ows?^pvci_nb
+								<OPTION VALUE="https://geobretagne.fr/geoserver/photo/ows?^ortho-composite">https://geobretagne.fr/geoserver/photo/ows?^ortho-composite
+									<OPTION VALUE="https://geobretagne.fr/geoserver/dir_ouest/ows?^trafic_diro">https://geobretagne.fr/geoserver/dir_ouest/ows?^trafic_diro
+
+		</SELECT>
+
+		<input type="button" value="Supprimer favori WMS" onclick='supfavwms();' />
+
+	</form>
+
+
+
+	<div id="listecouchemap" style="display:none">
+	</div>
+
+
+
+	<div id="mapid" style="visibility:visible">
+	</div>
+
+	<div id="tempid" style="display:none">
+	</div>
+
+
+	<form id="reinit" style="display:none">
+		<input type="button" value="reinitialiser map OSM" onclick="mapinit(1);" />
+
+		<div class="wps-container" style="visibility:hidden">
+			<textarea rows="20" cols="100" id="capabilitiesText">empty</textarea>
+		</div>
+	</form>
+
+	<input id="reinitialiser" type="button" style="visibility:visible" value="reinitialiser map OSM" onclick="mapinit(1);" />
+
+
+	<!-- import du code javascript -->
+	<script type="text/javascript" src="MapView.js"></script>
+	<script type="text/javascript" src="WSAPI.js"></script>
+	<script type="text/javascript" src="ViewController.js"></script>
+	<script type="text/javascript" src="config.js"></script>
+	<script type="text/javascript" src="ConfigWPS.js"></script>
+	<script type="text/javascript" src="ConfigWFS.js"></script>
+	<script type="text/javascript" src="ConfigWMS.js"></script>
+
+
+	<!-- 
+            <script type="text/javascript" src="ConfigExecute.js"></script>
+    <script type="text/javascript" src="MapView.js"></script>-->
+
+
+</body>
+
+</html>
