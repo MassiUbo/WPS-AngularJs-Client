@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<script src="wps-js-all.min.js"></script>
+	<script src="lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="lib/jquery/jquery-1.9.1.js"></script>
+<!--	<script src="lib/ol.js"></script>-->
+	<script src="lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+	<script src="js/xmlToJSON.js"></script>
+	<link rel=  "stylesheet" href="lib/jquery/jquery-ui-1.10.3.custom.min.css" />
+	<!--<script src="http://www.openlayers.org/api/OpenLayers.js"></script>-->
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
+	<script src="js/rangeslider.js"></script>
+	<!--<script src="Leaflet-WFST-master/dist/Leaflet-WFST.src.js"></script>-->
+	<!--<script src="http://www.openlayers.org/api/OpenLayers.js"></script>-->
+	<!--<script src="lib/ol.js"></script>-->
+	<!--<link rel="stylesheet" href="lib/opacity/Control.Opacity.css" />-->
+	<!--<script src="lib/opacity/Control.Opacity.js"></script>-->
+	<!--<script type="text/javascript" src="js/example.js"></script>-->
+	<title>wps-js example</title>
+</head>
+
+<body>
+
+	<div id="wrapper" style="display:block">
+			<form id="capabilities" style="display:block">
+					<h3>
+						Configuration favoris WPS
+					</h3>
+
+					<div class="wps-container">
+						<h3>
+							Liste des sites
+						</h3>
+
+						<select id="wps">
+							<option>Select a WPS</option>
+							<option>http://geoprocessing.demo.52north.org:8080/wps/WebProcessingService</option>
+							<!--<option>http://localhost:8080/geoserver/ows?</option>-->
+							<!--<option>http://envision-wps.brgm-rec.fr/WPS.NET/WPService.asmx/WPS?</option>-->
+							<option>https://geobretagne.fr/geoserver/ows?</option>
+						</select>
+					</div>
+					<!-- réponse getCapabilities -->
+			</form>
+			<div>
+				<form id="describe" style="display:block">
+					<h3>
+						Liste des processus
+					</h3>
+					<!--liste déroulante process -->
+					<div class="wps-container">
+						<select id="processes">
+							<option>Select a Process</option>
+						</select>
+					</div>
+				</form>
+				<!-- réponse Describeprocess-->
+			</div>
+
+			<div>
+				<div class="divName" id="divName" name="divName"></div>
+				<!--liste déroulante execute process -->
+			</div>
+
+			<form id="processDescription" style="display:block">
+				<input type="button" id="next" value="Ajout" onclick="addfavwps();  " />
+				<br />
+				<!--<div class="wps-container" id="processDescriptionDiv" style="visibility:hidden">
+					<textarea rows="20" cols="100" id="processDescriptionText">empty</textarea>
+				</div>-->
+			</form>
+    </div>
+    
+    <form name="wpsfavform" id="wpsfavform" style="display:block">
+		<SELECT NAME="wpsfav" id="wpsfav" onChange='initConfig(11);'>
+			<OPTION VALUE="Choisir un favori WPS">Choisir un favori WPS
+		</SELECT>
+		<input type='button' value="Supprimer favori WPS" onclick='supfavwps();' />
+    </form>
+    
+    <!--<div class="divS" id="divS"></div>-->
+	<div class="divSlider" id="divSlider"></div>
+
+	<div id="wpsexe" style="display:none">
+		<input type='button' name='wpsexe' id='wpsexe' value="Executer" onclick="executeLaunch();">
+	</div>
+
+	<!-- import du code javascript -->
+
+	<script type="text/javascript" src="controler.js"></script>
+	<script type="text/javascript" src="config.js"></script>
+	<script type="text/javascript" src="configwp.js"></script>
+
+
+</body>
+
+</html>
