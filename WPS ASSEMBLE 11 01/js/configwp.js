@@ -167,6 +167,8 @@ Download.save = function(data, name)
 
 // Excecution de la requête
 function executeCallback (data, url) {
+	
+	// reponse de la requête
 	response = (new XMLSerializer()).serializeToString(data);
 	var parser = new DOMParser();
 	var xml = parser.parseFromString(response, "text/xml");
@@ -177,7 +179,8 @@ function executeCallback (data, url) {
 	 // sauvgarder le resultat comme Json   
 	 try{
 	 if (isWeb[selectedIndex][0] == false) {
-		 Download.save(JSON.stringify(wpsResponse),fileName[selectedIndex] + ".txt");
+		// Download.save(JSON.stringify(wpsResponse),fileName[selectedIndex] + ".txt");
+		document.getElementById("resultat").innerHTML += " <textarea id='message' name='message' rows='9' cols='80'>"+JSON.stringify(wpsResponse)+"</textarea>" ;
 	 }
 	 // si non on excute sur le web 
 	 else{
@@ -223,8 +226,7 @@ var wpsService = new WpsService({
 
 	$.each(processes, function(index, process) {
 		_select.append(
-	     pinchou.push(process)									  
-			); 
+	     pinchou.push(process)); 
     });  
 	
 	var capabilitiesDocument = response.responseDocument;
@@ -285,11 +287,13 @@ var wpsService = new WpsService({
 							var char = "onclick='checker('check1" + inputIndex + "','check2" + inputIndex + "');";
 							newdiv.innerHTML += " <br><div " + inputIndex +  n +"' " +"' id='notused" + inputIndex + n +"' /> ";			
 							newdiv.innerHTML += "<textarea type='text' name='myInputs[" + nb + "]'  id='myInputs[" + inputIndex + n + "]'  style='width:250px;height:25px;' value='"+defaultValue[inputIndex]+"'></textarea>" ;
-							newdiv.innerHTML += "obligatoire  <input type='checkbox' checked='checked' name='1" + inputIndex + n + "' " +"' id='1" + inputIndex + n + "' onclick='checker(1" + inputIndex + n + ",2" + inputIndex + n + ");' />";
+							newdiv.innerHTML += "Text WKT  <input type='checkbox' checked='checked' name='1" + inputIndex + n + "' " +"' id='1" + inputIndex + n + "' onclick='checker(1" + inputIndex + n + ",2" + inputIndex + n + ");' />";
 						//	newdiv.innerHTML +=  "user <input type='checkbox' name='2" + inputIndex + n + "' id='2" + inputIndex + n + "' onclick='checker(2" + inputIndex + n + " ,1" + inputIndex + n + ");' />";
 							var d=document.wpsfavform.wpsfav;
 							idInputs[d.length-1][nb] = response.processOffering.process.inputs[nb].title;
 							
+
+							// requeste vers serveur
 						    $.ajax({
 						        type: "GET",
 						        url: adresseWps + 'service=WPS&version=' + versionWps + '&request=DescribeProcess&identifier='+ identifier,
