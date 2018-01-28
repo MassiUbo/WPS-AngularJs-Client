@@ -7,28 +7,19 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	$scope.visible;
 	$scope.txtname = "";
 
-	$scope.items = [{
-		id: 1,
-		label: 'http://geoprocessing.demo.52north.org:8080/wps/WebProcessingService',
-	},
-	{
-		id: 2,
-		label: 'https://geobretagne.fr/geoserver/ows',
 
-	},
-	{
-		id: 3,
-		label: 'http://zoo-project.org/zoo',
-
-	}
-
-	];
+	$http.get('/items').then(function (response) {
+		console.log("j'ai recu la liste des serveurs")
+		$scope.items = response.data;
+		console.log("", response.data)
+	});
 
 
 	$scope.selected = null;
 	$scope.select = null;
 	$scope.pinchou = [];
 	$scope.result = null;
+	$scope.good = null;
 	$scope.wps = null;
 	$scope.processes = null;
 	$scope.process = null;
@@ -36,12 +27,38 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	$scope.result2 = null;
 	$scope.descriptionProcess = null;
 	$scope.inputs = false;
-	
+
+
+	$scope.verification = function () {
+		if ($scope.monServeur != "") {
+			
+			$http.get($scope.monServeur.label+'?service=WPS&version=1.0.0&request=GetCapabilities').then(function (response) {
+					
+				   $scope.good = true;
+				    window.alert('serveur correcte !')		
+				});
+			
+				if ($scope.good != true){
+				//	window.alert("Serveur Incorrecte !")
+					$scope.good = false;
+				  }		
+
+		}
+	}
 
 	$scope.ajout = function () {
-		if ($scope.monServeur.label != "") {
-			$scope.items.push($scope.monServeur);
-			$scope.monServeur = "";
+		if ($scope.monServeur != "") {
+
+			if ($scope.good === true) {
+				$http.post('/items', $scope.monServeur).then(function (response) {
+					window.alert("Ajout server SUCCEED !!");
+					//$scope.monServeur = "";
+				});
+				//$scope.items.push($scope.monServeur);
+			}
+			else {
+				window.alert("verifier votre serveur !")
+			}
 		}
 	}
 
@@ -88,7 +105,15 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 	$scope.ExecuteProcess = function (id) {
 		console.log("===>DATA ");
-		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=geom%3Dpoint(+4+5)%3B&_=1515963068965').then(function (response) {
+		var valeurtext = document.getElementById('myInputs').value;
+		console.log('txt>>>', valeurtext);
+		var nominput = document.getElementById('contenu').innerHTML;
+		console.log('txt>>>', nominput);
+
+		// a utiliser
+		//  listeInputs +=  idInputs[selectedIndex][i]  +"=" + inputValue[selectedIndex][i] +";" ;
+
+		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + nominput + "=" + valeurtext).then(function (response) {
 			console.log("===>CC", response);
 			$scope.result3 = response.data;
 			console.log("===>DATA ", response.data);
