@@ -47,7 +47,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 
 	$scope.config = function () {
-		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=GetCapabilities').then(function (response) {
+		$http.get('https://paris.demo.netdevices.fr/data').then(function (response) {
 			console.log("===>CC", response);
 			$scope.result = response.data;
 			console.log("===>DATA ", response.data);
