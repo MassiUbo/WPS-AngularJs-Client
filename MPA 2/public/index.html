@@ -50,8 +50,16 @@
 						<br>
 					</tr>
 					<tr ng-repeat="item in items">
-						<td>{{item.label}}
-							<button class="btn btn-danger" ng-click="remove(item._id)">supprimer</button>
+						
+						<td>{{item.label}}</td>
+						<td> 
+								<select id="process" ng-options="item as item.process for item in items" ng-model="selectprocess">
+										<option value="">Liste de process sauvgardé</option>
+									
+									</select> 
+
+						</td>
+							<td><button class="btn btn-danger" ng-click="remove(item._id)">supprimer</button>
 						</td>
 					</tr>
 					<td>
@@ -85,15 +93,13 @@
 
 								<select multiple="multiple" ng-model="process">
 									<option ng-repeat="o in processes">{{o.Identifier.__text}}</option>
-                                    
 								</select>
+
 								<b>{{process["0"]}}</b>
-								<input value="Ajout BDD" type='button' class="btn btn-primary" ng-click="ajoutprobdd(process['0'])" />
+								<input value="Ajout BDD" type='button' class="btn btn-primary" ng-click="ajoutprobdd(selected._id,process['0'])" />
 								<br>
 								<br>
-
 								<input value="GET Description" type='button' class="btn btn-primary" ng-click="getDescriptionProcess(process['0'])" />
-
 								<input value="Display Description	" type='button' class="btn btn-primary" ng-click='getData2()' />
 								<input type="button" class="btn btn-primary" id="next" value="Executer" ng-click="ExecuteProcess(process['0']);" />
 								<input type="button" class="btn btn-primary" id="next" value="Display Executer" ng-click="getData3();" />

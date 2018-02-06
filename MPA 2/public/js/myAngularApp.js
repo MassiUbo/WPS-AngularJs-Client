@@ -30,8 +30,15 @@ $scope.remove = function (id){
 	};
 
 	// Ajout d'un process à une base de données 
-	$scope.ajoutprobdd = function (id){
-		console.log(id);
+	$scope.ajoutprobdd = function (_id,process){
+		console.log(_id);
+	
+		$http.put('/items/'+ _id ,{process}).then(function (response) {
+			window.alert("Ajout process SUCCEED !!");
+			//$scope.monServeur = "";
+			refresh();
+		});
+	
 	}
 
 	$scope.selected = null;
