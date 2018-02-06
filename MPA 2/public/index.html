@@ -40,38 +40,50 @@
 				</form>
 			</div>
 			<div class="panel-body">
-				
+
 
 				<table class="table">
 					<tr>
-						<td>
+						<th>
 							<b> Liste de serveur disponible :</b>
-						</td>
+						</th>
+					<!--	<th>select\deselect all
+							<input type="checkbox" ng-model="selectAll" ng-click="checkAll">
+						</th> -->
 						<br>
 					</tr>
 					<tr ng-repeat="item in items">
-						
-						<td>{{item.label}}</td>
-						<td> 
-								<select id="process" ng-options="item as item.process for item in items" ng-model="selectprocess">
-										<option value="">Liste de process sauvgardé</option>
-									
-									</select> 
+						<td><b>Nom Serveur : </b>{{item.label}}  
+							<button class="btn btn-danger" ng-click="remove(item._id)">supprimer</button>
+							<input type="checkbox" ng-model="checked" ng-checked="exist(item)" ng-click="toggleSelection(item)">
+						   <p> <b> Liste de process sauvegardé dans ce serveur : <b></p>
+							<div ng-repeat="element in item.process" >
+								<li>	{{ element }} </li>
+							</div>
+						</td>
 
-						</td>
-							<td><button class="btn btn-danger" ng-click="remove(item._id)">supprimer</button>
-						</td>
+					
+
+
 					</tr>
+					<p ng-repeat="selectedItems in checked">{{selectedItems.label}}</p>
+
+
+					<button class="btn btn-danger" ng-click="removeChecked()"> supprimer les choix </button>
+
+					<button class="btn btn-danger" ng-click="removeAll()"> supprimer tout </button>
+
+
 					<td>
-							<b>Choisir un serveur:</b>
-							
-											<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
-												<option value="">Sélectionnez un Serveur WPS</option>
-							
-											</select>
-											<input value="GET DATA" class="btn btn-primary" type='button' ng-click='config()' />
-											<input value="Display INFO" class="btn btn-primary" type='button' ng-click='getData()' />
-											<br>
+						<b>Choisir un serveur:</b>
+
+						<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
+							<option value="">Sélectionnez un Serveur WPS</option>
+
+						</select>
+						<input value="GET DATA" class="btn btn-primary" type='button' ng-click='config()' />
+						<input value="Display INFO" class="btn btn-primary" type='button' ng-click='getData()' />
+						<br>
 					</td>
 				</table>
 

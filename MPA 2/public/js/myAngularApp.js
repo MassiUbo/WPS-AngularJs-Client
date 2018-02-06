@@ -29,6 +29,34 @@ $scope.remove = function (id){
 	});
 	};
 
+	/*** suppression */
+
+	
+	$scope.removeChecked = function(){
+		angular.forEach($scope.checked,function(val){
+			$http.delete('/items/'+ val._id).success(function (response){
+			//	window.alert('serveur supprimé avec succès !')
+				refresh();
+				$scope.checked=[];
+			});
+			
+		})
+		
+	}
+
+
+	$scope.removeAll = function(){
+		angular.forEach($scope.items,function(val){
+			$http.delete('/items/'+ val._id).success(function (response){
+			//	window.alert('serveur supprimé avec succès !')
+				refresh();
+				$scope.checked=[];
+			});
+			
+		})
+		
+	}
+
 	// Ajout d'un process à une base de données 
 	$scope.ajoutprobdd = function (_id,process){
 		console.log(_id);
@@ -54,6 +82,50 @@ $scope.remove = function (id){
 	$scope.descriptionProcess = null;
 	$scope.inputs = false;
 
+	// var zaki
+	$scope.checked = null;
+	$scope.selectAll = null;
+
+	// cheked
+	$scope.checked = [];
+	$scope.exist = function(item){
+		return $scope.checked.indexOf(item) > -1;
+	}
+
+	/** partie zaki */
+	$scope.checkAll = function(){
+		if($scope.selectAll){
+			angular.forEach($scope.items, function(item){
+				var idx = $scope.checked.indexOf(item);
+				if(idx >= 0){
+					return true ; 
+				}
+				else {
+					$scope.checked.push(item);
+				}
+			})
+		}
+		else{
+			$scope.checked= [];
+		}
+	}
+
+	$scope.toggleSelection = function(item){
+
+		var idx = $scope.checked.indexOf(item);
+		if(idx > -1){
+			$scope.checked.splice(idx,1);
+		}
+		else {
+			$scope.checked.push(item);
+		}
+	}
+ 
+	$scope.check = function(event) {
+		// how to check if checkbox is selected or not
+		if(this.checked ==true)
+		alert(event.target.checked);
+	  };
 
 	$scope.verification = function () {
 		if ($scope.monServeur != "") {
