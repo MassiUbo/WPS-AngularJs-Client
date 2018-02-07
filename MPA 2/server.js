@@ -66,6 +66,16 @@ app.delete('/items/:id', function(req, res){
     })
 })
 
+app.post('/items2/:id', function(req, res){
+    var id = req.params.id;
+    console.log("yes"+id);
+    db.items.update({_id: mongojs.ObjectId(id)},{ $unset: { process: 1 }}, function (err, doc){
+        res.json(doc);
+    })
+})
+
+
+
 
 
 // affichage sur le port 8080

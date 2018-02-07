@@ -3,15 +3,11 @@
 <html>
 
 <head>
-
 	<meta charset="UTF-8" />
 	<title>Angular CLient WPS Demo</title>
-
 	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/myStyle.css" />
 	<script src="js/xml2json.js"></script>
-
-
 </head>
 
 <body ng-app="angularApp" ng-controller="myController">
@@ -36,11 +32,13 @@
 					<button class="btn btn-primary" ng-click="ajout()">Ajout</button>
 					<button class="btn btn-danger" ng-click="removeChecked()"> supprimer les choix </button>
 					<button class="btn btn-danger" ng-click="removeAll()"> supprimer tout </button>
+
 				</form>
 			</div>
+
+			<div>
+				
 			<div class="panel-body">
-
-
 				<table class="table">
 					<tr>
 						<th>
@@ -60,30 +58,26 @@
 							
 						   
 							<p> <b> Liste de process sauvegardé dans ce serveur : <b></p>
-						
+								<button class="btn btn-danger" ng-click="remove2(item._id)"> supprimer process </button>
 
 							<div ng-repeat="pro in item.process">
 									<p> {{pro.name}}</p>
-			
 								</div>
 						</td>
-					</tr>
-					
-					<p ng-repeat="selectedItems in checked">{{selectedItems.label}}</p>
 
+					</tr>
+		
+					<p ng-repeat="selectedItems in checked">{{selectedItems.label}}</p>
 					<td>
 						<b>Choisir un serveur:</b>
-
 						<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
 							<option value="">Sélectionnez un Serveur WPS</option>
-
 						</select>
 						<input value="GET DATA" class="btn btn-primary" type='button' ng-click='config()' />
 						<input value="Display INFO" class="btn btn-primary" type='button' ng-click='getData()' />
 						<br>
 					</td>
 				</table>
-
 			</div>
 		</div>
 	</div>
@@ -91,7 +85,6 @@
 	<!-- test angularjs ################################################################################################################################################-->
 	<!-- réponse getCapabilities -->
 	<div class="container" ng-if="selected">
-
 		<div class="row">
 			<div ng-if="selected">
 				<div class="col-md-12" ng-if="processes">
@@ -99,11 +92,9 @@
 						<div class="panel-heading">
 							<h3>List of Process</h3>
 							<div class="wps-container">
-
 								<select multiple="multiple" ng-model="process">
 									<option ng-repeat="o in processes">{{o.Identifier.__text}}</option>
 								</select>
-
 								<b>{{process["0"]}}</b>
 								<input value="Ajout BDD" type='button' class="btn btn-primary" ng-click="ajoutprobdd(selected._id,process['0'])" />
 								<br>
@@ -115,30 +106,40 @@
 
 								<br>
 								<div ng-if="descriptionProcess">
-									<h3>Description of Process </h3>
+									<h3>Description du Process </h3>
 									<p>
 
 										<span>
-											<strong>Process </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Title.__text}}</span>
+											<strong>Nom Process : </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Title.__text}}</span>
 										<br>
-										<span>
+										<!--<span>
 											<strong>Version</strong> {{descriptionProcess.ProcessDescriptions._version}}</span>
-										<br>
-										<span>
+										<br>-->
+										<!--<span>
 											<strong>prefix </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Abstract.__prefix}}</span>
-										<br>
-										<span>
+										<br>-->
+									<!--	<span>
 											<strong>Process </strong>{{descriptionProcess.ProcessDescriptions._service}}</span>
+										<br>-->
+										<span>
+											<strong>Description : </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Abstract.__text}}</span>
 										<br>
 										<span>
-											<strong>Description </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Abstract.__text}}</span>
-										<br>
-										<br>
-										<span>
-											<strong>INPUTS </strong>
+											<strong>Listes de entrées requis : </strong>
 										</span>
 										<br>
-										<span>
+										<span ng-if="inputs">
+												<div ng-repeat="obj in inputs ">
+													<div id="contenu"> {{obj.Abstract.__text}}</div>
+													<br>
+												</div>
+											</span>
+											</span>
+		
+											<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title">
+													<div id="contenu">	{{descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title.__text}}</div>
+										</span>	
+										<!--<span>
 											<strong>Title </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Title.__text}}</span>
 										<br>
 										<span>
@@ -175,6 +176,7 @@
 										<span>
 											<strong>literalData: </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.LiteralOutput}}</span>
 										<br>
+										-->
 									</p>
 
 
@@ -197,23 +199,20 @@
 									<span ng-if="inputs">
 										<div ng-repeat="obj in inputs ">
 											<div id="contenu"> {{obj.Abstract.__text}}</div>
-											<input type="text" name='myInputs' id='myInputs' /> 
+											<input type="text" name='myInputs' id='myInputs' />
+											
 											<br>
-											<!--fixe
-											<input type="checkbox" /> non fixe
-											<input type="checkbox" /> sauvgarde
-											<input type="checkbox" />-->
-                                          
 										</div>
 									</span>
 									</span>
 
 									<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title">
 											<div id="contenu">	{{descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title.__text}}</div>
-                                            <input type="text" name='myInputs' id='myInputs' />
+											<input type="text" name='myInputs' id='myInputs' />
+											<!--<button class="btn btn-primary" ng-click="toto()">recuperer</button> -->
+											
 									</span>		
 								
-
 								</div>
 								<div>
 									<div class="divName" name="divName">OUTPUTS</div>
@@ -228,17 +227,13 @@
 										<br>
 									</p>
 								</div>
-
 							</div>
 						</div>
 
 						<div ng-if="result4">
-
 							<textarea rows="15" cols="80" id="pikou">{{result4}}</textarea>
-
 							<br>
 							<span>
-
 								<strong> Resultat : </strong>
 								<br>
 								<textarea rows="1" cols="80" id="2">{{resProcess.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.__text}}</textarea>
@@ -246,19 +241,12 @@
 
 						</div>
 					</div>
-
 				</div>
-
-
 			</div>
-
-
 		</div>
 	</div>
 	<!-- test angularjs ################################################################################################################################################-->
 	<!-- réponse getCapabilities -->
-
-
 
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-info spacer">
@@ -272,7 +260,5 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.32/angular.min.js"></script>
 	<script type="text/javascript" src="js/myAngularApp.js"></script>
-
 </body>
-
 </html>

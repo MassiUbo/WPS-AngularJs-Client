@@ -31,6 +31,14 @@ $scope.remove = function (id){
 	});
 	};
 
+	$scope.remove2 = function (id){
+		console.log(id);
+		$http.post('/items2/'+id).success(function (response){
+			window.alert('process supprimé avec succès !')
+			refresh();
+		});
+		};
+
 	/*** suppression */
 
 	
@@ -63,14 +71,14 @@ $scope.remove = function (id){
 	$scope.ajoutprobdd = function (_id,process){
 		console.log(_id);
 	
-		$http.put('/items/'+ _id ,{process,name}).then(function (response) {
+		$http.put('/items/'+ _id ,{process}).then(function (response) {
 			window.alert("Ajout process SUCCEED !!");
 			//$scope.monServeur = "";
 			refresh();
 		});
 	
 	}
-
+	
 	$scope.selected = null;
 	$scope.select = null;
 	$scope.pinchou = [];
@@ -83,7 +91,7 @@ $scope.remove = function (id){
 	$scope.result2 = null;
 	$scope.descriptionProcess = null;
 	$scope.inputs = false;
-
+    
 	// var zaki
 	$scope.checked = null;
 	$scope.selectAll = null;
@@ -94,7 +102,12 @@ $scope.remove = function (id){
 		return $scope.checked.indexOf(item) > -1;
 	}
 
-	/** partie zaki */
+
+   /* $scope.toto = function(){
+	console.log("pp", $scope.movie)
+	
+	}   */
+/** partie zaki */
 	$scope.checkAll = function(){
 		if($scope.selectAll){
 			angular.forEach($scope.items, function(item){
@@ -210,14 +223,14 @@ $scope.remove = function (id){
 	//	console.log("inputs test :",pp[0].Abstract.__text)
 	//	console.log("inputs test :",pp[1].__text)
 		//$scope.wps = aftCnv.Capabilities;  
-	};
-
-
+	}; 
+	
 	$scope.ExecuteProcess = function (id) {
 		console.log("===>DATA ");
-		var valeurtext = document.getElementById('myInputs').value;
+		var valeurtext = document.getElementsByClassName('myInputs').value;
 		console.log('txt>>>', valeurtext);
 		var nominput = document.getElementById('contenu').innerHTML;
+		
 		console.log('txt>>>', nominput);
 
 		// a utiliser
