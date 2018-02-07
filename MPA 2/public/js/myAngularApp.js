@@ -197,7 +197,11 @@ $scope.remove = function (id){
 		console.log("===>DATA CONVERTED ", aftCnv);
 		$scope.descriptionProcess = aftCnv;
 		$scope.inputs = $scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input;
-		$scope.inputs = angular.isArray;
+		//$scope.inputs = angular.isArray;
+		var pp =  $scope.inputs;
+		console.log("inputs test :",pp)
+	//	console.log("inputs test :",pp[0].Abstract.__text)
+	//	console.log("inputs test :",pp[1].__text)
 		//$scope.wps = aftCnv.Capabilities;  
 	};
 

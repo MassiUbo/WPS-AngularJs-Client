@@ -52,19 +52,19 @@
 						</th> -->
 						<br>
 					</tr>
+
 					<tr ng-repeat="item in items">
-						<td><b>Nom Serveur : </b>{{item.label}}  
-							<button class="btn btn-danger" ng-click="remove(item._id)">supprimer</button>
-							<input type="checkbox" ng-model="checked" ng-checked="exist(item)" ng-click="toggleSelection(item)">
-						   <p> <b> Liste de process sauvegardé dans ce serveur : <b></p>
-							<div ng-repeat="element in item.process" >
-								<li>	{{ element }} </li>
+						<td>
+								<input type="checkbox" ng-model="checked" ng-checked="exist(item)" ng-click="toggleSelection(item)">
+							<b>Nom Serveur : </b>{{item.label}}  
+						<!--	<button class="btn btn-danger" ng-click="remove(item._id)">supprimer</button>  -->
+							
+						   
+							<p> <b> Liste de process sauvegardé dans ce serveur : <b></p>
+							<div  >
+								<p>	{{ item.process }} </p>
 							</div>
 						</td>
-
-					
-
-
 					</tr>
 					<p ng-repeat="selectedItems in checked">{{selectedItems.label}}</p>
 
@@ -192,31 +192,30 @@
 					<div class="col-md-12 col-sm-12 col-xs-12" ng-if="descriptionProcess">
 						<div class="panel panel-info spacer">
 							<div class="panel-heading">
-								<p>Liste des entréess :</p>
+								<p> <b>Liste des entréess :</b></p>
 
 								<div>
 									<div class="divName" name="divName">Inputs</div>
-
 									<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input['0']">
-
-										<p ng-repeat="obj in descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input">
-											<div id="contenu"> {{obj.Title.__text}}</div>
+									<span ng-if="inputs">
+										<div ng-repeat="obj in inputs ">
+											<div id="contenu"> {{obj.Abstract.__text}}</div>
+											<input type="text" name='myInputs' id='myInputs' /> 
 											<br>
-											<input type="text" name='myInputs' id='myInputs' /> fixe
+											<!--fixe
 											<input type="checkbox" /> non fixe
 											<input type="checkbox" /> sauvgarde
-											<input type="checkbox" />
+											<input type="checkbox" />-->
+                                          
+										</div>
+									</span>
+									</span>
 
-										</p>
-									</span>---
-									<p ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title">
-										<div id="contenu"> {{descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title.__text}}</div>
-										<br>
-										<input type="text" name='myInputs' id='myInputs' /> fixe
-										<input type="checkbox" checked="true" /> non fixe
-										<input type="checkbox" /> sauvgarde
-										<input type="checkbox" />
-									</p>
+									<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title">
+											<div id="contenu">	{{descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Abstract.__text}}</div>
+                                            <input type="text" name='myInputs' id='myInputs' />
+									</span>		
+								
 
 								</div>
 								<div>
