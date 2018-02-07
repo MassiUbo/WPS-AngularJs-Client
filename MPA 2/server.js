@@ -51,7 +51,7 @@ app.put('/items/:id', function(req, res){
       var id = req.params.id 
       console.log("ppp"+req.body.id);
       db.items.findAndModify({query: {_id: mongojs.ObjectId(id)},
-      update: {$push: {process: req.body.process}},
+      update: {$push: {process:{name:req.body.process}}},
   new:true}, function(err,doc){
       res.json(doc);
   });

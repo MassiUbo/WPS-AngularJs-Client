@@ -13,6 +13,8 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		console.log("j'ai recu la liste des serveurs")
 		$scope.items = response.data;
 		console.log("", response.data)
+		// pour verification 
+		$scope.good = false;
 		
 	});
 }; 
@@ -61,7 +63,7 @@ $scope.remove = function (id){
 	$scope.ajoutprobdd = function (_id,process){
 		console.log(_id);
 	
-		$http.put('/items/'+ _id ,{process}).then(function (response) {
+		$http.put('/items/'+ _id ,{process,name}).then(function (response) {
 			window.alert("Ajout process SUCCEED !!");
 			//$scope.monServeur = "";
 			refresh();
@@ -128,12 +130,13 @@ $scope.remove = function (id){
 	  };
 
 	$scope.verification = function () {
-		if ($scope.monServeur != "") {
+		if ($scope.monServeur != null) {
 			
 			$http.get($scope.monServeur.label+'?service=WPS&version=1.0.0&request=GetCapabilities').then(function (response) {
 					
 				   $scope.good = true;
-				    window.alert('serveur correcte !')		
+					window.alert('serveur correcte !')	
+				
 				});
 			
 				if ($scope.good != true){
@@ -142,15 +145,18 @@ $scope.remove = function (id){
 				  }		
 
 		}
+		else {
+			window.alert('nom vide !')
+		}
 	}
 
 	$scope.ajout = function () {
-		if ($scope.monServeur != "") {
+		if ($scope.monServeur != null) {
 
 			if ($scope.good === true) {
 				$http.post('/items', $scope.monServeur).then(function (response) {
 					window.alert("Ajout server SUCCEED !!");
-					//$scope.monServeur = "";
+					$scope.monServeur = null;
 					refresh();
 				});
 				//$scope.items.push($scope.monServeur);
@@ -158,9 +164,10 @@ $scope.remove = function (id){
 			else {
 				window.alert("verifier votre serveur !")
 			}
+		} else {
+			window.alert(" nom vide !")
 		}
 	}
-
 
 	$scope.config = function () {
 		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=GetCapabilities').then(function (response) {

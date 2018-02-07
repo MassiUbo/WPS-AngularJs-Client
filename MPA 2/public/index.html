@@ -34,9 +34,8 @@
 					<input type="text" ng-model="monServeur.label" />
 					<button class="btn btn-primary" ng-click="verification()">Verifier</button>
 					<button class="btn btn-primary" ng-click="ajout()">Ajout</button>
-
-
-
+					<button class="btn btn-danger" ng-click="removeChecked()"> supprimer les choix </button>
+					<button class="btn btn-danger" ng-click="removeAll()"> supprimer tout </button>
 				</form>
 			</div>
 			<div class="panel-body">
@@ -61,18 +60,16 @@
 							
 						   
 							<p> <b> Liste de process sauvegardé dans ce serveur : <b></p>
-							<div  >
-								<p>	{{ item.process }} </p>
-							</div>
+						
+
+							<div ng-repeat="pro in item.process">
+									<p> {{pro.name}}</p>
+			
+								</div>
 						</td>
 					</tr>
+					
 					<p ng-repeat="selectedItems in checked">{{selectedItems.label}}</p>
-
-
-					<button class="btn btn-danger" ng-click="removeChecked()"> supprimer les choix </button>
-
-					<button class="btn btn-danger" ng-click="removeAll()"> supprimer tout </button>
-
 
 					<td>
 						<b>Choisir un serveur:</b>
@@ -212,7 +209,7 @@
 									</span>
 
 									<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title">
-											<div id="contenu">	{{descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Abstract.__text}}</div>
+											<div id="contenu">	{{descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title.__text}}</div>
                                             <input type="text" name='myInputs' id='myInputs' />
 									</span>		
 								
