@@ -10,11 +10,18 @@ var bodyParser = require('body-parser');
 // utilisation de notre base de données des serveur
 var db= mongojs('items', ['items']); 
 
+// base de données configuration 
+var db2 = mongojs('configuration',['configuration'])
+
 var app = express();
 
 app.use(express.static(__dirname+"/public"));
 
 app.use(bodyParser.json());
+
+// recuperation de puis configuration 
+
+
 
 app.get('/items', function(req, res){
 
@@ -35,6 +42,18 @@ app.get('/items', function(req, res){
 	];
     res.json(items); */
 });
+
+// ajout dans la base de données configuration 
+app.post('/configuration/:id/:valtext/:nominput', function(req, res){
+    var process = req.params.id
+    var input = req.params.valtext
+    var nomparam = req.params.nominput
+    db2.configuration.insert({process, input, nomparam}, function(err, doc){
+    console.log("coucou!!!!!!!!!"+input);
+    res.json(doc);
+    })
+});
+
 
 // reception ajout serveur 
 app.post('/items', function(req, res){
@@ -61,7 +80,7 @@ app.put('/items/:id', function(req, res){
 app.delete('/items/:id', function(req, res){
     var id = req.params.id;
     console.log(id);
-    db.items.remove({_id: mongojs.ObjectId(id)}, function (err, doc){
+    db.items.remove({_id:mongojs.ObjectId(id)}, function (err, doc){
         res.json(doc);
     })
 })

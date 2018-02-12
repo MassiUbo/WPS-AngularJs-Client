@@ -8,77 +8,73 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	$scope.txtname = "";
 
 	// refresh pour éviter d'acctualiser 
-   var refresh = function () {
-	$http.get('/items').then(function (response) {
-		console.log("j'ai recu la liste des serveurs")
-		$scope.items = response.data;
-		console.log("", response.data)
-		// pour verification 
-		$scope.good = false;
-		
-	});
-}; 
+	var refresh = function () {
+		$http.get('/items').then(function (response) {
+			console.log("j'ai recu la liste des serveurs")
+			$scope.items = response.data;
+			var date = response.data
+			for (i = 0; i < date.length; i++)
+				var k = date[i].process
+			console.log(k)
+			$scope.listepro = k
+			// pour verification 
+			$scope.good = false;
 
-// on appel refresh ici 
-refresh();
-
-// fonction suppression 
-$scope.remove = function (id){
-	console.log(id);
-	$http.delete('/items/'+ id).success(function (response){
-		window.alert('serveur supprimé avec succès !')
-		refresh();
-	});
+		});
 	};
 
-	$scope.remove2 = function (id){
+
+
+	// on appel refresh ici 
+	refresh();
+
+	// fonction suppression 
+	$scope.remove = function (id) {
 		console.log(id);
-		$http.post('/items2/'+id).success(function (response){
+		$http.delete('/items/' + id).success(function (response) {
+			window.alert('serveur supprimé avec succès !')
+			refresh();
+		});
+	};
+
+	$scope.remove2 = function (id) {
+		console.log(id);
+		$http.post('/items2/' + id).success(function (response) {
 			window.alert('process supprimé avec succès !')
 			refresh();
 		});
-		};
+	};
 
 	/*** suppression */
 
-	
-	$scope.removeChecked = function(){
-		angular.forEach($scope.checked,function(val){
-			$http.delete('/items/'+ val._id).success(function (response){
-			//	window.alert('serveur supprimé avec succès !')
+
+	$scope.removeChecked = function () {
+		angular.forEach($scope.checked, function (val) {
+			$http.delete('/items/' + val._id).success(function (response) {
+				//	window.alert('serveur supprimé avec succès !')
 				refresh();
-				$scope.checked=[];
+				$scope.checked = [];
 			});
-			
+
 		})
-		
+
 	}
 
 
-	$scope.removeAll = function(){
-		angular.forEach($scope.items,function(val){
-			$http.delete('/items/'+ val._id).success(function (response){
-			//	window.alert('serveur supprimé avec succès !')
+	$scope.removeAll = function () {
+		angular.forEach($scope.items, function (val) {
+			$http.delete('/items/' + val._id).success(function (response) {
+				//	window.alert('serveur supprimé avec succès !')
 				refresh();
-				$scope.checked=[];
+				$scope.checked = [];
 			});
-			
+
 		})
-		
+
 	}
 
-	// Ajout d'un process à une base de données 
-	$scope.ajoutprobdd = function (_id,process){
-		console.log(_id);
-	
-		$http.put('/items/'+ _id ,{process}).then(function (response) {
-			window.alert("Ajout process SUCCEED !!");
-			//$scope.monServeur = "";
-			refresh();
-		});
-	
-	}
-	
+
+
 	$scope.selected = null;
 	$scope.select = null;
 	$scope.pinchou = [];
@@ -91,71 +87,77 @@ $scope.remove = function (id){
 	$scope.result2 = null;
 	$scope.descriptionProcess = null;
 	$scope.inputs = false;
-    
+
 	// var zaki
 	$scope.checked = null;
 	$scope.selectAll = null;
 
+		// variable verfication entier 
+	$scope.min = null;
+	$scope.max = null;
+	$scope.entier = null;
+	$scope.step = null;
+
 	// cheked
 	$scope.checked = [];
-	$scope.exist = function(item){
+	$scope.exist = function (item) {
 		return $scope.checked.indexOf(item) > -1;
 	}
 
 
-   /* $scope.toto = function(){
-	console.log("pp", $scope.movie)
-	
-	}   */
-/** partie zaki */
-	$scope.checkAll = function(){
-		if($scope.selectAll){
-			angular.forEach($scope.items, function(item){
+	/* $scope.toto = function(){
+	 console.log("pp", $scope.movie)
+ 	
+	 }   */
+	/** partie zaki */
+	$scope.checkAll = function () {
+		if ($scope.selectAll) {
+			angular.forEach($scope.items, function (item) {
 				var idx = $scope.checked.indexOf(item);
-				if(idx >= 0){
-					return true ; 
+				if (idx >= 0) {
+					return true;
 				}
 				else {
 					$scope.checked.push(item);
 				}
 			})
 		}
-		else{
-			$scope.checked= [];
+		else {
+			$scope.checked = [];
 		}
 	}
 
-	$scope.toggleSelection = function(item){
+	$scope.toggleSelection = function (item) {
 
 		var idx = $scope.checked.indexOf(item);
-		if(idx > -1){
-			$scope.checked.splice(idx,1);
+		if (idx > -1) {
+			$scope.checked.splice(idx, 1);
 		}
 		else {
 			$scope.checked.push(item);
 		}
 	}
- 
-	$scope.check = function(event) {
+
+	$scope.check = function (event) {
 		// how to check if checkbox is selected or not
-		if(this.checked ==true)
-		alert(event.target.checked);
-	  };
+		if (this.checked == true)
+			alert(event.target.checked);
+	};
 
 	$scope.verification = function () {
 		if ($scope.monServeur != null) {
-			
-			$http.get($scope.monServeur.label+'?service=WPS&version=1.0.0&request=GetCapabilities').then(function (response) {
-					
-				   $scope.good = true;
-					window.alert('serveur correcte !')	
-				
-				});
-			
-				if ($scope.good != true){
+
+			$http.get($scope.monServeur.label + '?service=WPS&version=1.0.0&request=GetCapabilities').then(function (response) {
+
+				$scope.good = true;
+				window.alert('serveur correcte !')
+
+			});
+
+			if ($scope.good != true) {
 				//	window.alert("Serveur Incorrecte !")
-					$scope.good = false;
-				  }		
+				$scope.good = false;
+			}
 
 		}
 		else {
@@ -165,7 +167,6 @@ $scope.remove = function (id){
 
 	$scope.ajout = function () {
 		if ($scope.monServeur != null) {
-
 			if ($scope.good === true) {
 				$http.post('/items', $scope.monServeur).then(function (response) {
 					window.alert("Ajout server SUCCEED !!");
@@ -192,7 +193,6 @@ $scope.remove = function (id){
 
 	};
 	$scope.getData = function () {
-
 		var x2js = new X2JS();
 		var aftCnv = x2js.xml_str2json($scope.result);
 		console.log("===>DATA CONVERTED ", aftCnv.Capabilities);
@@ -211,36 +211,61 @@ $scope.remove = function (id){
 
 	};
 	$scope.getData2 = function () {
-
 		var x2js = new X2JS();
 		var aftCnv = x2js.xml_str2json($scope.result2);
 		console.log("===>DATA CONVERTED ", aftCnv);
 		$scope.descriptionProcess = aftCnv;
 		$scope.inputs = $scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input;
 		//$scope.inputs = angular.isArray;
-		var pp =  $scope.inputs;
-		console.log("inputs test :",pp)
-	//	console.log("inputs test :",pp[0].Abstract.__text)
-	//	console.log("inputs test :",pp[1].__text)
+		var pp = $scope.inputs;
+		//var palone = $scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title.__text
+		console.log("inputs test :", pp)
+		//	console.log("inputs testalone :",palone)
+		//	console.log("inputs test :",pp[0].Abstract.__text)
+		//	console.log("inputs test :",pp[1].__text)
 		//$scope.wps = aftCnv.Capabilities;  
-	}; 
-	
+	};
+
+	// Ajout d'un process à une base de données 
+	$scope.ajoutprobdd = function (_id, process) {
+		console.log(_id);
+
+		$http.put('/items/' + _id, { process }).then(function (response) {
+			window.alert("Ajout process SUCCEED !!");
+			//$scope.monServeur = "";
+			refresh();
+		});
+	}
+
 	$scope.ExecuteProcess = function (id) {
 		console.log("===>DATA ");
-		var valeurtext = document.getElementsByClassName('myInputs').value;
+		var valeurtext = document.getElementById('myInputs').value;
 		console.log('txt>>>', valeurtext);
 		var nominput = document.getElementById('contenu').innerHTML;
-		
-		console.log('txt>>>', nominput);
 
-		// a utiliser
-		//  listeInputs +=  idInputs[selectedIndex][i]  +"=" + inputValue[selectedIndex][i] +";" ;
-
+		console.log('txt input>>>', nominput);
 		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + nominput + "=" + valeurtext).then(function (response) {
 			console.log("===>CC", response);
 			$scope.result3 = response.data;
 			console.log("===>DATA ", response.data);
+		});
+	};
 
+	// sauvgarde configuration
+	$scope.sauvgardeconf = function (id) {
+		console.log("===>DATA ");
+		var valeurtext = document.getElementById('myInputs').value;
+		console.log('txt>>>', valeurtext);
+		var nominput = document.getElementById('contenu').innerHTML;
+
+		console.log('txt input>>>', nominput);
+
+		// a utiliser
+		//  listeInputs +=  idInputs[selectedIndex][i]  +"=" + inputValue[selectedIndex][i] +";" ;
+		$http.post('/configuration/' + id + '/' + valeurtext + '/' + nominput).then(function (response) {
+			window.alert("Ajout bdd configuration!!");
+			//$scope.monServeur = "";
+			//refresh();
 		});
 	};
 
@@ -252,6 +277,26 @@ $scope.remove = function (id){
 		console.log("===>DATA CONVERTED 3 ", aftCnv3);
 		$scope.resProcess = aftCnv3;
 	};
+
+	$scope.verifEntier = function () {
+
+		if ($scope.min > $scope.max) {
+			
+			window.alert("Warning" + "\n " + "min >> max");
+		}
+		else if ($scope.entier > $scope.max) {
+			window.alert("Vous avez depassé le max ");
+		}
+		else if ($scope.entier < $scope.min) {
+			window.alert("vous devez mettre une valeur > min ");
+		}
+		else if ($scope.entier == null || $scope.min == null
+			|| $scope.max == null) {
+
+			window.alert("vous avez laissé un champs vide !!")
+			console.log($scope.min)
+		}
+	}
 });
 
 
