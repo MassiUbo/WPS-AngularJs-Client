@@ -136,24 +136,25 @@
 																<b> (integer) </b>
 															</div>
 
-															<input type="text" name='myInputs' id='myInputs' ng-model="entier" />
+															<input type="text" name='myInputs' id='inputint' ng-model="entier" />
 															<b>min:</b>
-															<input type='text' name='minint' id='maxint' size="2" ng-model="min" />
+															<input type='text' name='minint' id='minint' size="2" ng-model="min" />
 															<b>max:</b>
 															<input type='text' name='maxint' id='maxint' size="2" ng-model="max" />
 															<b>step:</b>
 															<input type="number" name="force" value="4" step="2" ng-model="step" step />
 															<input type="button" class="btn btn-primary" id="next" value="verifEntier" ng-click="verifEntier()" />
 															<br>
+															
 														</div>
 														<div ng-if="obj.LiteralData.DataType.__text!='xs:double'">
 															<div id="contenu"> {{obj.Abstract.__text}}</div>
 															<div>
 																<b> (Geometry)</b>
 															</div>
-
+                                                        
 															<input type="text" name='myInputs' id='myInputs' />
-
+															
 															<br>
 														</div>
 													</div>

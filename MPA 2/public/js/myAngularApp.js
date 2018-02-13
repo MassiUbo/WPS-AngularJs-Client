@@ -46,8 +46,6 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	};
 
 	/*** suppression */
-
-
 	$scope.removeChecked = function () {
 		angular.forEach($scope.checked, function (val) {
 			$http.delete('/items/' + val._id).success(function (response) {
@@ -60,7 +58,6 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 	}
 
-
 	$scope.removeAll = function () {
 		angular.forEach($scope.items, function (val) {
 			$http.delete('/items/' + val._id).success(function (response) {
@@ -68,9 +65,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 				refresh();
 				$scope.checked = [];
 			});
-
 		})
-
 	}
 
 
@@ -92,11 +87,11 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	$scope.checked = null;
 	$scope.selectAll = null;
 
-		// variable verfication entier 
-	$scope.min = null;
+	// variable verfication entier 
+	/*$scope.min = null;
 	$scope.max = null;
 	$scope.entier = null;
-	$scope.step = null;
+	$scope.step = null;*/
 
 	// cheked
 	$scope.checked = [];
@@ -278,23 +273,21 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		$scope.resProcess = aftCnv3;
 	};
 
+	// fonction de verification du min 
 	$scope.verifEntier = function () {
-
-		if ($scope.min > $scope.max) {
-			
-			window.alert("Warning" + "\n " + "min >> max");
+       
+		var min = parseInt(document.getElementById('minint').value, 10)
+		var input = parseInt(document.getElementById('inputint').value, 10)
+		var max = parseInt(document.getElementById('maxint').value, 10)
+		
+	    if (input > max || input < min) {
+			window.alert("L'entree doit être entre min et max ");
 		}
-		else if ($scope.entier > $scope.max) {
-			window.alert("Vous avez depassé le max ");
+		else if (min > max) {
+			window.alert("Warning" + "\n " + "min est supérieur à max");
 		}
-		else if ($scope.entier < $scope.min) {
-			window.alert("vous devez mettre une valeur > min ");
-		}
-		else if ($scope.entier == null || $scope.min == null
-			|| $scope.max == null) {
-
-			window.alert("vous avez laissé un champs vide !!")
-			console.log($scope.min)
+	    else if ( isNaN(min) || isNaN(max) || isNaN(input)) {
+			window.alert("vous avez laissé un champs vide ou erreur saisie !!")
 		}
 	}
 });
