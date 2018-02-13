@@ -119,7 +119,7 @@
 											<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input['0']">
 												<span ng-if="inputs">
 													<div ng-repeat="obj in inputs " ng-if="obj.LiteralData.DataType.__text=='xs:double'">
-														<div id="contenu"> {{obj.Abstract.__text}}</div>
+														<div id="{{'contenu'+ $index }}"> {{obj.Identifier.__text}}</div>
 														<div>
 															<b> (double) </b>
 														</div>
@@ -131,8 +131,9 @@
 
 													<div ng-repeat="obj in inputs ">
 														<div ng-if="obj.LiteralData.DataType.__text=='xs:int'">
-															<div id="contenu"> {{obj.Abstract.__text}}</div>
+															<div id="{{'contenu'+ $index }}"> {{obj.Identifier.__text}}</div>
 															<div>
+			
 																<b> (integer) </b>
 															</div>
 
@@ -147,8 +148,8 @@
 															<br>
 															
 														</div>
-														<div ng-if="obj.LiteralData.DataType.__text!='xs:double'">
-															<div id="contenu"> {{obj.Abstract.__text}}</div>
+														<div ng-if="obj.ComplexData">
+															<div id="{{'contenu'+ $index }}"> {{obj.Identifier.__text}}</div>
 															<div>
 																<b> (Geometry)</b>
 															</div>

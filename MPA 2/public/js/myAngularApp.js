@@ -236,9 +236,18 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		console.log("===>DATA ");
 		var valeurtext = document.getElementById('myInputs').value;
 		console.log('txt>>>', valeurtext);
+		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title){
 		var nominput = document.getElementById('contenu').innerHTML;
-
 		console.log('txt input>>>', nominput);
+		}
+		else {
+			console.log("mmm"+$scope.inputs)
+		for (i=0;i<$scope.inputs.length;i++){
+		var nominput = document.getElementById('contenu'+i).innerHTML;
+		console.log('txt input>>>', nominput);
+		}
+	}
+	
 		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + nominput + "=" + valeurtext).then(function (response) {
 			console.log("===>CC", response);
 			$scope.result3 = response.data;
