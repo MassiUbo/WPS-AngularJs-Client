@@ -1,7 +1,6 @@
 ﻿
 var myApp = angular.module("angularApp", [])      //declaration du module
 
-
 myApp.controller("myController", function ($scope, $http) {   // controller 
 
 	$scope.visible;
@@ -23,9 +22,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		});
 	};
 
-
-
-	// on appel refresh ici 
+	// on appel refresh ici pour rafrichir la page 
 	refresh();
 
 	// fonction suppression 
@@ -58,6 +55,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 	}
 
+	// suppression de tous les serveur de la base de données
 	$scope.removeAll = function () {
 		angular.forEach($scope.items, function (val) {
 			$http.delete('/items/' + val._id).success(function (response) {
@@ -68,7 +66,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		})
 	}
 
-
+// Declaration des variables
 
 	$scope.selected = null;
 	$scope.select = null;
@@ -88,10 +86,10 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	$scope.selectAll = null;
 
 	// variable verfication entier 
-	/*$scope.min = null;
-	$scope.max = null;
-	$scope.entier = null;
-	$scope.step = null;*/
+	$scope.min = 6;
+	$scope.max = 20;
+	$scope.step = 2;
+	//$scope.entier =4 ;
 
 	// cheked
 	$scope.checked = [];
@@ -99,11 +97,6 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		return $scope.checked.indexOf(item) > -1;
 	}
 
-
-	/* $scope.toto = function(){
-	 console.log("pp", $scope.movie)
- 	
-	 }   */
 	/** partie zaki */
 	$scope.checkAll = function () {
 		if ($scope.selectAll) {
@@ -123,7 +116,6 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	}
 
 	$scope.toggleSelection = function (item) {
-
 		var idx = $scope.checked.indexOf(item);
 		if (idx > -1) {
 			$scope.checked.splice(idx, 1);
@@ -139,6 +131,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			alert(event.target.checked);
 	};
 
+	// fonction verification d'un serveur
 	$scope.verification = function () {
 		if ($scope.monServeur != null) {
 
@@ -153,13 +146,13 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 				//	window.alert("Serveur Incorrecte !")
 				$scope.good = false;
 			}
-
 		}
 		else {
 			window.alert('nom vide !')
 		}
 	}
 
+	// Fonction ajout d'un serveur
 	$scope.ajout = function () {
 		if ($scope.monServeur != null) {
 			if ($scope.good === true) {
@@ -178,15 +171,16 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		}
 	}
 
+	// execution requete getCapabilities
 	$scope.config = function () {
 		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=GetCapabilities').then(function (response) {
 			console.log("===>CC", response);
 			$scope.result = response.data;
 			console.log("===>DATA ", response.data);
 		});
-
-
 	};
+
+	// recuperation données Getcapabilities
 	$scope.getData = function () {
 		var x2js = new X2JS();
 		var aftCnv = x2js.xml_str2json($scope.result);
@@ -195,6 +189,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		$scope.wps = aftCnv.Capabilities;
 	};
 
+ 	// requête execution process
 	$scope.getDescriptionProcess = function (id) {
 		console.log("===>DATA ");
 		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=DescribeProcess&Identifier=' + id).then(function (response) {
@@ -205,6 +200,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 
 	};
+	// recuperation données process
 	$scope.getData2 = function () {
 		var x2js = new X2JS();
 		var aftCnv = x2js.xml_str2json($scope.result2);
@@ -213,12 +209,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		$scope.inputs = $scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input;
 		//$scope.inputs = angular.isArray;
 		var pp = $scope.inputs;
-		//var palone = $scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title.__text
-		console.log("inputs test :", pp)
-		//	console.log("inputs testalone :",palone)
-		//	console.log("inputs test :",pp[0].Abstract.__text)
-		//	console.log("inputs test :",pp[1].__text)
-		//$scope.wps = aftCnv.Capabilities;  
+		console.log("inputs test :", pp) 
 	};
 
 	// Ajout d'un process à une base de données 
@@ -232,27 +223,45 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		});
 	}
 
+	// Exécution d'un process
 	$scope.ExecuteProcess = function (id) {
-		console.log("===>DATA ");
-		var valeurtext = document.getElementById('myInputs').value;
-		console.log('txt>>>', valeurtext);
+		console.log("===>DATA EXECUTION ");
+	
+		var requestinput=""
 		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title){
 		var nominput = document.getElementById('contenu').innerHTML;
+		var valeurtext = document.getElementById('myInputs').value;
+		console.log('txt>>>', valeurtext);
 		console.log('txt input>>>', nominput);
-		}
-		else {
-			console.log("mmm"+$scope.inputs)
-		for (i=0;i<$scope.inputs.length;i++){
-		var nominput = document.getElementById('contenu'+i).innerHTML;
-		console.log('txt input>>>', nominput);
-		}
-	}
-	
+
+		// exéctution de requete avec une seule entrée
 		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + nominput + "=" + valeurtext).then(function (response) {
 			console.log("===>CC", response);
 			$scope.result3 = response.data;
 			console.log("===>DATA ", response.data);
 		});
+		}
+		else {
+			console.log("mmm"+$scope.inputs)
+		for (i=0;i<$scope.inputs.length;i++){
+		var nominput = document.getElementById('contenu'+i).innerHTML;
+		var valeurtext = document.getElementById('myInputs'+i).value;
+		
+		console.log('txt input>>>', nominput);
+		console.log('txt input>>>', valeurtext);
+		requestinput+=nominput+"="+valeurtext+";"
+		requestinput.trim()
+		console.log(requestinput)
+	}
+		$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs='+requestinput).then(function (response) {
+			console.log("===>CC", response);
+			$scope.result3 = response.data;
+			console.log("===>DATA ", response.data);
+		});
+	
+	}
+	
+		
 	};
 
 	// sauvgarde configuration
@@ -261,9 +270,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		var valeurtext = document.getElementById('myInputs').value;
 		console.log('txt>>>', valeurtext);
 		var nominput = document.getElementById('contenu').innerHTML;
-
 		console.log('txt input>>>', nominput);
-
 		// a utiliser
 		//  listeInputs +=  idInputs[selectedIndex][i]  +"=" + inputValue[selectedIndex][i] +";" ;
 		$http.post('/configuration/' + id + '/' + valeurtext + '/' + nominput).then(function (response) {
@@ -298,6 +305,8 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	    else if ( isNaN(min) || isNaN(max) || isNaN(input)) {
 			window.alert("vous avez laissé un champs vide ou erreur saisie !!")
 		}
+		else 
+		window.alert("Entier correcte!!")
 	}
 });
 

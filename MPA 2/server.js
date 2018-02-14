@@ -93,10 +93,6 @@ app.post('/items2/:id', function(req, res){
     })
 })
 
-
-
-
-
 // affichage sur le port 8080
 app.listen(8080)
 console.log("Server is running on port 8080")
