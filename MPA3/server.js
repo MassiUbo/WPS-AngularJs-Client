@@ -1,4 +1,3 @@
-
 // pour charger notre application 
 var express = require('express');
 
@@ -51,17 +50,18 @@ app.get('/configuration', function(req, res){
         })
     });
 
-// ajout dans la base de données configuration 
-app.post('/configuration/:id/:valtext/:nominput', function(req, res){
+// ajout dans la base de données configuration (cas une seule entrées) 
+app.post('/configuration/:id', function(req, res){
     var process = req.params.id
-    var input = req.params.valtext
-    var nomparam = req.params.nominput
-    db2.configuration.insert({process, input, nomparam}, function(err, doc){
-    console.log("coucou!!!!!!!!!"+input);
+    //var input = req.params.valtext
+    //var nomparam = req.params.nominput
+    db2.configuration.insert({process, inputs : req.body.requestinput}, function(err, doc){
+    //console.log("coucou!!!!!!!!!"+input);
     res.json(doc);
     })
 });
 
+// ajout dans la base de données configuration ( cas plusueurs entrées)
 app.post('/configuration2/:id', function(req, res){
     var process = req.params.id
     db2.configuration.insert({process, inputs :req.body.requestinput}, function(err, doc){
@@ -69,7 +69,6 @@ app.post('/configuration2/:id', function(req, res){
     res.json(doc);
     })
 });
-
 
 // reception ajout serveur 
 app.post('/items', function(req, res){
@@ -93,6 +92,7 @@ app.put('/items/:id', function(req, res){
 
 });
 
+// suppression serveur
 app.delete('/items/:id', function(req, res){
     var id = req.params.id;
     console.log(id);
@@ -122,8 +122,8 @@ app.post('/items2/:id/:process', function(req, res){
 
 
 // affichage sur le port 8080
-app.listen(8080)
-console.log("Server is running on port 8080")
+app.listen(8082)
+console.log("Server is running on port 8082")
 
 
 

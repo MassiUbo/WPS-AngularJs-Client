@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>Angular CLient WPS Demo</title>
+	<title>Angular CLient WPS</title>
 	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/myStyle.css" />
 	<script src="js/xml2json.js"></script>
@@ -16,106 +16,257 @@
 		<div class="panel panel-info spacer">
 			<div class="panel-heading">
 				<center>
-					<h3> Démo Application WPS Cofigurable </h3>
+					<h3> Application WPS Configurable </h3>
 				</center>
 			</div>
 		</div>
 	</div>
 
-	<div class="col-md-12">
+	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-info spacer">
 			<div class="panel-heading">
-				<form>
-					<b> Ajout d'un serveur: </b>
-					<input type="text" id ="serveur" placeholder="entrer votre serveur" ng-model="monServeur.label" />
-					<button class="btn btn-success btn-sm" ng-click="verification()">Verifier</button>
-					<button class="btn btn-primary btn-sm" ng-click="ajout()">Ajout</button>
-					<button class="btn btn-danger btn-sm" ng-click="removeChecked()"> supprimer les choix </button>
-					<button class="btn btn-danger btn-sm" ng-click="removeAll()"> supprimer tout </button>
-				</form>
-			</div>
-
-			<div>
-				<div class="panel-body">
-					<table class="table">
-						<tr>
-							<th>
-								<b>Liste de serveur disponible: </b>
-							</th>
-							<br>
-						</tr>
-
-						<tr ng-repeat="item in items">
-							<td>
-								<input type="checkbox" ng-model="checked" ng-checked="exist(item)" ng-click="toggleSelection(item)">
-								<b>Nom Serveur : </b>{{item.label}}
-								<p>
-									<b> Liste de process sauvegardé dans ce serveur :
-										<b>
-								</p>
-								<select id="wps" ng-options="pr as pr.name for pr in listepro" ng-model="selectedpro">
-									<option value="">Liste de process </option>
-								</select>
-							<!--<button class="btn btn-danger" ng-click="remove2(item._id)"> supprimer process </button>-->
-
-								<div ng-repeat="pro in item.process">
-									<ul> 
-										<li><input type="checkbox" ng-model="checked2" ng-checked="exist2(pro)" ng-click="toggleSelection2(pro)"> {{pro.name}}</li>
-									</ul>
-								</div>
-								<button class="btn btn-danger btn-sm" ng-click="remove2(item)"> supprimer process </button>
-				</div>
-				</td>
-				</tr>
-
-				<p ng-repeat="selectedItems in checked">{{selectedItems.label}}</p>
-				<td>
-					<b>Choisir un serveur:</b>
-					<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
-						<option value="">Sélectionnez un Serveur WPS</option>
-					</select>
-					<input value="GET DATA" class="btn btn-primary" type='button' ng-click='config()' />
-					<input value="Display INFO" class="btn btn-primary" type='button' ng-click='getData()' />
-					<br>
-				</td>
-				</table>
+				<center>
+					<button class="btn btn-primary" ng-click="affichage1()">Ajouter serveur</button>
+					<button class="btn btn-primary" ng-click="affichage2()">Liste de serveurs</button>
+					<button class="btn btn-primary" ng-click="affichage3()">Gestion serveurs</button>
+					<button class="btn btn-primary" ng-click="affichage4()">Ajouter process</button>
+					<button class="btn btn-primary" ng-click="affichage5()">Exécuter requêtes</button>
+					<p><div class="blink" id="info" ></div></p>
+				</center>
 			</div>
 		</div>
 	</div>
 
-	<!-- test angularjs ################################################################################################################################################-->
-	<!-- réponse getCapabilities -->
-	<div class="container" ng-if="selected">
-		<div class="row">
-			<div ng-if="selected">
-				<div class="col-md-12" ng-if="processes">
+	<div ng-show="visible">
+
+
+		<center>
+			<form>
+				<b> Ajout d'un serveur: </b>
+				<input type="text" id="serveur" placeholder="entrer votre serveur" ng-model="monServeur.label" />
+				<button class="btn btn-success btn-sm" ng-click="verification()">Verifier</button>
+				<button class="btn btn-primary btn-sm" ng-click="ajout()">Ajout</button>
+				
+
+			</form>
+		</center>
+
+		<div ng-if="resultverif">
+			<div class="col-md-12">
+				<div class="panel panel-info spacer">
+					<div class="panel-heading">
+						<center>
+							<h3>Réponse serveur:</h3>
+						</center>
+						<center>
+							<textarea rows="15" cols="100" id="pepe">{{resultv}}</textarea>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div ng-show="visible2">
+
+		<table class="table">
+			<tr>
+				<th>
+					<center>
+						<h3>
+							<b> Liste de serveurs disponible: </b>
+						</h3>
+					</center>
+				</th>
+				<br>
+			</tr>
+
+			<tr ng-repeat="item in items">
+				<td>
+					<center>
+						<b>Nom Serveur : </b>{{item.label}}
+						<p>
+							<b> Liste de process sauvegardé dans ce serveur :
+								<b>
+						</p>
+
+						<div ng-repeat="pro in item.process">
+							
+								 {{pro.name}}
+							
+						</div>
+					</center>
+				</td>
+			</tr>
+		</table>
+
+
+	</div>
+
+
+	<div ng-show="visible3">
+
+		<br>
+
+		<table class="table">
+			<tr>
+				<th>
+					<center>
+						<h3>
+							<b>Suppression Serveurs / Process: </b>
+						</h3>
+						<button class="btn btn-danger btn-sm" ng-click="removeChecked()"> supprimer les choix </button>
+						<button class="btn btn-danger btn-sm" ng-click="removeAll()"> supprimer tout les serveur </button>
+					</center>
+				</th>
+				<br>
+			</tr>
+
+			<tr>
+				<td>
+					<center>
+						<p>
+							<b> Séléction :</b>
+						</p>
+					</center>
+					<div ng-repeat="selectedItems in checked">
+						<center>{{selectedItems.label}}</center>
+					</div>
+				</td>
+			</tr>
+
+			<tr ng-repeat="item in items">
+
+				<td>
+					<center>
+						<input type="checkbox" ng-model="checked" ng-checked="exist(item)" ng-click="toggleSelection(item)">
+						<b>Nom Serveur : </b>{{item.label}}
+						<p>
+							<b> Liste de process sauvegardé dans ce serveur :
+								<b>
+						</p>
+
+						<div ng-repeat="pro in item.process">
+								
+									<input type="checkbox" ng-model="checked2" ng-checked="exist2(pro)" ng-click="toggleSelection2(pro)">
+									 {{pro.name}}
+						</div>
+						<button class="btn btn-danger btn-sm" ng-click="remove2(item)"> supprimer process </button>
+					</center>
+
+				</td>
+
+			</tr>
+
+		</table>
+
+	</div>
+
+	<div ng-show="visible4">
+		<td>
+			<center>
+			<b>Choisir un serveur:</b>
+			<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
+				<option value="">Sélectionnez un Serveur WPS</option>
+			</select>
+			<br>
+			<br>
+			<input value="GET CAPABILITIES" class="btn btn-primary btn-sm" type='button' ng-click='config()' />
+			<input value="AFFICHER CAPABILITIES" class="btn btn-primary btn-sm" type='button' ng-click='getData()' />
+			<br>
+		</center>
+		</td>
+
+		<div class="container" ng-if="selected">
+			<div class="row">
+				<div ng-if="selected">
+					<div class="col-md-12" ng-if="processes">
+						<div class="panel panel-info spacer">
+							<div class="panel-heading">
+								<center>
+								<h3>List of Process</h3>
+								<div class="wps-container">
+									<select multiple="multiple" ng-model="process">
+										<option ng-repeat="o in processes">{{o.Identifier.__text}}</option>
+									</select>
+									<br>
+									<b>{{process["0"]}}</b>
+
+
+									<br>
+									<input value="Execute process" type='button' class="btn btn-primary btn-sm" ng-click="getDescriptionProcess(process['0'])"
+									/>
+									<input value="Afficher Resultat" type='button' class="btn btn-primary btn-sm" ng-click='getData2()' />
+									<input value="Ajout process BDD" type='button' class="btn btn-primary btn-sm" ng-click="ajoutprobdd(selected._id,process['0'])"
+									/>
+
+									<br>
+									<div ng-if="descriptionProcess">
+										<h3>Description du Process </h3>
+										<p>
+
+											<span>
+												<strong>Nom Process : </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Title.__text}}</span>
+											<br>
+
+											<span>
+												<strong>Description : </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Abstract.__text}}</span>
+											<br>
+										</p>
+									</div>
+								</div>
+							</center>	
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div ng-show="visible5">
+
+		<td>
+			<center>
+			<b>Choisir un serveur:</b>
+			<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
+				<option value="">Sélectionnez un Serveur WPS</option>
+			</select>
+		</center>
+			<br>
+		</td>
+		<div class="container" ng-if="selected">
+			<div class="row">
+				<div ng-if="selected">
+
 					<div class="panel panel-info spacer">
 						<div class="panel-heading">
-							<h3>List of Process</h3>
+							<center>
+							<h3>Liste de Process :</h3>
 							<div class="wps-container">
-								<select multiple="multiple" ng-model="process">
-									<option ng-repeat="o in processes">{{o.Identifier.__text}}</option>
+								<select id="processus" ng-options="pr as pr.name for pr in selected.process" ng-model="process">
+									<option value="">Liste de process </option>
 								</select>
-								<b>{{process["0"]}}</b>
-								<input value="Ajout BDD" type='button' class="btn btn-primary" ng-click="ajoutprobdd(selected._id,process['0'])" />
 								<br>
+								<b>{{process.name}}</b>
 								<br>
-								<input value="GET Description" type='button' class="btn btn-primary" ng-click="getDescriptionProcess(process['0'])" />
-								<input value="Display Description	" type='button' class="btn btn-primary" ng-click='getData2()' />
-								
-								
+								<input value="Chargement liste entrées" type='button' class="btn btn-primary btn-sm" ng-click="getDescriptionProcess(process.name)"
+								/>
+								<input value="Afficher entrées" type='button' class="btn btn-primary btn-sm" ng-click='getData2()' />
+
+
+
 								<br>
 								<div ng-if="descriptionProcess">
-									<h3>Description du Process </h3>
+										<br>
+										<select id="pro" ng-options="pr as pr.process for pr in date2" ng-model="selectedconf">
+											<option value="">Liste de configuration </option>
+										</select>
+										<br>
+										<input type="button" class="btn btn-primary btn-sm" id="next2" value="recuperer configuration" ng-click="recup(process.name,selectedconf)" />
+									    
+										<h3>Description du Process </h3>
 									<p>
-
-										<span>
-											<strong>Nom Process : </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Title.__text}}</span>
-										<br>
-
-										<span>
-											<strong>Description : </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Abstract.__text}}</span>
-										<br>
 
 										<b>Liste des entréess :</b>
 										<div>
@@ -129,19 +280,21 @@
 
 																<b> (integer) </b>
 															</div>
-															
-															<input  type="number" name='inputint' id="{{'myInputs'+$index}}" size="2" step="2" disabled="true" ng-value="step" />
+
+															<input type="number" name='inputint' id="{{'myInputs'+$index}}" size="2" step="2" disabled="true" ng-value="step" />
 															<b>min:</b>
 															<input type='text' name='minint' id='minint' size="2" disabled="true" ng-value="min" />
 															<b>max:</b>
 															<input type='text' name='maxint' id='maxint' size="2" disabled="true" ng-value="max" />
-														<!--	<b>step:</b>
-															<input type="number" name="force" value="4" step="2" size="2" ng-model="step" />-->
+																<b>step:</b>
+																		<input type="text" name="force" id = "step2" disabled="true" step="2" size="2" ng-model="step2" />
 															<b>Modifier ? </b>
-															<input id="oui" type="radio" name="inscription" value="oui" ng-click="activer()"/>Oui
-															<input id ="non" type="radio" name="inscription" value="non" checked="checked"  ng-focus="desactiver()" />Non
-															<input type ="button" id ="default" class="btn btn-primary btn-sm" value="default"  ng-click="getData2()" />
+															<input id="oui" type="radio" name="inscription" value="oui" ng-click="activer()" />Oui
+															<input id="non" type="radio" name="inscription" value="non" checked="checked" ng-focus="desactiver()" />Non
+															<input type="button" class="btn btn-primary btn-sm" id="changstep" value="ok" ng-click="changestep()" />
+															<input type="button" id="default" class="btn btn-primary btn-sm" value="default" ng-click="getData2()" />
 															<input type="button" class="btn btn-success btn-sm" id="verif" value="verifierEntier" ng-click="verifEntier()" />
+															
 															<br>
 
 														</div>
@@ -155,14 +308,14 @@
 
 															<br>
 														</div>
+
+
 														<div ng-if="obj.ComplexData">
 															<div id="{{'contenu'+ $index }}">{{obj.Identifier.__text}}</div>
 															<div>
 																<b> (Geometry)</b>
 															</div>
-
 															<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
-
 															<br>
 														</div>
 													</div>
@@ -177,61 +330,57 @@
 
 												<input type="text" name='myInputs' id='myInputs' />
 												<!--<button class="btn btn-primary" ng-click="toto()">recuperer</button> -->
-
 											</span>
-
 										</div>
 										<div>
 											<div class="divName" name="divName">OUTPUTS</div>
 											<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output['0']">
 												<p ng-repeat="obj in descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output">
-												<b>	{{obj.Title.__text}}</b>
+													<b> {{obj.Title.__text}}</b>
 												</p>
 											</span>
 											<p ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.Title">
 												<b>{{descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.Title.__text}}</b>
-							                    <p ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.LiteralOutput">
-														({{descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.LiteralOutput.DataType.__text}})
+												<p ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.LiteralOutput">
+													({{descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.LiteralOutput.DataType.__text}})
 												</p>
 												<p ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.ComplexOutput">
-														(ComplexOutput)
+													(ComplexOutput)
 												</p>
 											</p>
 										</div>
 									</p>
-								   <br>
-								   <input type="button" class="btn btn-primary" id="next" value="Executer" ng-click="ExecuteProcess(process['0']);" />
-								   <input type="button" class="btn btn-primary" id="next" value="Display Executer" ng-click="getData3();" />
-								   <input type="button" class="btn btn-primary" id="next" value="SauvgarderConfig" ng-click="sauvgardeconf(process['0']);" />
-								   <select id="pro" ng-options="pr as pr.process for pr in date2" ng-model="selectedconf">
-									<option value="">Liste de configuration </option>
-								</select>
-								   <input type="button" class="btn btn-primary" id="next2" value="recup" ng-click="recup(process['0'],selectedconf)" />
+									<br>
+									<input type="button" class="btn btn-primary" id="next" value="Executer" ng-click="ExecuteProcess(process.name);" />
+									<input type="button" class="btn btn-primary" id="next" value="Display Executer" ng-click="getData3();" />
+									<input type="button" class="btn btn-primary" id="next" value="SauvgarderConfig" ng-click="sauvgardeconf(process.name);" />
+									
+
 								</div>
 							</div>
-							<!--	<p><input type="file" onchange="loadfile(this)"></p>-->
+						</center>
 						</div>
 					</div>
 
 					<div ng-if="result4">
-						<div class="col-md-12" ng-if="processes">
-							<div class="panel panel-info spacer">
-								<div class="panel-heading">
-									<h3>Résultat exécution:</h3>
-									<textarea rows="15" cols="100" id="pikou">{{result4}}</textarea>
+						<div class="panel panel-info spacer">
+							<div class="panel-heading">
+								<center>
+								<h3>Résultat exécution:</h3>
+								<textarea rows="15" cols="100" id="pikou">{{result4}}</textarea>
+								<br>
+								<span>
+									<strong> Resultat : </strong>
 									<br>
-									<span>
-										<strong> Resultat : </strong>
-										<br>
-										<div ng-if="resProcess.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData">
+									<div ng-if="resProcess.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData">
 										<textarea rows="1" cols="100" id="2">{{resProcess.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.__text}}</textarea>
-									   </div>
+									</div>
 
-									   <div ng-if="resProcess.ExecuteResponse.ProcessOutputs.Output.Data.ComplexData">
+									<div ng-if="resProcess.ExecuteResponse.ProcessOutputs.Output.Data.ComplexData">
 										<textarea rows="1" cols="100" id="2">{{resProcess.ExecuteResponse.ProcessOutputs.Output.Data.ComplexData.Point.pos.__text}}</textarea>
-									   </div>
-									</span>
-								</div>
+									</div>
+								</span>
+							</center>
 							</div>
 						</div>
 					</div>
@@ -239,14 +388,13 @@
 			</div>
 		</div>
 	</div>
-	<!-- test angularjs ################################################################################################################################################-->
-	<!-- réponse getCapabilities -->
+
 
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-info spacer">
 			<div class="panel-heading">
 				<center>
-					<p>PROJET MPA M2 ILIADE 2017/2018 </p>
+					<p> <b>PROJET MPA M2 ILIADE 2017/2018 </b> </p>
 				</center>
 			</div>
 		</div>
