@@ -1,3 +1,4 @@
+
 // pour charger notre application 
 var express = require('express');
 
@@ -41,9 +42,7 @@ app.get('/items', function(req, res){
 });
 
 app.get('/configuration', function(req, res){
-    
         console.log("I received request1 from controller ! ")
-    
         db2.configuration.find(function(err, docs){
             console.log(docs);
             res.json(docs);
@@ -55,7 +54,7 @@ app.post('/configuration/:id', function(req, res){
     var process = req.params.id
     //var input = req.params.valtext
     //var nomparam = req.params.nominput
-    db2.configuration.insert({process, inputs : req.body.requestinput}, function(err, doc){
+    db2.configuration.insert({process, config:req.body.bool, inputs:req.body.requestinput}, function(err, doc){
     //console.log("coucou!!!!!!!!!"+input);
     res.json(doc);
     })
@@ -117,10 +116,9 @@ app.post('/items2/:id/:process', function(req, res){
     var proc = req.params.process
     console.log("yes"+id);
     db.items.update({_id: mongojs.ObjectId(id)},{ $pull: { process: {name : proc} }}, function (err, doc){
-        res.json(doc);
+    res.json(doc);
     })
 })
-
 
 // affichage sur le port 8080
 app.listen(8082)

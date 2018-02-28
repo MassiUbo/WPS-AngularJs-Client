@@ -12,7 +12,7 @@ var myApp = angular.module("angularApp", [])      //declaration du module
  * @argument $http : Module http pour éxécution de requête
  */
 
-myApp.controller("myController", function ($scope, $http) {   // controller 
+myApp.controller("myController", function ($scope,$http) {   // controller 
 
 	/**
 	 *  Fonctions qui gère l'affichage de notre vue 
@@ -167,45 +167,23 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 	refresh2();
 
+	 // myFunction sera exécutée au bout de 2 secondes
+	 $scope.recup21= function(process){
+		$scope.getDescriptionProcess(process)
+		setTimeout($scope.getData2, 3000);
+		setTimeout($scope.$apply,3000);
+	 } 
+
+
 	/**
-	 * @method recup : récuperation de liste de configuration
+	 * @method recup2 : récuperation de liste de configuration
 	 * @augments : id : le nom d'un process, ii : Entrées
 	 */
-	$scope.recup = function (id, ii) {
-		console.log("process", id)
-		var donnee = ii
-		console.log("données", donnee)
-        
-		// On test si la configuration est compatible 
-		if (donnee.process == id) {
-			// si process contient plusieurs paramètres
-			if (pp.length > 0) {
-				for (i = 0; i < pp.length; i++) {
-					document.getElementById('myInputs' + i).value = donnee.inputs[i]
-					displayinfo(" configuration récupéré !")
-				}
-			}
-			// si non le process contient une seule entrée
-			else {
-				document.getElementById('myInputs').value = donnee.inputs[0]
-				displayinfo(" configuration récupéré !")
-			}
-			// si configuration non compatible 		
-		} else {
-			displayinfo(" configuration non compatible !")
-			//window.alert('configuration non compatible ! ')
-		}
-	}
-
-
-	$scope.sleep = function(seconds){
-		var waitUntil = new Date().getTime() + seconds*1000;
-		while(new Date().getTime() < waitUntil) true;
-	}
-	 // myFunction sera exécutée au bout de 2 secondes
 
 	// recuperation cas configuration 
-	$scope.recup2 = function (id) {
+	$scope.recup2 = function (id, id2) {
+		
+	 if (id.process== id2){
 	   //$scope.getData2()
 		console.log("process", id.process)
 		var donnee = id.inputs
@@ -227,6 +205,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 					}
 					else {
 					document.getElementById('myInputs1'+ i).value = donnee[i]
+					document.getElementById('myInputs1' + i).disabled = bool
 					displayinfo(" configuration récupéré !")
 				}
 				}
@@ -234,10 +213,15 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			// si non le process contient une seule entrée
 			else {
 				document.getElementById('myInputs1').value = donnee[0]
+				document.getElementById('myInputs1').disabled = bool
 				displayinfo(" configuration récupéré !")
 			}
-	}
-
+		} else {
+			displayinfo(" configuration incompatible !")
+		}
+	
+   
+}
 
 	// on appel refresh ici pour rafrichir recuperation liste serveurs 
 	refresh();
@@ -300,7 +284,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	}
 
 	// Affichage Welcome au lancement de l'application
-	document.getElementById('info').innerHTML = "<h3>Welcome !</h3>";
+	document.getElementById('info').innerHTML = "<h1>Welcome !</h1>";
 	temp = document.getElementById('info')
 	setTimeout('temp.style.display="none"', 3000);
 
@@ -341,7 +325,8 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 	// variables references
 	
-	$scope.typeGeom = null ;
+	$scope.typeGeom = 'text' ;
+	$scope.typeGeom1 = 'text' ;
 	$scope.options = ['text', 'reference'];
 
 	/**
@@ -410,7 +395,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	 * @method displayinfo : afficher informations (erreurs / success)
 	 */
 	displayinfo = function (a) {
-		document.getElementById('info').innerHTML = "<b>" + a + "</b>";
+		document.getElementById('info').innerHTML = "<h2>" + a + "</h2>";
 		temp = document.getElementById('info')
 		temp.style.display = "block";
 		setTimeout('temp.style.display="none"', 3000);
@@ -501,7 +486,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=GetCapabilities').then(function (response) {
 				console.log("===>CC", response);
 				if (response)
-					window.alert("données recupérés")
+					displayinfo("données recupérés")
 				$scope.result = response.data;
 				console.log("===>DATA ", response.data);
 			});
@@ -536,7 +521,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=DescribeProcess&Identifier=' + id).then(function (response) {
 				console.log("===>CC", response);
 				if (response)
-					window.alert("SUCCESS !")
+					displayinfo("Données récupérés !")
 				$scope.result2 = response.data;
 				console.log("===>DATA ", response.data);
 			});
@@ -553,7 +538,10 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		//$scope.inputs = angular.isArray;
 		pp = $scope.inputs;
 		console.log("inputs test :", pp)
+		
 	};
+
+	
 
 	/**
 	 * @method ajoutprobdd: Ajour d'un process à la base de données
@@ -665,6 +653,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 	$scope.sauvgardeconf = function (id) {
 		console.log("===>DATA ");
+		var bool
 		// cas une seule entrée
 		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title) {
 			var requestinput = new Array();
@@ -672,10 +661,11 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			console.log('txt>>>', valeurtext);
 			var nominput = document.getElementById('contenu').innerHTML;
 			console.log('txt input>>>', nominput);
-			requestinput.push(valeurtext)
+			requestinput.push(valeurtext);
+			bool = document.getElementById('myInputs').disabled
 			// à utiliser
 			//  listeInputs +=  idInputs[selectedIndex][i]  +"=" + inputValue[selectedIndex][i] +";" ;
-			$http.post('/configuration/' + id, { requestinput }).then(function (response) {
+			$http.post('/configuration/' + id, {bool,requestinput}).then(function (response) {
 				//window.alert("Ajout bdd configuration!!");
 				displayinfo("Ajout à la base de données réussi !")
 				//$scope.monServeur = "";
@@ -755,24 +745,39 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	 */
 	$scope.activer = function () {
 		console.log(pp)
+		if (isNaN(pp)== false){
 		for (i = 0; i < pp.length; i++) {
-			if (pp[i].LiteralData)
-				document.getElementById('myInputs' + i).disabled = false
+			if (pp[i].LiteralData) {
+				
+			  document.getElementById('step2').disabled = false;
+			}
+			document.getElementById('myInputs' + i).disabled = false
+			}
+		} else {
+			document.getElementById('myInputs').disabled = false
+
 		}
 		//document.getElementById('minint').disabled = false;
-		document.getElementById('step2').disabled = false;
+		
 		//document.getElementById('maxint').disabled = false;
 	}
 
 	$scope.desactiver = function () {
+	 
+		console.log(pp)
+		if (isNaN(pp)== false){
 		for (i = 0; i < pp.length; i++) {
-			if (pp[i].LiteralData)
-				document.getElementById('myInputs' + i).disabled = true
+			if (pp[i].LiteralData) {
+				
+			  document.getElementById('step2').disabled = true;
+			}
+			document.getElementById('myInputs' + i).disabled = true
+			}
+		} else {
+			document.getElementById('myInputs').disabled = true
+
 		}
-		//document.getElementById('inputint').disabled=true;
-		//document.getElementById('minint').disabled = true;
-		//document.getElementById('maxint').disabled = true;
-		document.getElementById('step2').disabled = true;
+	
 	}
 
 	$scope.changestep = function () {
@@ -786,7 +791,9 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	}
 
 	// Cas configuration *****************************************************//
-	$scope.activer1 = function () {
+	
+	
+	/*$scope.activer1 = function () {
 		console.log(pp)
 		for (i = 0; i < pp.length; i++) {
 			if (pp[i].LiteralData)
@@ -806,7 +813,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		//document.getElementById('minint').disabled = true;
 		//document.getElementById('maxint').disabled = true;
 		document.getElementById('step21').disabled = true;
-	}
+	}*/
 
 	$scope.changestep1 = function () {
 		var s = parseInt(document.getElementById('step21').value, 10)

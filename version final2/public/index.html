@@ -16,7 +16,7 @@
 		<div class="panel panel-info spacer">
 			<div class="panel-heading">
 				<center>
-					<h3> Application WPS Configurable </h3>
+					<h3> Client WPS Configurable </h3>
 				</center>
 			</div>
 		</div>
@@ -28,10 +28,10 @@
 				<center>
 					<button class="btn btn-primary" ng-click="affichage1()">Ajouter serveur</button>
 					<button class="btn btn-primary" ng-click="affichage2()">Liste de serveurs</button>
-					<button class="btn btn-primary" ng-click="affichage3()">Gestion serveurs</button>
-					<button class="btn btn-primary" ng-click="affichage4()">Ajouter process</button>
+					<button class="btn btn-primary" ng-click="affichage3()">Gérer les serveurs</button>
+					<button class="btn btn-primary" ng-click="affichage4()">Ajouter un process</button>
 					<button class="btn btn-primary" ng-click="affichage5()">Configuration</button>
-					<button class="btn btn-primary" ng-click="affichage6()">Exécuter process</button>
+					<button class="btn btn-primary" ng-click="affichage6()">Exécuter des requêtes</button>
 					<p>
 						<div class="blink" id="info"></div>
 					</p>
@@ -46,9 +46,9 @@
 		<center>
 			<form>
 				<b> Ajout d'un serveur: </b>
-				<input type="text" id="serveur" placeholder="entrer votre serveur" ng-model="monServeur.label" />
-				<button class="btn btn-success btn-sm" ng-click="verification()">Verifier</button>
-				<button class="btn btn-primary btn-sm"id = "ajout" disabled = "true" ng-click="ajout()">Ajout</button>
+				<input type="text" id="serveur" placeholder="Entrez le lien du serveur" ng-model="monServeur.label" />
+				<button class="btn btn-success btn-sm" ng-click="verification()">Vérifier</button>
+				<button class="btn btn-primary btn-sm" id="ajout" disabled="true" ng-click="ajout()">Ajouter</button>
 
 
 			</form>
@@ -59,7 +59,7 @@
 				<div class="panel panel-info spacer">
 					<div class="panel-heading">
 						<center>
-							<h3>Réponse serveur:</h3>
+							<h3>Réponse du serveur:</h3>
 						</center>
 						<center>
 							<textarea rows="15" cols="100" id="pepe">{{resultv}}</textarea>
@@ -77,7 +77,7 @@
 				<th>
 					<center>
 						<h3>
-							<b> Liste de serveurs disponible: </b>
+							<b> Liste de serveurs disponibles: </b>
 						</h3>
 					</center>
 				</th>
@@ -89,10 +89,13 @@
 					<center>
 						<b>Nom Serveur : </b>{{item.label}}
 						<p>
-							<b> Liste de process sauvegardé dans ce serveur :
+							<b> Liste de process sauvegardés dans ce serveur :
 								<b>
 						</p>
 
+						<div ng-if="item.process == null">
+								<b style="color:#FF0000";>(Liste vide)</b>
+						</div>
 						<div ng-repeat="pro in item.process">
 
 							{{pro.name}}
@@ -102,24 +105,19 @@
 				</td>
 			</tr>
 		</table>
-
-
 	</div>
 
-
 	<div ng-show="visible3">
-
 		<br>
-
 		<table class="table">
 			<tr>
 				<th>
 					<center>
 						<h3>
-							<b>Suppression Serveurs / Process: </b>
+							<b>Suppression Serveurs | Process: </b>
 						</h3>
-						<button class="btn btn-danger btn-sm" ng-click="removeChecked()"> supprimer les choix </button>
-						<button class="btn btn-danger btn-sm" ng-click="removeAll()"> supprimer tout les serveur </button>
+						<button class="btn btn-danger btn-sm" ng-click="removeChecked()"> Supprimer la séléction </button>
+						<button class="btn btn-danger btn-sm" ng-click="removeAll()"> Supprimer tout les serveurs </button>
 					</center>
 				</th>
 				<br>
@@ -128,9 +126,11 @@
 			<tr>
 				<td>
 					<center>
+						
 						<p>
 							<b> Séléction :</b>
 						</p>
+					
 					</center>
 					<div ng-repeat="selectedItems in checked">
 						<center>{{selectedItems.label}}</center>
@@ -145,17 +145,20 @@
 						<input type="checkbox" ng-model="checked" ng-checked="exist(item)" ng-click="toggleSelection(item)">
 						<b>Nom Serveur : </b>{{item.label}}
 						<p>
-							<b> Liste de process sauvegardé dans ce serveur :
-								<b>
+							<b> Liste de process archivés pour ce serveur :<b>
 						</p>
-
+            
+							<div ng-if="item.process == null" >
+									<b style="color:#FF0000";>(Liste vide)</b>
+							</div>
+						<div ng-if="item.process != null" >
 						<div ng-repeat="pro in item.process">
 
 							<input type="checkbox" ng-model="checked2" ng-checked="exist2(pro)" ng-click="toggleSelection2(pro)"> {{pro.name}}
 						</div>
-						<button class="btn btn-danger btn-sm" ng-click="remove2(item)"> supprimer process </button>
-					</center>
-
+						<button class="btn btn-danger btn-sm" ng-click="remove2(item)"> Supprimer process </button>
+					    </div>
+					</center>	
 				</td>
 
 			</tr>
@@ -167,7 +170,7 @@
 	<div ng-show="visible4">
 		<td>
 			<center>
-				<b>Choisir un serveur:</b>
+				<b>Choisisez un serveur:</b>
 				<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
 					<option value="">Sélectionnez un Serveur WPS</option>
 				</select>
@@ -186,7 +189,7 @@
 						<div class="panel panel-info spacer">
 							<div class="panel-heading">
 								<center>
-									<h3>List of Process</h3>
+									<h3>Liste de Process:</h3>
 									<div class="wps-container">
 										<select multiple="multiple" ng-model="process">
 											<option ng-repeat="o in processes">{{o.Identifier.__text}}</option>
@@ -196,15 +199,14 @@
 
 
 										<br>
-										<input value="Execute process" type='button' class="btn btn-primary btn-sm" ng-click="getDescriptionProcess(process['0'])"
-										/>
-										<input value="Afficher Resultat" type='button' class="btn btn-primary btn-sm" ng-click='getData2()' />
+										<input value="Détails process" type='button' class="btn btn-primary btn-sm" ng-click="recup21(process['0'])" />
+
 										<input value="Ajout process BDD" type='button' class="btn btn-primary btn-sm" ng-click="ajoutprobdd(selected._id,process['0'])"
 										/>
 
 										<br>
 										<div ng-if="descriptionProcess">
-											<h3>Description du Process </h3>
+											<h3>Déscription du Process </h3>
 											<p>
 
 												<span>
@@ -212,7 +214,7 @@
 												<br>
 
 												<span>
-													<strong>Description : </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Abstract.__text}}</span>
+													<strong>Déscription : </strong>{{descriptionProcess.ProcessDescriptions.ProcessDescription.Abstract.__text}}</span>
 												<br>
 											</p>
 										</div>
@@ -230,7 +232,7 @@
 
 		<td>
 			<center>
-				<b>Choisir un serveur:</b>
+				<b>Choisisez un serveur:</b>
 				<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
 					<option value="">Sélectionnez un Serveur WPS</option>
 				</select>
@@ -244,7 +246,7 @@
 					<div class="panel panel-info spacer">
 						<div class="panel-heading">
 							<center>
-								<h3>Liste de Process :</h3>
+								<h3>Configuration :</h3>
 								<div class="wps-container">
 									<select id="processus" ng-options="pr as pr.name for pr in selected.process" ng-model="process">
 										<option value="">Liste de process </option>
@@ -252,18 +254,12 @@
 									<br>
 									<b>{{process.name}}</b>
 									<br>
-									<input value="Chargement liste entrées" type='button' class="btn btn-primary btn-sm" ng-click="getDescriptionProcess(process.name)"
-									/>
-									<input value="Afficher entrées" type='button' class="btn btn-primary btn-sm" ng-click='getData2()' />
+									<input value="Chargement liste entrées" type='button' class="btn btn-primary btn-sm" ng-click="recup21(process.name)" />
+
 									<br>
 									<div ng-if="descriptionProcess">
 
-
-
-
-
 										<p>
-
 											<b>Liste des entrées :</b>
 											<div>
 
@@ -290,11 +286,7 @@
 																<input type="button" class="btn btn-primary btn-sm" id="changstep" value="ok" ng-click="changestep()" />
 																<input type="button" id="default" class="btn btn-primary btn-sm" value="default" ng-click="getData2()" />
 																<input type="button" class="btn btn-success btn-sm" id="verif" value="verifierEntier" ng-click="verifEntier()" />
-																<br>
-																<b>Configuration modifiable ? </b>
-																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer()" />Oui
-																<input id="non" type="radio" name="inscription" value="non" ng-click="desactiver()" />Non
-																<br>
+																
 
 															</div>
 															<div ng-if="obj.LiteralData.DataType.__text=='xs:double'">
@@ -333,6 +325,11 @@
 																<br>
 															</div>
 														</div>
+														<br>
+														<b>Configuration modifiable ? </b>
+														<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer()" />Oui
+														<input id="non" type="radio" name="inscription" value="non" ng-click="desactiver()" />Non
+														<br>
 													</span>
 												</span>
 
@@ -342,7 +339,7 @@
 														<b> (ComplexeData)</b>
 														<br>
 														<select id="typeGeom" ng-options="o for o in options" ng-model="typeGeom">
-															<option value=""> chsoisir type</option>
+															
 														</select>
 													</div>
 													<div ng-if="typeGeom=='text'">
@@ -353,8 +350,12 @@
 														url :
 														<input type="text" name='myInputs' id='myInputs' />
 													</div>
-													<!--	<input type="text" name='myInputs' id='myInputs' />-->
-													<!--<button class="btn btn-primary" ng-click="toto()">recuperer</button> -->
+
+													<b>Configuration modifiable ? </b>
+													<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer()" />Oui
+													<input id="non" type="radio" name="inscription" value="non" ng-click="desactiver()" />Non
+													<br>
+							
 												</span>
 											</div>
 											<div>
@@ -376,11 +377,9 @@
 											</div>
 										</p>
 										<br>
-										<input type="button" class="btn btn-primary" id="next" value="Executer" ng-click="ExecuteProcess(process.name);" />
-										<input type="button" class="btn btn-primary" id="next" value="Display Executer" ng-click="getData3();" />
-										<input type="button" class="btn btn-primary" id="next" value="SauvgarderConfig" ng-click="sauvgardeconf(process.name);" />
-
-
+										<input type="button" class="btn btn-primary btn-sm" id="next" value="Executer" ng-click="ExecuteProcess(process.name);" />
+										<input type="button" class="btn btn-primary btn-sm" id="next" value="Afficher Résultat" ng-click="getData3();" />
+										<input type="button" class="btn btn-success btn-sm" id="next" value="Sauvgarder Configuration" ng-click="sauvgardeconf(process.name);" />
 									</div>
 								</div>
 							</center>
@@ -391,7 +390,7 @@
 						<div class="panel panel-info spacer">
 							<div class="panel-heading">
 								<center>
-									<h3>Résultat exécution:</h3>
+									<h3>Résultat Exécution:</h3>
 									<textarea rows="15" cols="100" id="pikou">{{result4}}</textarea>
 									<br>
 									<span>
@@ -419,7 +418,7 @@
 
 		<td>
 			<center>
-				<b>Choisir un serveur:</b>
+				<b>Choisisez un serveur:</b>
 				<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
 					<option value="">Sélectionnez un Serveur WPS</option>
 				</select>
@@ -433,24 +432,28 @@
 					<div class="panel panel-info spacer">
 						<div class="panel-heading">
 							<center>
-								<h3>Liste de Process :</h3>
+								<h3>Exécution requêtes :</h3>
 								<div class="wps-container">
-									<select id="processus" ng-options="pr as pr.process for pr in date2" ng-model="process">
+
+
+									<select id="processus" ng-options="pr as pr.name for pr in selected.process" ng-model="process">
+										<option value="">Liste de process </option>
+									</select>
+
+									<select id="processus" ng-options="pr as pr.process for pr in date2" ng-model="process1">
 										<option value="">Liste de configuration </option>
 									</select>
+
 									<br>
-									<b>{{process.process}}</b>
+									<b>{{process.name}}</b>
 									<br>
-									<input value="Chargement entrées" type='button' class="btn btn-primary btn-sm" ng-click="getDescriptionProcess(process.process);"
+									<input value="Récupérer entrées" type='button' class="btn btn-primary btn-sm" ng-click='recup21(process.name)' />
+									<input value="Récuperer configuration" type='button' class="btn btn-primary btn-sm" ng-click='recup2(process1, process.name)'
 									/>
-									<input value="Afficher Resultat" type='button' class="btn btn-primary btn-sm" ng-click='getData2()' />
-									<input value="Récuperer configuration" type='button' class="btn btn-primary btn-sm" ng-click='recup2(process)' />
 									<br>
 									<div ng-if="descriptionProcess">
 
 										<br>
-										
-									
 										<p>
 
 											<b>Liste des entrées :</b>
@@ -528,7 +531,7 @@
 														<b> (ComplexeData)</b>
 														<br>
 														<select id="typeGeom1" ng-options="o for o in options" ng-model="typeGeom1">
-															<option value=""> chsoisir type</option>
+															
 														</select>
 													</div>
 													<div ng-if="typeGeom1=='text'">
@@ -539,8 +542,7 @@
 														url :
 														<input type="text" name='myInputs' id='myInputs1' />
 													</div>
-													<!--	<input type="text" name='myInputs' id='myInputs' />-->
-													<!--<button class="btn btn-primary" ng-click="toto()">recuperer</button> -->
+
 												</span>
 											</div>
 											<div>
@@ -562,9 +564,8 @@
 											</div>
 										</p>
 										<br>
-										<input type="button" class="btn btn-primary" id="next" value="Executer" ng-click="ExecuteProcess1(process.process);" />
-										<input type="button" class="btn btn-primary" id="next" value="Display Executer" ng-click="getData3();" />
-										<!--	<input type="button" class="btn btn-primary" id="next" value="SauvgarderConfig" ng-click="sauvgardeconf(process.name);" />-->
+										<input type="button" class="btn btn-primary btn-sm" id="next" value="Executer" ng-click="ExecuteProcess1(process.name);" />
+										<input type="button" class="btn btn-primary btn-sm" id="next" value="Afficher Résultat" ng-click="getData3();" />
 
 
 									</div>
@@ -577,7 +578,7 @@
 						<div class="panel panel-info spacer">
 							<div class="panel-heading">
 								<center>
-									<h3>Résultat exécution:</h3>
+									<h3>Résultat Exécution:</h3>
 									<textarea rows="15" cols="100" id="pikou">{{result4}}</textarea>
 									<br>
 									<span>
@@ -609,6 +610,7 @@
 				<center>
 					<p>
 						<b>PROJET MPA M2 ILIADE 2017/2018 </b>
+						
 					</p>
 				</center>
 			</div>
