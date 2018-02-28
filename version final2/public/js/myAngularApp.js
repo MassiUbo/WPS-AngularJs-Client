@@ -198,9 +198,9 @@ myApp.controller("myController", function ($scope,$http) {   // controller
                 
 						console.log("mmmm",bool)
 						document.getElementById('myInputs1' + i).disabled = bool
-						document.getElementById('step21').disabled = bool
-						document.getElementById('changstep1').disabled= bool
-						document.getElementById('verif1').disabled= bool
+						document.getElementById('step21'+i).disabled = bool
+						document.getElementById('changstep1'+i).disabled= bool
+						document.getElementById('verif1'+i).disabled= bool
 						document.getElementById('myInputs1'+ i).value = donnee[i]
 					}
 					else {
@@ -682,13 +682,13 @@ myApp.controller("myController", function ($scope,$http) {   // controller
 			for (i = 0; i < pp.length; i++) {
 				nominput = document.getElementById('contenu' + i).innerHTML;
 				valeurtext = document.getElementById('myInputs' + i).value;
-				requestinput.push(valeurtext)
+				requestinput.push(valeurtext)  // changement ici
 				console.log("reqqq", requestinput)
 
-				if (pp[i].LiteralData) {
+				
 					bool = document.getElementById('myInputs' + i).disabled
 					console.log("mmmm",bool)
-				}
+				
 			}
 			console.log("conf" + requestinput)
 			$http.post('/configuration2/' + id, {bool,requestinput}).then(function (response) {
@@ -712,14 +712,13 @@ myApp.controller("myController", function ($scope,$http) {   // controller
 	/**
 	 * @method verifEntier : verification d'un entier
 	 */
-	$scope.verifEntier = function () {
-		var min = parseInt(document.getElementById('minint').value, 10)
-		for (i = 0; i < pp.length; i++) {
-			console.log("cc", pp)
-			if (pp[i].LiteralData)
-				var input = parseInt(document.getElementById('myInputs' + i).value, 10)
-		}
-		var max = parseInt(document.getElementById('maxint').value, 10)
+	$scope.verifEntier = function (a) {
+		console.log("mm"+a)
+		var min = parseInt(document.getElementById('minint'+a).value, 10)
+	
+		var input = parseInt(document.getElementById('myInputs' + a).value, 10)
+		
+		var max = parseInt(document.getElementById('maxint'+a).value, 10)
 
 		if (input > max || input < min) {
 			//displayinfo("L'entrée doit être entre min et max")
@@ -745,11 +744,11 @@ myApp.controller("myController", function ($scope,$http) {   // controller
 	 */
 	$scope.activer = function () {
 		console.log(pp)
-		if (isNaN(pp)== false){
+		if (isNaN(pp.length)== false){
 		for (i = 0; i < pp.length; i++) {
 			if (pp[i].LiteralData) {
 				
-			  document.getElementById('step2').disabled = false;
+			  document.getElementById('step2'+i).disabled = false;
 			}
 			document.getElementById('myInputs' + i).disabled = false
 			}
@@ -765,11 +764,11 @@ myApp.controller("myController", function ($scope,$http) {   // controller
 	$scope.desactiver = function () {
 	 
 		console.log(pp)
-		if (isNaN(pp)== false){
+		if (isNaN(pp.length)== false){
 		for (i = 0; i < pp.length; i++) {
 			if (pp[i].LiteralData) {
 				
-			  document.getElementById('step2').disabled = true;
+			  document.getElementById('step2'+i).disabled = true;
 			}
 			document.getElementById('myInputs' + i).disabled = true
 			}
@@ -780,12 +779,9 @@ myApp.controller("myController", function ($scope,$http) {   // controller
 	
 	}
 
-	$scope.changestep = function () {
-		var s = parseInt(document.getElementById('step2').value, 10)
-		for (i = 0; i < pp.length; i++) {
-			if (pp[i].LiteralData)
-				document.getElementById('myInputs' + i).step = s
-		}
+	$scope.changestep = function (a) {
+		var s = parseInt(document.getElementById('step2'+a).value, 10)
+		document.getElementById('myInputs' + a).step = s;
 		displayinfo("configuration pris en compte !")
 
 	}
@@ -825,14 +821,13 @@ myApp.controller("myController", function ($scope,$http) {   // controller
 
 	}
 
-	$scope.verifEntier1 = function () {
-		var min = parseInt(document.getElementById('minint').value, 10)
-		for (i = 0; i < pp.length; i++) {
-			console.log("cc", pp)
-			if (pp[i].LiteralData)
-				var input = parseInt(document.getElementById('myInputs1' + i).value, 10)
-		}
-		var max = parseInt(document.getElementById('maxint').value, 10)
+	$scope.verifEntier1 = function (a) {
+		var min = parseInt(document.getElementById('minint'+a).value, 10)
+		
+			
+				var input = parseInt(document.getElementById('myInputs1' + a).value, 10)
+		
+		var max = parseInt(document.getElementById('maxint'+a).value, 10)
 
 		if (input > max || input < min) {
 			//displayinfo("L'entrée doit être entre min et max")

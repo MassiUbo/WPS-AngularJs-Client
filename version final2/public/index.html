@@ -276,16 +276,16 @@
 
 																<input type="number" name='inputint' id="{{'myInputs'+$index}}" size="2" step="2" ng-value="step" />
 																<b>min:</b>
-																<input type='text' name='minint' id='minint' size="2" disabled="true" ng-value="min" />
+																<input type='text' name='minint' id="{{'minint'+$index}}"  size="2" disabled="true" ng-value="min" />
 																<b>max:</b>
-																<input type='text' name='maxint' id='maxint' size="2" disabled="true" ng-value="max" />
+																<input type='text' name='maxint' id="{{'maxint'+$index}}"  size="2" disabled="true" ng-value="max" />
 																<br>
 																<b>step:</b>
-																<input type="range" name="force" id="step2" step="2" max="100" min="0" ng-model="step2" />
+																<input type="range" name="force" id="{{'step2'+$index}}"  step="2" max="100" min="0" ng-model="step2" />
 																<br>
-																<input type="button" class="btn btn-primary btn-sm" id="changstep" value="ok" ng-click="changestep()" />
+																<input type="button" class="btn btn-primary btn-sm" id="changstep" value="ok" ng-click="changestep($index)" />
 																<input type="button" id="default" class="btn btn-primary btn-sm" value="default" ng-click="getData2()" />
-																<input type="button" class="btn btn-success btn-sm" id="verif" value="verifierEntier" ng-click="verifEntier()" />
+																<input type="button" class="btn btn-success btn-sm" id="verif" value="verifierEntier" ng-click="verifEntier($index)" />
 																
 
 															</div>
@@ -472,16 +472,16 @@
 
 																<input type="number" name='inputint' id="{{'myInputs1'+$index}}" size="2" step="2" ng-value="step" />
 																<b>min:</b>
-																<input type='text' name='minint' id='minint' size="2" disabled="true" ng-value="min" />
+																<input type='text' name='minint' id="{{'minint1'+$index}}"  size="2" disabled="true" ng-value="min" />
 																<b>max:</b>
-																<input type='text' name='maxint' id='maxint' size="2" disabled="true" ng-value="max" />
+																<input type='text' name='maxint' id="{{'maxint1'+$index}}"  size="2" disabled="true" ng-value="max" />
 																<b>step:</b>
-																<input type="range" name="force" id="step21" step="2" size="2" ng-model="step2" />
+																<input type="range" name="force" id="{{'step21'+$index}}"  step="2" size="2" ng-model="step2" />
 																<!--<b>Modifier ? </b>
 																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer1()" />Oui
 																<input id="non" type="radio" name="inscription" value="non"  ng-click="desactiver1()" />Non-->
-																<input type="button" class="btn btn-primary btn-sm" id="changstep1" value="ok" ng-click="changestep1()" />
-																<input type="button" class="btn btn-success btn-sm" id="verif1" value="verifierEntier" ng-click="verifEntier1()" />
+																<input type="button" class="btn btn-primary btn-sm" id="{{'changstep1'+$index}}" value="ok" ng-click="changestep1($index)" />
+																<input type="button" class="btn btn-success btn-sm" id="{{'verif1'+$index}}" value="verifierEntier" ng-click="verifEntier1($index)" />
 
 																<br>
 
