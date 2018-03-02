@@ -7,7 +7,7 @@
 var myApp = angular.module("angularApp", [])      //declaration du module
 
 /**
- * Controlleur : Gère l'intégralité de notre vue
+ * Controleur : Gère l'intégralité de notre vue
  * @argument $scope : Intéraction entre Vue et controlleur
  * @argument $http : Module http pour éxécution de requête
  */
@@ -18,7 +18,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	 *  Fonctions qui gère l'affichage de notre vue 
 	 */
 
-	// Affichage 1 : Ajout serveur 	
+	// Affichage 1 : Ajouter serveur 	
 	$scope.visible = false;
 	$scope.affichage1 = function () {
 		if ($scope.visible == false) {
@@ -27,6 +27,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			$scope.visible3 = false;
 			$scope.visible4 = false;
 			$scope.visible5 = false;
+			$scope.visible6 = false;
 			$scope.selected = null;
 			$scope.resultverif = null;
 		}
@@ -44,6 +45,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			$scope.visible3 = false;
 			$scope.visible4 = false;
 			$scope.visible5 = false;
+			$scope.visible6 = false;
 			$scope.selected = null;
 		}
 		else {
@@ -60,6 +62,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			$scope.visible2 = false;
 			$scope.visible4 = false;
 			$scope.visible5 = false;
+			$scope.visible6 = false;
 			$scope.selected = null;
 		}
 		else {
@@ -77,6 +80,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			$scope.visible2 = false;
 			$scope.visible3 = false;
 			$scope.visible5 = false;
+			$scope.visible6 = false;
 			$scope.descriptionProcess = null;
 			$scope.processes = null;
 		}
@@ -89,24 +93,51 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	$scope.visible5 = false;
 	$scope.affichage5 = function () {
 		if ($scope.visible5 == false) {
+			pp = null;
+			$scope.inputs = null
 			$scope.visible5 = true;
 			$scope.selected = null;
 			$scope.visible = false;
 			$scope.visible2 = false;
 			$scope.visible3 = false;
 			$scope.visible4 = false;
+			$scope.visible6 = false;
 			$scope.descriptionProcess = null;
 			$scope.result4 = null;
+
 		}
 		else {
 			$scope.visible5 = false;
 		}
 	}
 
+	// Exécution de reuquêtes
+
+	$scope.visible6 = false;
+	$scope.affichage6 = function () {
+		if ($scope.visible6 == false) {
+			$scope.inputs = null
+			pp = null;
+			$scope.visible6 = true;
+			$scope.selected = null;
+			$scope.visible = false;
+			$scope.visible2 = false;
+			$scope.visible3 = false;
+			$scope.visible4 = false;
+			$scope.visible5 = false;
+			$scope.descriptionProcess = null;
+			$scope.result4 = null;
+		}
+		else {
+			$scope.visible6 = false;
+		}
+	}
+
 	/**
 	 * @method refresh : Raffrichissement après récupération données 
-	 * de base de données items
+	 * de base de données items.
 	 */
+
 	var refresh = function () {
 		$http.get('/items').then(function (response) {
 			console.log("j'ai recu la liste des serveurs")
@@ -116,15 +147,16 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 				var k = date[i].process
 			console.log(k)
 			$scope.listepro = k
-			// pour verification 
+			// pour verification serveur 
 			$scope.good = false;
 		});
 	};
 
 	/**
 	 *@method refresh2 : Raffrichissement après récupération données 
-	 * de base de données configuration
+	 * de base de données configuration.
 	 */
+
 	var refresh2 = function () {
 		$http.get('/configuration').then(function (response) {
 			console.log("j'ai recu la liste des entrées")
@@ -140,36 +172,66 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	refresh2();
 
 	/**
-	 * @method recup : récuperation de liste de configuration
+	 * @method recup21: temporisation entre récuperation de données depuis le serveur
+	 * et leur conversion au format JSON.
+	 * 
+	 */
+
+	$scope.recup21 = function (process) {
+		$scope.getDescriptionProcess(process)
+		setTimeout($scope.getData2, 3000);
+		setTimeout($scope.$apply, 3000);
+	}
+
+
+	// ** 
+
+	/*$scope.recup3 = function (){
+		document.getElementById('toto').innerHTML += 
+		'<div id="masso"><input type="button" id="massi" value="massi" /></div>';
+	}  */
+
+	/**
+	 * @method recup2 : récuperation de liste de configuration
 	 * @augments : id : le nom d'un process, ii : Entrées
 	 */
-	$scope.recup = function (id, ii) {
-		console.log("process", id)
-		var donnee = ii
-		console.log("données", donnee)
 
-		// On test si la configuration est compatible 
-		if (donnee.process == id) {
-			// si process contient plusieurs paramètres
-			if (pp.length > 0) {
-				for (i = 0; i < pp.length; i++) {
-					document.getElementById('myInputs' + i).value = donnee.inputs[i]
+	// recuperation cas configuration 
+	$scope.recup2 = function (id) {
+		//$scope.getData2()
+		console.log("process", id.process)
+		var donnee = id.inputs
+		console.log("données", donnee[0])
+		var bool = id.config
+		console.log("bool", bool)
+		console.log("pp", pp)
+		// si process contient plusieurs paramètres
+		if (pp.length > 0) {
+			for (i = 0; i < pp.length; i++) {
+				if (pp[i].LiteralData) {
+					console.log("mmmm", bool)
+					document.getElementById('myInputs1' + i).disabled = bool[i]
+					document.getElementById('step21' + i).disabled = bool[i]
+					document.getElementById('changstep1' + i).disabled = bool[i]
+					//	document.getElementById('verif1'+i).disabled= bool[i]
+					document.getElementById('myInputs1' + i).value = donnee[i]
+				}
+				else {
+					document.getElementById('myInputs1' + i).value = donnee[i]
+					document.getElementById('myInputs1' + i).disabled = bool[i]
 					displayinfo(" configuration récupéré !")
 				}
 			}
-			// si non le process contient une seule entrée
-			else {
-				document.getElementById('myInputs').value = donnee.inputs[0]
-				displayinfo(" configuration récupéré !")
-			}
-			// si configuration non compatible 		
-		} else {
-			displayinfo(" configuration non compatible !")
-			//window.alert('configuration non compatible ! ')
+		}
+		// si non le process contient une seule entrée
+		else {
+			document.getElementById('myInputs1').value = donnee[0]
+			document.getElementById('myInputs1').disabled = bool
+			displayinfo(" configuration récupéré !")
 		}
 	}
 
-	// on appel refresh ici pour rafrichir recuperation liste serveurs 
+	// On appel refresh ici pour rafrichir recuperation liste serveurs 
 	refresh();
 
 	/**
@@ -230,12 +292,11 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	}
 
 	// Affichage Welcome au lancement de l'application
-	document.getElementById('info').innerHTML = "<h3>Welcome !</h3>";
+	document.getElementById('info').innerHTML = "<h1>Welcome !</h1>";
 	temp = document.getElementById('info')
 	setTimeout('temp.style.display="none"', 3000);
 
 	// Declaration des variables
-
 	$scope.selectedconf = null
 	$scope.selected = null;
 	$scope.select = null;
@@ -263,13 +324,20 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	// tableau entrees
 	var pp = null
 
-	//  variables cheked
+	// variables cheked
 	$scope.checked = [];
 	$scope.checked2 = [];
+
+	// variables references
+
+	$scope.typeGeom = 'text';
+	$scope.typeGeom1 = 'text';
+	$scope.options = ['text', 'reference'];
 
 	/**
 	 * Fonction exist1/2 : relié aux cases à coché
 	 */
+
 	$scope.exist = function (item) {
 		return $scope.checked.indexOf(item) > -1;
 	}
@@ -333,7 +401,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	 * @method displayinfo : afficher informations (erreurs / success)
 	 */
 	displayinfo = function (a) {
-		document.getElementById('info').innerHTML = "<b>" + a + "</b>";
+		document.getElementById('info').innerHTML = "<h2>" + a + "</h2>";
 		temp = document.getElementById('info')
 		temp.style.display = "block";
 		setTimeout('temp.style.display="none"', 3000);
@@ -358,6 +426,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 			$http.get($scope.monServeur.label + '?service=WPS&version=1.0.0&request=GetCapabilities').success(function (response) {
 				displayinfo("serveur valide !")
+				document.getElementById("ajout").disabled = false
 				//window.alert('serveur correcte !');
 				$scope.resultverif = response;
 				$scope.resultv = response;
@@ -365,7 +434,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 				console.log("verification serveur ");
 				$scope.good = true;
 			}).error(function (response) {
-				displayinfo("Bad request " + "\n" + "serveur non valide !")
+				displayinfo("Serveur non valide !")
 				//window.alert("Bad request " + "\n" + "put an valid server" );
 				$scope.good = false;
 				$scope.resultverif = response;
@@ -389,20 +458,24 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 						//window.alert("Ajout server SUCCEED !!");
 						displayinfo("Ajout server réussi !!")
 						$scope.monServeur = null;
+						document.getElementById("ajout").disabled = true
 						refresh();
 					});
 				}).error(function (response) {
 					//	window.alert("vous avez modifié l' URL du serveur aprés vérfication" );
 					displayinfo("vous avez modifié l' URL du serveur aprés vérfication !")
+					document.getElementById("ajout").disabled = true
 					$scope.good = false;
 				});
 			}
 			else {
 				//window.alert("verifier votre serveur !")
 				displayinfo("verifier votre serveur !")
+				document.getElementById("ajout").disabled = true
 			}
 		} else {
 			displayinfo("nom vide !")
+			document.getElementById("ajout").disabled = true
 			//window.alert(" nom vide !")
 		}
 	}
@@ -419,7 +492,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=GetCapabilities').then(function (response) {
 				console.log("===>CC", response);
 				if (response)
-					window.alert("données recupérés")
+					displayinfo("données recupérés")
 				$scope.result = response.data;
 				console.log("===>DATA ", response.data);
 			});
@@ -427,7 +500,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	};
 
 	/**
-	 * @method getData : conversion en format JSON
+	 * @method getData : conversion en format JSON réponse GetCapabilities
 	 */
 	$scope.getData = function () {
 		var x2js = new X2JS();
@@ -438,30 +511,29 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	};
 
 	/**
-	 * @method getDescriptionProcess : récupération données relié à un process
-	 * d'un serveur WPS 
+	 * @method getDescriptionProcess : Récupération données relié à un process
+	 * d'un serveur WPS.
 	 */
-
 	$scope.getDescriptionProcess = function (id) {
 		$scope.descriptionProcess = null
 		$scope.result4 = null;
 		if (id === undefined) {
 			displayinfo("Veuillez séléctionné un process !")
-			//	window.alert(" veuillez séléctionnez un process !")
+			//window.alert(" veuillez séléctionnez un process !")
 		}
 		else {
 			console.log("===>DATA ");
 			$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=DescribeProcess&Identifier=' + id).then(function (response) {
 				console.log("===>CC", response);
 				if (response)
-					window.alert("SUCCESS !")
+					displayinfo("Données récupérés !")
 				$scope.result2 = response.data;
 				console.log("===>DATA ", response.data);
 			});
 		}
 	};
 
-	// Conversion en format JSON 
+	// Conversion en format JSON Reponse DescribeProcess 
 	$scope.getData2 = function () {
 		var x2js = new X2JS();
 		var aftCnv = x2js.xml_str2json($scope.result2);
@@ -499,26 +571,57 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	 * @param id : represente un process
 	 */
 	$scope.ExecuteProcess = function (id) {
-		console.log("===>DATA EXECUTION ");
-		var requestinput = ""
-		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title) {
-			var nominput = document.getElementById('contenu').innerHTML;
-			var valeurtext = document.getElementById('myInputs').value;
-			console.log('txt>>>', valeurtext);
-			console.log('txt input>>>', nominput);
 
-			// exéctution de requete avec une seule entrée
-			$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + nominput + "=" + valeurtext).then(function (response) {
-				console.log("===>CC", response);
-				if (response) {
-					//	window.alert("Requête exécuté !")
-					displayinfo("Requête éxécuté !")
+		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title) {
+			var texRef = document.getElementById('typeGeom').value;
+
+			console.log("===> type geom " + document.getElementById('typeGeom').value);
+			console.log("===>DATA EXECUTION ");
+
+			if (texRef == 0) {
+				{
+					var nominput = document.getElementById('contenu').innerHTML;
+					var valeurtext = document.getElementById('myInputs').value;
+					console.log('txt>>>', valeurtext);
+					console.log('txt input>>>', nominput);
+
+					// exéctution de requete avec une seule entrée
+					$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + nominput + "=" + valeurtext).then(function (response) {
+						console.log("===>CC", response);
+						if (response)
+							window.alert("Requête exécuté !")
+						$scope.result3 = response.data;
+						console.log("===>DATA ", response.data);
+					});
 				}
-				$scope.result3 = response.data;
-				console.log("===>DATA ", response.data);
-			});
+			}
+
+			else if (texRef == 1) {
+				var nominput = document.getElementById('contenu').innerHTML;
+				var valeurtext = document.getElementById('myInputs').value;
+
+				$http({
+					method: 'GET', url: "http://portail.indigeo.fr/geoserver/LETG-BREST/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LETG-BREST%3AREF_VOUG&maxFeatures=50&outputFormat=application%2Fjson"
+
+				}).then(function (response) {
+					console.log("===>CC ref", response);
+					$scope.result = response.data;
+					console.log("===>DATA ref ", response.data);
+					var x = response.data.features[0].geometry.coordinates[0][0];
+					var y = response.data.features[0].geometry.coordinates[0][1];
+					console.log("===>DATA x ", x);
+
+					$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + 'JTS:getX' + '&DataInputs=geom=point(' + x + ' ' + y + ')'
+					).then(function (response) {
+						console.log("===>CC", response);
+						$scope.result3 = response.data;
+						console.log("===>DATA ", response.data);
+					});
+				});
+			}
 		}
 		else {
+			var requestinput = ""
 			console.log("mmm" + $scope.inputs)
 			for (i = 0; i < pp.length; i++) {
 				var nominput = document.getElementById('contenu' + i).innerHTML;
@@ -540,10 +643,6 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			// execution requête avec plusieurs entrées
 			$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + requestinput).then(function (response) {
 				console.log("===>CC", response);
-				if (response) {
-					//	window.alert("Requête exécuté !")
-					displayinfo("Requête éxécuté !")
-				}
 				$scope.result3 = response.data;
 				console.log("===>DATA ", response.data);
 			});
@@ -552,11 +651,12 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	};
 
 	/**
-	 *@method sauvgardeconf : sauvegarder une configuration
+	 *@method sauvgardeconf : sauvegarder une configuration dans la base de données
 	 */
 
 	$scope.sauvgardeconf = function (id) {
 		console.log("===>DATA ");
+		var bool
 		// cas une seule entrée
 		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title) {
 			var requestinput = new Array();
@@ -564,10 +664,11 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			console.log('txt>>>', valeurtext);
 			var nominput = document.getElementById('contenu').innerHTML;
 			console.log('txt input>>>', nominput);
-			requestinput.push(valeurtext)
+			requestinput.push(valeurtext);
+			bool = document.getElementById('myInputs').disabled
 			// à utiliser
 			//  listeInputs +=  idInputs[selectedIndex][i]  +"=" + inputValue[selectedIndex][i] +";" ;
-			$http.post('/configuration/' + id, { requestinput }).then(function (response) {
+			$http.post('/configuration/' + id, { bool, requestinput }).then(function (response) {
 				//window.alert("Ajout bdd configuration!!");
 				displayinfo("Ajout à la base de données réussi !")
 				//$scope.monServeur = "";
@@ -575,19 +676,24 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			});
 		}
 
-		// cas plusieures entrées
+		// Cas plusieures entrées
 		else {
 			var requestinput = new Array()
 			var nominput
 			var valeurtext
+			var b
+			var bool = new Array()
 			for (i = 0; i < pp.length; i++) {
 				nominput = document.getElementById('contenu' + i).innerHTML;
 				valeurtext = document.getElementById('myInputs' + i).value;
-				requestinput.push(valeurtext)
+				requestinput.push(valeurtext)  // changement ici
+				b = document.getElementById('myInputs' + i).disabled
+				bool.push(b)
+				console.log("mmmm", bool)
 				console.log("reqqq", requestinput)
 			}
 			console.log("conf" + requestinput)
-			$http.post('/configuration2/' + id, { requestinput }).then(function (response) {
+			$http.post('/configuration2/' + id, { bool, requestinput }).then(function (response) {
 				displayinfo("Ajout à la base de données réussi !")
 				//window.alert("Ajout bdd configuration!!");
 				//$scope.monServeur = "";
@@ -608,14 +714,11 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	/**
 	 * @method verifEntier : verification d'un entier
 	 */
-	$scope.verifEntier = function () {
-		var min = parseInt(document.getElementById('minint').value, 10)
-		for (i = 0; i < pp.length; i++) {
-			console.log("cc", pp)
-			if (pp[i].LiteralData)
-				var input = parseInt(document.getElementById('myInputs' + i).value, 10)
-		}
-		var max = parseInt(document.getElementById('maxint').value, 10)
+	$scope.verifEntier = function (a) {
+		console.log("mm" + a)
+		var min = parseInt(document.getElementById('minint' + a).value, 10)
+		var input = parseInt(document.getElementById('myInputs' + a).value, 10)
+		var max = parseInt(document.getElementById('maxint' + a).value, 10)
 
 		if (input > max || input < min) {
 			//displayinfo("L'entrée doit être entre min et max")
@@ -637,37 +740,164 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	}
 
 	/**
-	 * @method activer/desactiver : changement de configuration dun entier
+	 * @method activer/desactiver : activer modification / non modification d'une entrée
+	 * @param a : index de l'entrée
 	 */
-	$scope.activer = function () {
-		for (i = 0; i < pp.length; i++) {
-			if (pp[i].LiteralData)
-				document.getElementById('myInputs' + i).disabled = false
+	$scope.activer = function (a) {
+		if (pp[a].LiteralData) {
+
+			document.getElementById('step2' + a).disabled = false;
+			document.getElementById('myInputs' + a).disabled = false
+		} else {
+			document.getElementById('myInputs' + a).disabled = false
 		}
-		document.getElementById('minint').disabled = false;
-		document.getElementById('step2').disabled = false;
-		document.getElementById('maxint').disabled = false;
 	}
 
-	$scope.desactiver = function () {
-		for (i = 0; i < pp.length; i++) {
-			if (pp[i].LiteralData)
-				document.getElementById('myInputs' + i).disabled = true
-		}
-		//document.getElementById('inputint').disabled=true;
-		document.getElementById('minint').disabled = true;
-		document.getElementById('maxint').disabled = true;
-		document.getElementById('step2').disabled = true;
+	$scope.activer2 = function () {
+		document.getElementById('myInputs').disabled = false
 	}
-	$scope.changestep = function () {
-		var s = parseInt(document.getElementById('step2').value, 10)
-		for (i = 0; i < pp.length; i++) {
-			if (pp[i].LiteralData)
-				document.getElementById('myInputs' + i).step = s
+
+	$scope.desactiver = function (a) {
+		if (pp[a].LiteralData) {
+
+			document.getElementById('step2' + a).disabled = true;
+			document.getElementById('myInputs' + a).disabled = true
+		} else {
+			document.getElementById('myInputs' + a).disabled = true
 		}
+
+	}
+	$scope.desactiver2 = function () {
+		document.getElementById('myInputs').disabled = true
+	}
+
+	/**
+	 * @method changstep: changement du step
+	 */
+	$scope.changestep = function (a) {
+		var s = parseInt(document.getElementById('step2' + a).value, 10)
+		document.getElementById('myInputs' + a).step = s;
 		displayinfo("configuration pris en compte !")
-
 	}
+
+	//**********Cas configuration*********//
+
+
+	/**
+	 * @method changstep: changement du step
+	 */
+	$scope.changestep1 = function (a) {
+		var s = parseInt(document.getElementById('step21' + a).value, 10)
+		document.getElementById('myInputs1' + a).step = s;
+		displayinfo("configuration pris en compte !")
+	}
+
+	/**
+	 * Vérification d'un entrier dans le cans modification 
+	 */
+	$scope.verifEntier1 = function (a) {
+		var min = parseInt(document.getElementById('minint' + a).value, 10)
+		var input = parseInt(document.getElementById('myInputs1' + a).value, 10)
+		var max = parseInt(document.getElementById('maxint' + a).value, 10)
+
+		if (input > max || input < min) {
+			//displayinfo("L'entrée doit être entre min et max")
+			window.alert("L'entree doit être entre min et max ");
+		}
+		else if (min > max) {
+			///displayinfo("Warning ! min est supérieur à max")
+			window.alert("Warning" + "\n " + "min est supérieur à max");
+		}
+		else if (min < 0 || max < 0)
+			//window.alert("valeur min ou max négatif !!")
+			displayinfo("Valeur min ou max négatif !")
+		else if (isNaN(min) || isNaN(max) || isNaN(input)) {
+			window.alert("vous avez laissé un champs vide ou erreur saisie !!")
+			//displayinfo("Vous avez laissé un champs vide ou erreur saisie !")
+		}
+		else
+			window.alert("Entier correcte!!")
+	}
+
+	// Exécute process configuration //  
+
+	/**
+	 * @method ExecuteProcess1 : exécution d'un process sur le serveur WPS
+	 * @param id : represente un process
+	 */
+
+	$scope.ExecuteProcess1 = function (id) {
+		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title) {
+			var texRef = document.getElementById('typeGeom1').value;
+			console.log("===> type geom " + document.getElementById('typeGeom1').value);
+			console.log("===>DATA EXECUTION ");
+
+			if (texRef == 0) {
+				{
+					var nominput = document.getElementById('contenu').innerHTML;
+					var valeurtext = document.getElementById('myInputs1').value;
+					console.log('txt>>>', valeurtext);
+					console.log('txt input>>>', nominput);
+
+					// exéctution de requete avec une seule entrée
+					$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + nominput + "=" + valeurtext).then(function (response) {
+						console.log("===>CC", response);
+						if (response)
+							window.alert("Requête exécuté !")
+						$scope.result3 = response.data;
+						console.log("===>DATA ", response.data);
+					});
+				}
+			}
+
+			else if (texRef == 1) {
+				var nominput = document.getElementById('contenu').innerHTML;
+				var valeurtext = document.getElementById('myInputs1').value;
+
+				$http({
+					method: 'GET', url: "http://portail.indigeo.fr/geoserver/LETG-BREST/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LETG-BREST%3AREF_VOUG&maxFeatures=50&outputFormat=application%2Fjson"
+
+				}).then(function (response) {
+					console.log("===>CC ref", response);
+					$scope.result = response.data;
+					console.log("===>DATA ref ", response.data);
+					var x = response.data.features[0].geometry.coordinates[0][0];
+					var y = response.data.features[0].geometry.coordinates[0][1];
+					console.log("===>DATA x ", x);
+
+					$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + 'JTS:getX' + '&DataInputs=geom=point(' + x + ' ' + y + ')'
+					).then(function (response) {
+						console.log("===>CC", response);
+						$scope.result3 = response.data;
+						console.log("===>DATA ", response.data);
+					});
+				});
+			}
+		}
+		else {
+			var requestinput = ""
+			console.log("mmm" + $scope.inputs)
+			for (i = 0; i < pp.length; i++) {
+				var nominput = document.getElementById('contenu' + i).innerHTML;
+				var valeurtext = document.getElementById('myInputs1' + i).value;
+				console.log('txt input>>>', nominput);
+				console.log('txt input>>>', valeurtext);
+				requestinput += nominput + "=" + valeurtext + ";"
+				requestinput.trim()
+				console.log(requestinput)
+			}
+
+			// execution requête avec plusieurs entrées
+			$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + requestinput).then(function (response) {
+				console.log("===>CC", response);
+				$scope.result3 = response.data;
+				console.log("===>DATA ", response.data);
+			});
+
+		}
+	};
 });
+
+
 
 
