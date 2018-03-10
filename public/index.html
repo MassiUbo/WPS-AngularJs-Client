@@ -47,6 +47,7 @@
 				<input type="text" id="serveur" placeholder="Entrez le lien du serveur" ng-model="monServeur.label" />
 				<button class="btn btn-success btn-sm" ng-click="verification()">Vérifier</button>
 				<button class="btn btn-primary btn-sm" id="ajout" disabled="true" ng-click="ajout()">Ajouter</button>
+
 			</form>
 		</center>
 
@@ -251,6 +252,7 @@
 									<div ng-if="descriptionProcess">
 
 										<p>
+											<br>
 											<b>Liste des entrées </b>
 											<div>
 												<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input['0']">
@@ -286,9 +288,9 @@
 
 
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
-																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
+																<input id="oui1" type="radio" name="inscription1" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
-																<input id="non" type="radio" name="inscription" value="non" ng-click="desactiver($index)" />
+																<input id="non1" type="radio" name="inscription1" value="non" ng-click="desactiver($index)" />
 																<b>static</b>
 
 																<br>
@@ -303,9 +305,9 @@
 
 
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
-																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
+																<input id="oui2" type="radio" name="inscription2" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
-																<input id="non" type="radio" name="inscription" value="non" ng-click="desactiver($index)" />
+																<input id="non2" type="radio" name="inscription2" value="non" ng-click="desactiver($index)" />
 																<b>static</b>
 
 																<br>
@@ -316,9 +318,9 @@
 																<div id="{{'contenu'+ $index }}">{{obj.Identifier.__text}}</div>
 																<div id="{{'type'+ $index }}">(ComplexeData)</div>
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
-																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
+																<input id="oui3" type="radio" name="inscription3" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
-																<input id="non" type="radio" name="inscription" value="non" ng-click="desactiver($index)" />
+																<input id="non3" type="radio" name="inscription3" value="non" ng-click="desactiver($index)" />
 																<b>static</b>
 																<br>
 															</div>
@@ -349,9 +351,9 @@
 													</div>
 
 
-													<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer2()" />
+													<input id="oui4" type="radio" name="inscription4" value="oui" checked="checked" ng-click="activer2()" />
 													<b>modif</b>
-													<input id="non" type="radio" name="inscription" value="non" ng-click="desactiver2()" />
+													<input id="non4" type="radio" name="inscription4" value="non" ng-click="desactiver2()" />
 													<b>static</b>
 													<br>
 
