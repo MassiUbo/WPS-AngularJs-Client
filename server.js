@@ -55,7 +55,7 @@ app.post('/configuration/:id', function (req, res) {
     var process = req.params.id
     //var input = req.params.valtext
     //var nomparam = req.params.nominput
-    db2.configuration.insert({ process, config: req.body.bool, inputs: req.body.requestinput }, function (err, doc) {
+    db2.configuration.insert({ process, config: req.body.bool, nameinputs: req.body.nominputs, typeinputs: req.body.typeentre, inputs: req.body.requestinput }, function (err, doc) {
         //console.log("coucou!!!!!!!!!"+input);
         res.json(doc);
     })
@@ -67,7 +67,7 @@ app.post('/configuration/:id', function (req, res) {
 app.post('/configuration2/:id', function (req, res) {
     var process = req.params.id
     console.log("massi!!", req.body)
-    db2.configuration.insert({ process, config: req.body.bool, inputs: req.body.requestinput }, function (err, doc) {
+    db2.configuration.insert({ process, config: req.body.bool, nameinputs: req.body.nominputs, typeinputs: req.body.typeentre, step: req.body.step, inputs: req.body.requestinput }, function (err, doc) {
         // console.log("coucou!!!!!!!!!"+inputs);
         res.json(doc);
     })

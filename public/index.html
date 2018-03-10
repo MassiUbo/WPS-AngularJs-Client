@@ -173,8 +173,7 @@
 				</select>
 				<br>
 				<br>
-				<input value="Récuperer Process" class="btn btn-primary btn-sm" type='button' ng-click='config()' />
-				<input value="Afficher Process" class="btn btn-primary btn-sm" type='button' ng-click='getData()' />
+				<input value="Récuperer Process" class="btn btn-primary btn-sm" type='button' ng-click='recup22()' />
 				<br>
 			</center>
 		</td>
@@ -198,7 +197,7 @@
 										<br>
 										<input value="Détails process" type='button' class="btn btn-primary btn-sm" ng-click="recup21(process['0'])" />
 
-										<input value="Ajout process BDD" type='button' class="btn btn-primary btn-sm" ng-click="ajoutprobdd(selected._id,process['0'])"
+										<input value="Ajout process BDD" type='button' class="btn btn-success btn-sm" ng-click="ajoutprobdd(selected._id,process['0'])"
 										/>
 
 										<br>
@@ -266,18 +265,17 @@
 															<div ng-if="obj.LiteralData.DataType.__text=='xs:int'">
 																<div>{{obj.Abstract.__text}}</div>
 																<div id="{{'contenu'+ $index }}">{{obj.Identifier.__text}}</div>
-																<div>
+																<div id = "{{'type'+ $index }}" >(integer)</div>
 
-																	<b> (integer) </b>
-																</div>
+																
 
-																<input type="number" name='inputint' id="{{'myInputs'+$index}}" size="2" step="2" ng-value="step" />
+																<input type="text" name='inputint' id="{{'myInputs'+$index}}" size="8"  ng-value="step" />
 																<b>min:</b>
-																<input type='text' name='minint' id="{{'minint'+$index}}" size="2" disabled="true" ng-value="min" />
+																<input type='text' name='minint' id="{{'minint'+$index}}" size="1" disabled="true" ng-value="min" />
 																<b>max:</b>
-																<input type='text' name='maxint' id="{{'maxint'+$index}}" size="2" disabled="true" ng-value="max" />
+																<input type='text' name='maxint' id="{{'maxint'+$index}}" size="1" disabled="true" ng-value="max" />
 																<b>step:</b>
-																<input type="text" name="force" id="{{'step2'+$index}}" step="2" size="2" max="100" min="0" ng-model="step2" />
+																<input type="text" name="force" id="{{'step2'+$index}}" step="2" size="1" max="100" min="0" ng-model="step2" />
 																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
 																<input id="non" type="radio" name="inscription" value="non" ng-click="desactiver($index)" />
@@ -285,7 +283,7 @@
 																<br>
 																<br>
 
-																<input type="button" class="btn btn-primary btn-sm" id="changstep" value="ok" ng-click="changestep($index)" />
+															<!--	<input type="button" class="btn btn-primary btn-sm" id="changstep" value="ok" ng-click="changestep($index)" />-->
 																<input type="button" id="default" class="btn btn-primary btn-sm" value="default" ng-click="getData2()" />
 																<input type="button" class="btn btn-success btn-sm" id="verif" value="verifierEntier" ng-click="verifEntier($index)" />
 
@@ -295,9 +293,8 @@
 																<div>{{obj.Abstract.__text}}</div>
 																<div id="{{'contenu'+ $index }}"> {{obj.Identifier.__text}}</div>
 
-																<div>
-																	<b> (double) </b>
-																</div>
+																<div id = "{{'type'+ $index }}">(double)</div>
+																
 
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
 																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
@@ -312,9 +309,9 @@
 																<div>{{obj.Abstract.__text}}</div>
 																<div id="{{'contenu'+ $index }}"> {{obj.Identifier.__text}}</div>
 
-																<div>
-																	<b> (boolean) </b>
-																</div>
+																<div id = "{{'type'+ $index }}">(boolean)</div>
+															
+																
 
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
 																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
@@ -328,9 +325,7 @@
 															<div ng-if="obj.ComplexData">
 																<div>{{obj.Abstract.__text}}</div>
 																<div id="{{'contenu'+ $index }}">{{obj.Identifier.__text}}</div>
-																<div>
-																	<b> (ComplexeData)</b>
-																</div>
+																<div id = "{{'type'+ $index }}">(ComplexeData)</div>
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
 																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
@@ -346,8 +341,10 @@
 
 												<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title">
 													<div id="contenu">{{descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title.__text}}</div>
+													
+													<div id="type">(ComplexeData)</div>
 													<div>
-														<b> (ComplexeData)</b>
+														
 														<br>
 														<select id="typeGeom" ng-options="o for o in options" ng-model="typeGeom">
 
@@ -429,7 +426,6 @@
 
 
 	<div ng-show="visible6">
-
 		<td>
 			<center>
 				<b>Choisisez un serveur:</b>
@@ -446,135 +442,26 @@
 					<div class="panel panel-info spacer">
 						<div class="panel-heading">
 							<center>
-								<h3>Exécution requêtes :</h3>
+								<h3>Liste de configurations</h3>
 								<div class="wps-container">
 
-									<select id="processus" ng-options="pr as pr.process for pr in date2" ng-model="process1">
-										<option value="">Liste de configurations : </option>
+									<select id="processus" ng-options="pr as pr.process for pr in date2" ng-model="process1" ng-click='recup3(process1)'>
+										<option value="">Choisir une configuration</option>
 									</select>
 
 									<br>
-									<b>{{process.name}}</b>
 									<br>
-									<input value="Récupérer entrées" type='button' class="btn btn-primary btn-sm" ng-click='recup21(process1.process)' />
-									<input value="Récuperer configuration" type='button' class="btn btn-primary btn-sm" ng-click='recup2(process1)' />
-									<!--<span id='toto'></span>-->
-									<br>
-									<div ng-if="descriptionProcess">
-
-										<br>
-										<p>
-
-											<b>Liste des entrées :</b>
-											<div>
-
-												<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input['0']">
-													<span ng-if="inputs">
-														<div ng-repeat="obj in inputs ">
-															<div ng-if="obj.LiteralData.DataType.__text=='xs:int'">
-																<div>{{obj.Abstract.__text}}</div>
-																<div id="{{'contenu'+ $index }}">{{obj.Identifier.__text}}</div>
-																<div>
-
-																	<b> (integer) </b>
-																</div>
-
-																<input type="number" name='inputint' id="{{'myInputs1'+$index}}" size="2" step="2" ng-value="step" />
-																<b>step:</b>
-																<input type="range" name="force" id="{{'step21'+$index}}" step="2" size="2" ng-model="step2" />
-																<!--<b>Modifier ? </b>
-																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer1()" />Oui
-																<input id="non" type="radio" name="inscription" value="non"  ng-click="desactiver1()" />Non-->
-																<input type="button" class="btn btn-primary btn-sm" id="{{'changstep1'+$index}}" value="ok" ng-click="changestep1($index)"
-																/>
-																<!--	<input type="button" class="btn btn-success btn-sm" id="{{'verif1'+$index}}" value="verifierEntier" ng-click="verifEntier1($index)" />-->
-
-																<br>
-
-															</div>
-															<div ng-if="obj.LiteralData.DataType.__text=='xs:double'">
-																<div>{{obj.Abstract.__text}}</div>
-																<div id="{{'contenu'+ $index }}"> {{obj.Identifier.__text}}</div>
-
-																<div>
-																	<b> (double) </b>
-																</div>
-
-																<input type="text" name='myInputs' id="{{'myInputs1'+$index}}" />
-
-																<br>
-															</div>
-
-															<div ng-if="obj.LiteralData.DataType.__text=='xs:boolean'">
-																<div>{{obj.Abstract.__text}}</div>
-																<div id="{{'contenu'+ $index }}"> {{obj.Identifier.__text}}</div>
-
-																<div>
-																	<b> (boolean) </b>
-																</div>
-
-																<input type="text" name='myInputs' id="{{'myInputs1'+$index}}" />
-
-																<br>
-															</div>
-
-															<div ng-if="obj.ComplexData">
-																<div>{{obj.Abstract.__text}}</div>
-																<div id="{{'contenu'+ $index }}">{{obj.Identifier.__text}}</div>
-																<div>
-																	<b> (ComplexeData)</b>
-																</div>
-																<input type="text" name='myInputs' id="{{'myInputs1'+$index}}" />
-																<br>
-															</div>
-														</div>
-													</span>
-												</span>
-
-												<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title">
-													<div id="contenu">{{descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title.__text}}</div>
-													<div>
-														<b> (ComplexeData)</b>
-														<br>
-														<select id="typeGeom1" ng-options="o for o in options" ng-model="typeGeom1">
-
-														</select>
-													</div>
-													<div ng-if="typeGeom1=='text'">
-														text :
-														<input type="text" name='myInputs' id='myInputs1' />
-													</div>
-													<div ng-if="typeGeom1=='reference'">
-														url :
-														<input type="text" name='myInputs' id='myInputs1' />
-													</div>
-
-												</span>
-											</div>
-											<div>
-												<div class="divName" name="divName">OUTPUTS</div>
-												<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output['0']">
-													<p ng-repeat="obj in descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output">
-														<b> {{obj.Title.__text}}</b>
-													</p>
-												</span>
-												<p ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.Title">
-													<b>{{descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.Title.__text}}</b>
-													<p ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.LiteralOutput">
-														({{descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.LiteralOutput.DataType.__text}})
-													</p>
-													<p ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.ProcessOutputs.Output.ComplexOutput">
-														(ComplexOutput)
-													</p>
-												</p>
-											</div>
-										</p>
-										<br>
-										<input type="button" class="btn btn-primary btn-sm" id="next" value="Executer" ng-click="ExecuteProcess1(process.name);"
-										/>
+									<div ng-if="result5">
+										<p> <b>Information configuration :</b> </p>
+									</div>
+                                    
+									<span id='toto'>
+											
+									</span>
+                                    <br>
+									<div ng-if="result5">
+										<input type="button" class="btn btn-primary btn-sm" id="next" value="Executer" ng-click="ExecuteProcess1(process1);" />
 										<input type="button" class="btn btn-primary btn-sm" id="next" value="Afficher Résultat" ng-click="getData3();" />
-
-
 									</div>
 								</div>
 							</center>

@@ -183,53 +183,55 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 		setTimeout($scope.$apply, 3000);
 	}
 
+	$scope.recup22 = function () {
+		$scope.config()
+		setTimeout($scope.getData, 3000);
+		setTimeout($scope.$apply, 3000);
+	}
+
 
 	// ** 
 
-	/*$scope.recup3 = function (){
+	$scope.recup3 = function (id){
+
+		$scope.result4 = null;
+		$scope.result5 = id
+		var boite = document.getElementById('toto') 
+		while( boite.firstChild) {
+		// suppression des child à chaque fois 
+			boite.removeChild( boite.firstChild);
+		}
+		if (id!=null){
+        console.log("llkkk",id)
+		console.log("process", id.inputs)
+		console.log("process", id.inputs.length)
+        
+		for (i=0; i< id.inputs.length; i++){
+		
+		if (id.typeinputs[i]=="(integer)")
+		{
+			document.getElementById('toto').innerHTML += 
+			'<div id="contenu'+i+'">'+id.nameinputs[i]+'</div>'
+			document.getElementById('toto').innerHTML += 
+			'<div id="type'+i+'">'+id.typeinputs[i]+'</div>'
+			document.getElementById('toto').innerHTML += 
+			'<div><input type="range" id="myInputs1'+i+'"value="'+id.inputs[i]+' "max="100" min="0" step="'+id.step+'"/></div>'
+			document.getElementById('myInputs1' + i).disabled = id.config[i]	
+		} 
+		
+		else {	
 		document.getElementById('toto').innerHTML += 
-		'<div id="masso"><input type="button" id="massi" value="massi" /></div>';
-	}  */
-
-	/**
-	 * @method recup2 : récuperation de liste de configuration
-	 * @augments : id : le nom d'un process, ii : Entrées
-	 */
-
-	// recuperation cas configuration 
-	$scope.recup2 = function (id) {
-		//$scope.getData2()
-		console.log("process", id.process)
-		var donnee = id.inputs
-		console.log("données", donnee[0])
-		var bool = id.config
-		console.log("bool", bool)
-		console.log("pp", pp)
-		// si process contient plusieurs paramètres
-		if (pp.length > 0) {
-			for (i = 0; i < pp.length; i++) {
-				if (pp[i].LiteralData) {
-					console.log("mmmm", bool)
-					document.getElementById('myInputs1' + i).disabled = bool[i]
-					document.getElementById('step21' + i).disabled = bool[i]
-					document.getElementById('changstep1' + i).disabled = bool[i]
-					//	document.getElementById('verif1'+i).disabled= bool[i]
-					document.getElementById('myInputs1' + i).value = donnee[i]
-				}
-				else {
-					document.getElementById('myInputs1' + i).value = donnee[i]
-					document.getElementById('myInputs1' + i).disabled = bool[i]
-					displayinfo(" configuration récupéré !")
-				}
-			}
-		}
-		// si non le process contient une seule entrée
-		else {
-			document.getElementById('myInputs1').value = donnee[0]
-			document.getElementById('myInputs1').disabled = bool
-			displayinfo(" configuration récupéré !")
-		}
+		'<div id="contenu'+i+'">'+id.nameinputs[i]+'</div>'
+		document.getElementById('toto').innerHTML += 
+		'<div id="type'+i+'">'+id.typeinputs[i]+'</div>'
+		document.getElementById('toto').innerHTML += 
+		'<div><input type="text" id="myInputs1'+i+'"value="'+id.inputs[i]+'"/></div>'
+		document.getElementById('myInputs1' + i).disabled = id.config[i]
 	}
+	}
+	}
+	else console.log("process null")
+ 	} 
 
 	// On appel refresh ici pour rafrichir recuperation liste serveurs 
 	refresh();
@@ -656,19 +658,30 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 	$scope.sauvgardeconf = function (id) {
 		console.log("===>DATA ");
-		var bool
+		
 		// cas une seule entrée
 		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title) {
+			var bool = new  Array();
+			var b
 			var requestinput = new Array();
+			var nominputs = new Array();
+			var typeentre = new Array();
+ 
+			var valeurtype= document.getElementById('type').innerHTML;
+			console.log('txt>>>', valeurtype);
+
 			var valeurtext = document.getElementById('myInputs').value;
 			console.log('txt>>>', valeurtext);
 			var nominput = document.getElementById('contenu').innerHTML;
+			nominputs.push(nominput)
 			console.log('txt input>>>', nominput);
 			requestinput.push(valeurtext);
-			bool = document.getElementById('myInputs').disabled
+			b = document.getElementById('myInputs').disabled
+			bool.push(b)
+			typeentre.push(valeurtype)
 			// à utiliser
 			//  listeInputs +=  idInputs[selectedIndex][i]  +"=" + inputValue[selectedIndex][i] +";" ;
-			$http.post('/configuration/' + id, { bool, requestinput }).then(function (response) {
+			$http.post('/configuration/' + id, { bool, nominputs, typeentre, requestinput }).then(function (response) {
 				//window.alert("Ajout bdd configuration!!");
 				displayinfo("Ajout à la base de données réussi !")
 				//$scope.monServeur = "";
@@ -678,22 +691,35 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 
 		// Cas plusieures entrées
 		else {
+			var typeentre = new Array();
 			var requestinput = new Array()
-			var nominput
+			var nominputs= new Array()
 			var valeurtext
 			var b
+			var nominput 
+			var valeurtype
+			var step=null
 			var bool = new Array()
 			for (i = 0; i < pp.length; i++) {
 				nominput = document.getElementById('contenu' + i).innerHTML;
 				valeurtext = document.getElementById('myInputs' + i).value;
+
+				valeurtype= document.getElementById('type'+i).innerHTML;
+				console.log('txt>>>', valeurtype);
+
+                if (document.getElementById('type'+i).innerHTML == "(integer)")
+	            step = document.getElementById('step2'+i).value;
+				
 				requestinput.push(valeurtext)  // changement ici
 				b = document.getElementById('myInputs' + i).disabled
 				bool.push(b)
+				nominputs.push(nominput);
+				typeentre.push(valeurtype)
 				console.log("mmmm", bool)
 				console.log("reqqq", requestinput)
 			}
 			console.log("conf" + requestinput)
-			$http.post('/configuration2/' + id, { bool, requestinput }).then(function (response) {
+			$http.post('/configuration2/' + id, { bool, nominputs, typeentre, step, requestinput }).then(function (response) {
 				displayinfo("Ajout à la base de données réussi !")
 				//window.alert("Ajout bdd configuration!!");
 				//$scope.monServeur = "";
@@ -827,57 +853,11 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 	 */
 
 	$scope.ExecuteProcess1 = function (id) {
-		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title) {
-			var texRef = document.getElementById('typeGeom1').value;
-			console.log("===> type geom " + document.getElementById('typeGeom1').value);
-			console.log("===>DATA EXECUTION ");
-
-			if (texRef == 0) {
-				{
-					var nominput = document.getElementById('contenu').innerHTML;
-					var valeurtext = document.getElementById('myInputs1').value;
-					console.log('txt>>>', valeurtext);
-					console.log('txt input>>>', nominput);
-
-					// exéctution de requete avec une seule entrée
-					$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + nominput + "=" + valeurtext).then(function (response) {
-						console.log("===>CC", response);
-						if (response)
-							window.alert("Requête exécuté !")
-						$scope.result3 = response.data;
-						console.log("===>DATA ", response.data);
-					});
-				}
-			}
-
-			else if (texRef == 1) {
-				var nominput = document.getElementById('contenu').innerHTML;
-				var valeurtext = document.getElementById('myInputs1').value;
-
-				$http({
-					method: 'GET', url: "http://portail.indigeo.fr/geoserver/LETG-BREST/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LETG-BREST%3AREF_VOUG&maxFeatures=50&outputFormat=application%2Fjson"
-
-				}).then(function (response) {
-					console.log("===>CC ref", response);
-					$scope.result = response.data;
-					console.log("===>DATA ref ", response.data);
-					var x = response.data.features[0].geometry.coordinates[0][0];
-					var y = response.data.features[0].geometry.coordinates[0][1];
-					console.log("===>DATA x ", x);
-
-					$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + 'JTS:getX' + '&DataInputs=geom=point(' + x + ' ' + y + ')'
-					).then(function (response) {
-						console.log("===>CC", response);
-						$scope.result3 = response.data;
-						console.log("===>DATA ", response.data);
-					});
-				});
-			}
-		}
-		else {
+		
+		 
 			var requestinput = ""
 			console.log("mmm" + $scope.inputs)
-			for (i = 0; i < pp.length; i++) {
+			for (i = 0; i < id.inputs.length; i++) {
 				var nominput = document.getElementById('contenu' + i).innerHTML;
 				var valeurtext = document.getElementById('myInputs1' + i).value;
 				console.log('txt input>>>', nominput);
@@ -888,13 +868,15 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 			}
 
 			// execution requête avec plusieurs entrées
-			$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id + '&DataInputs=' + requestinput).then(function (response) {
+			$http.get($scope.selected.label + '?service=WPS&version=1.0.0&request=Execute&Identifier=' + id.process + '&DataInputs=' + requestinput).then(function (response) {
 				console.log("===>CC", response);
 				$scope.result3 = response.data;
+				if (response)
+				window.alert("Requête exécuté !")
 				console.log("===>DATA ", response.data);
 			});
 
-		}
+		
 	};
 });
 
