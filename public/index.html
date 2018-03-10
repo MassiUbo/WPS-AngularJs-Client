@@ -11,7 +11,6 @@
 </head>
 
 <body ng-app="angularApp" ng-controller="myController">
-	<!-- <div>Enter Text : <input type="text" ng-model = "textname"> {{textname}} </div> -->
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-info spacer">
 			<div class="panel-heading">
@@ -31,7 +30,8 @@
 					<button class="btn btn-primary" ng-click="affichage3()">Gérer les serveurs</button>
 					<button class="btn btn-primary" ng-click="affichage4()">Ajouter un process</button>
 					<button class="btn btn-primary" ng-click="affichage5()">Configuration</button>
-					<button class="btn btn-primary" ng-click="affichage6()">Exécuter des requêtes</button>
+					<button class="btn btn-primary" ng-click="affichage6()">Exécution requêtes</button>
+					
 					<p>
 						<div class="blink" id="info"></div>
 					</p>
@@ -43,7 +43,7 @@
 	<div ng-show="visible">
 		<center>
 			<form>
-				<b> Ajout d'un serveur: </b>
+				<b> Ajout d'un serveur </b>
 				<input type="text" id="serveur" placeholder="Entrez le lien du serveur" ng-model="monServeur.label" />
 				<button class="btn btn-success btn-sm" ng-click="verification()">Vérifier</button>
 				<button class="btn btn-primary btn-sm" id="ajout" disabled="true" ng-click="ajout()">Ajouter</button>
@@ -55,7 +55,7 @@
 				<div class="panel panel-info spacer">
 					<div class="panel-heading">
 						<center>
-							<h3>Réponse du serveur:</h3>
+							<h3>Réponse du serveur</h3>
 						</center>
 						<center>
 							<textarea rows="15" cols="100" id="pepe">{{resultv}}</textarea>
@@ -73,7 +73,7 @@
 				<th>
 					<center>
 						<h3>
-							<b> Liste de serveurs disponibles: </b>
+							<b> Liste de serveurs disponibles </b>
 						</h3>
 					</center>
 				</th>
@@ -110,7 +110,7 @@
 				<th>
 					<center>
 						<h3>
-							<b>Suppression Serveurs | Process: </b>
+							<b>Suppression Serveurs | Process </b>
 						</h3>
 						<button class="btn btn-danger btn-sm" ng-click="removeChecked()"> Supprimer la séléction </button>
 						<button class="btn btn-danger btn-sm" ng-click="removeAll()"> Supprimer tout les serveurs </button>
@@ -141,8 +141,8 @@
 						<input type="checkbox" ng-model="checked" ng-checked="exist(item)" ng-click="toggleSelection(item)">
 						<b>Nom Serveur : </b>{{item.label}}
 						<p>
-							<b> Liste de process archivés pour ce serveur :
-								<b>
+							<b> Liste de process archivés pour ce serveur :<b>
+								
 						</p>
 
 						<div ng-if="item.process == null">
@@ -157,17 +157,14 @@
 						</div>
 					</center>
 				</td>
-
 			</tr>
-
 		</table>
-
 	</div>
 
 	<div ng-show="visible4">
 		<td>
 			<center>
-				<b>Choisisez un serveur:</b>
+				<b>Choisisez un serveur</b>
 				<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
 					<option value="">Sélectionnez un Serveur WPS</option>
 				</select>
@@ -192,8 +189,6 @@
 										</select>
 										<br>
 										<b>{{process["0"]}}</b>
-
-
 										<br>
 										<input value="Détails process" type='button' class="btn btn-primary btn-sm" ng-click="recup21(process['0'])" />
 
@@ -228,7 +223,7 @@
 
 		<td>
 			<center>
-				<b>Choisisez un serveur:</b>
+				<b>Choisisez un serveur</b>
 				<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
 					<option value="">Sélectionnez un Serveur WPS</option>
 				</select>
@@ -242,7 +237,7 @@
 					<div class="panel panel-info spacer">
 						<div class="panel-heading">
 							<center>
-								<h3>Configuration :</h3>
+								<h3>Configuration </h3>
 								<div class="wps-container">
 									<select id="processus" ng-options="pr as pr.name for pr in selected.process" ng-model="process">
 										<option value="">Liste de process </option>
@@ -256,25 +251,21 @@
 									<div ng-if="descriptionProcess">
 
 										<p>
-											<b>Liste des entrées :</b>
+											<b>Liste des entrées </b>
 											<div>
-
 												<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input['0']">
 													<span ng-if="inputs">
 														<div ng-repeat="obj in inputs ">
 															<div ng-if="obj.LiteralData.DataType.__text=='xs:int'">
 																<div>{{obj.Abstract.__text}}</div>
 																<div id="{{'contenu'+ $index }}">{{obj.Identifier.__text}}</div>
-																<div id = "{{'type'+ $index }}" >(integer)</div>
-
-																
-
-																<input type="text" name='inputint' id="{{'myInputs'+$index}}" size="8"  ng-value="step" />
-																<b>min:</b>
+																<div id="{{'type'+ $index }}">(integer)</div>
+																<input type="text" name='inputint' id="{{'myInputs'+$index}}" size="8" ng-value="step" />
+																<b>min</b>
 																<input type='text' name='minint' id="{{'minint'+$index}}" size="1" disabled="true" ng-value="min" />
-																<b>max:</b>
+																<b>max</b>
 																<input type='text' name='maxint' id="{{'maxint'+$index}}" size="1" disabled="true" ng-value="max" />
-																<b>step:</b>
+																<b>step</b>
 																<input type="text" name="force" id="{{'step2'+$index}}" step="2" size="1" max="100" min="0" ng-model="step2" />
 																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
@@ -283,18 +274,16 @@
 																<br>
 																<br>
 
-															<!--	<input type="button" class="btn btn-primary btn-sm" id="changstep" value="ok" ng-click="changestep($index)" />-->
 																<input type="button" id="default" class="btn btn-primary btn-sm" value="default" ng-click="getData2()" />
 																<input type="button" class="btn btn-success btn-sm" id="verif" value="verifierEntier" ng-click="verifEntier($index)" />
-
 
 															</div>
 															<div ng-if="obj.LiteralData.DataType.__text=='xs:double'">
 																<div>{{obj.Abstract.__text}}</div>
 																<div id="{{'contenu'+ $index }}"> {{obj.Identifier.__text}}</div>
 
-																<div id = "{{'type'+ $index }}">(double)</div>
-																
+																<div id="{{'type'+ $index }}">(double)</div>
+
 
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
 																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
@@ -309,9 +298,9 @@
 																<div>{{obj.Abstract.__text}}</div>
 																<div id="{{'contenu'+ $index }}"> {{obj.Identifier.__text}}</div>
 
-																<div id = "{{'type'+ $index }}">(boolean)</div>
-															
-																
+																<div id="{{'type'+ $index }}">(boolean)</div>
+
+
 
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
 																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
@@ -325,7 +314,7 @@
 															<div ng-if="obj.ComplexData">
 																<div>{{obj.Abstract.__text}}</div>
 																<div id="{{'contenu'+ $index }}">{{obj.Identifier.__text}}</div>
-																<div id = "{{'type'+ $index }}">(ComplexeData)</div>
+																<div id="{{'type'+ $index }}">(ComplexeData)</div>
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
 																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
@@ -341,10 +330,10 @@
 
 												<span ng-if="descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title">
 													<div id="contenu">{{descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title.__text}}</div>
-													
+
 													<div id="type">(ComplexeData)</div>
 													<div>
-														
+
 														<br>
 														<select id="typeGeom" ng-options="o for o in options" ng-model="typeGeom">
 
@@ -401,11 +390,11 @@
 						<div class="panel panel-info spacer">
 							<div class="panel-heading">
 								<center>
-									<h3>Résultat Exécution:</h3>
+									<h3>Résultat Exécution</h3>
 									<textarea rows="15" cols="100" id="pikou">{{result4}}</textarea>
 									<br>
 									<span>
-										<strong> Resultat : </strong>
+										<strong> Resultat </strong>
 										<br>
 										<div ng-if="resProcess.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData">
 											<textarea rows="1" cols="100" id="2">{{resProcess.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.__text}}</textarea>
@@ -424,11 +413,10 @@
 		</div>
 	</div>
 
-
 	<div ng-show="visible6">
 		<td>
 			<center>
-				<b>Choisisez un serveur:</b>
+				<b>Choisisez un serveur</b>
 				<select id="wps" ng-options="item as item.label for item in items" ng-model="selected">
 					<option value="">Sélectionnez un Serveur WPS</option>
 				</select>
@@ -452,13 +440,15 @@
 									<br>
 									<br>
 									<div ng-if="result5">
-										<p> <b>Information configuration :</b> </p>
+										<p>
+											<b>Informations configuration</b>
+										</p>
 									</div>
-                                    
+
 									<span id='toto'>
-											
+
 									</span>
-                                    <br>
+									<br>
 									<div ng-if="result5">
 										<input type="button" class="btn btn-primary btn-sm" id="next" value="Executer" ng-click="ExecuteProcess1(process1);" />
 										<input type="button" class="btn btn-primary btn-sm" id="next" value="Afficher Résultat" ng-click="getData3();" />
@@ -472,11 +462,11 @@
 						<div class="panel panel-info spacer">
 							<div class="panel-heading">
 								<center>
-									<h3>Résultat Exécution:</h3>
+									<h3>Résultat Exécution</h3>
 									<textarea rows="15" cols="100" id="pikou">{{result4}}</textarea>
 									<br>
 									<span>
-										<strong> Résultat : </strong>
+										<strong> Résultat </strong>
 										<br>
 										<div ng-if="resProcess.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData">
 											<textarea rows="1" cols="100" id="2">{{resProcess.ExecuteResponse.ProcessOutputs.Output.Data.LiteralData.__text}}</textarea>
@@ -492,8 +482,6 @@
 				</div>
 			</div>
 		</div>
-
-
 
 	</div>
 

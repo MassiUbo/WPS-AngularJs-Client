@@ -16,13 +16,11 @@ var bodyParser = require('body-parser');
 // Utilisation de notre base de données des serveur
 var db = mongojs('items', ['items']);
 
-// base de données configuration 
+// Base de données configuration 
+
 var db2 = mongojs('configuration', ['configuration'])
-
 var app = express();
-
 app.use(express.static(__dirname + "/public"));
-
 app.use(bodyParser.json());
 
 /**
@@ -53,11 +51,8 @@ app.get('/configuration', function (req, res) {
 
 app.post('/configuration/:id', function (req, res) {
     var process = req.params.id
-    //var input = req.params.valtext
-    //var nomparam = req.params.nominput
     db2.configuration.insert({ process, config: req.body.bool, nameinputs: req.body.nominputs, typeinputs: req.body.typeentre, inputs: req.body.requestinput }, function (err, doc) {
-        //console.log("coucou!!!!!!!!!"+input);
-        res.json(doc);
+    res.json(doc);
     })
 });
 
@@ -66,9 +61,7 @@ app.post('/configuration/:id', function (req, res) {
  */
 app.post('/configuration2/:id', function (req, res) {
     var process = req.params.id
-    console.log("massi!!", req.body)
     db2.configuration.insert({ process, config: req.body.bool, nameinputs: req.body.nominputs, typeinputs: req.body.typeentre, step: req.body.step, inputs: req.body.requestinput }, function (err, doc) {
-        // console.log("coucou!!!!!!!!!"+inputs);
         res.json(doc);
     })
 });
@@ -78,7 +71,7 @@ app.post('/configuration2/:id', function (req, res) {
  */
 app.post('/items', function (req, res) {
     var str = req.body
-    console.log("coucou!!!!!!!!!" + str);
+    console.log("coucou !!!!!!!!!" + str);
     db.items.insert(req.body, function (err, doc) {
         res.json(doc);
     })
@@ -89,7 +82,7 @@ app.post('/items', function (req, res) {
  */
 app.put('/items/:id', function (req, res) {
     var id = req.params.id
-    console.log("ppp" + req.body.id);
+    console.log("salut" + req.body.id);
     db.items.findAndModify({
         query: { _id: mongojs.ObjectId(id) },
         update: { $push: { process: { name: req.body.process } } },
@@ -101,7 +94,7 @@ app.put('/items/:id', function (req, res) {
 });
 
 /**
- * suppression serveur 
+ * Suppression serveur 
  */
 app.delete('/items/:id', function (req, res) {
     var id = req.params.id;
