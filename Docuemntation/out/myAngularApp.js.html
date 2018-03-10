@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: myAngularApp.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: myAngularApp.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿/**
+ * @author Massinissa HADJ-SAID
+ * @author Zakaria Madhouni
+ *
+ */
+
+var myApp = angular.module("angularApp", [])      // déclaration du module
+
+/**
+ * Controleur : Gère l'intégralité de notre vue
+ * @argument $scope : Intéraction entre Vue et controlleur
+ * @argument $http : Module http pour éxécution de requête
+ */
+
+myApp.controller("myController", function ($scope, $http) {   // controller 
+
+	/**
+	 *  Fonctions qui gère l'affichage de notre vue 
+	 */
+
+	// Affichage 1 : Ajouter serveur 	
+	$scope.visible = false;
+	$scope.affichage1 = function () {
+		if ($scope.visible == false) {
+			$scope.visible = true;
+			$scope.visible2 = false;
+			$scope.visible3 = false;
+			$scope.visible4 = false;
+			$scope.visible5 = false;
+			$scope.visible6 = false;
+			$scope.selected = null;
+			$scope.resultverif = null;
+		}
+		else {
+			$scope.visible = false;
+		}
+	}
+
+	// Affichage 2 : Liste de serveurs
+	$scope.visible2 = false;
+	$scope.affichage2 = function () {
+		if ($scope.visible2 == false) {
+			$scope.visible2 = true;
+			$scope.visible = false;
+			$scope.visible3 = false;
+			$scope.visible4 = false;
+			$scope.visible5 = false;
+			$scope.visible6 = false;
+			$scope.selected = null;
+		}
+		else {
+			$scope.visible2 = false;
+		}
+	}
+
+	// affichage3 : Gestion des serveurs
+	$scope.visible3 = false;
+	$scope.affichage3 = function () {
+		if ($scope.visible3 == false) {
+			$scope.visible3 = true;
+			$scope.visible = false;
+			$scope.visible2 = false;
+			$scope.visible4 = false;
+			$scope.visible5 = false;
+			$scope.visible6 = false;
+			$scope.selected = null;
+		}
+		else {
+			$scope.visible3 = false;
+		}
+	}
+
+	// Affichage4 : Ajouter un process  
+	$scope.visible4 = false;
+	$scope.affichage4 = function () {
+		if ($scope.visible4 == false) {
+			$scope.visible4 = true;
+			$scope.selected = null;
+			$scope.visible = false;
+			$scope.visible2 = false;
+			$scope.visible3 = false;
+			$scope.visible5 = false;
+			$scope.visible6 = false;
+			$scope.descriptionProcess = null;
+			$scope.processes = null;
+		}
+		else {
+			$scope.visible4 = false;
+		}
+	}
+
+	// Affichage5 : Exécution des requêtes
+	$scope.visible5 = false;
+	$scope.affichage5 = function () {
+		if ($scope.visible5 == false) {
+			pp = null;
+			$scope.inputs = null
+			$scope.visible5 = true;
+			$scope.selected = null;
+			$scope.visible = false;
+			$scope.visible2 = false;
+			$scope.visible3 = false;
+			$scope.visible4 = false;
+			$scope.visible6 = false;
+			$scope.descriptionProcess = null;
+			$scope.result4 = null;
+
+		}
+		else {
+			$scope.visible5 = false;
+		}
+	}
+
+	// Exécution de reuquêtes
+	$scope.visible6 = false;
+	$scope.affichage6 = function () {
+		if ($scope.visible6 == false) {
+			$scope.inputs = null
+			pp = null;
+			$scope.visible6 = true;
+			$scope.selected = null;
+			$scope.visible = false;
+			$scope.visible2 = false;
+			$scope.visible3 = false;
+			$scope.visible4 = false;
+			$scope.visible5 = false;
+			$scope.descriptionProcess = null;
+			$scope.result4 = null;
+		}
+		else {
+			$scope.visible6 = false;
+		}
+	}
+
+	/**
+	 * @method refresh : Raffrichissement après récupération données 
+	 * de base de données items.
+	 */
+
+	var refresh = function () {
+		$http.get('/items').then(function (response) {
+			console.log("j'ai recu la liste des serveurs")
+			$scope.items = response.data;
+			var date = response.data
+			for (i = 0; i &lt; date.length; i++)
+				var k = date[i].process
+			console.log(k)
+			$scope.listepro = k
+			// variable 'good' pour verification du serveur 
+			$scope.good = false;
+		});
+	};
+
+	/**
+	 *@method refresh2 : Raffrichissement après récupération données 
+	 * de base de données configuration.
+	 */
+
+	var refresh2 = function () {
+		$http.get('/configuration').then(function (response) {
+			console.log("j'ai recu la liste des entrées")
+			$scope.configuration = response.data;
+			var date = response.data
+			$scope.date2 = response.data  // Pour utiliser dans liste configuration
+			for (i = 0; i &lt; date.length; i++)
+				$scope.entre = date[i]
+		});
+	};
+
+	refresh2();
+
+	/**
+	 * @method recup21: Temporisation entre récuperation de données depuis le serveur
+	 * et leur conversion au format JSON.
+	 * 
+	 */
+
+	$scope.recup21 = function (process) {
+		$scope.getDescriptionProcess(process)
+		setTimeout($scope.getData2, 3000);
+		setTimeout($scope.$apply, 3000);
+	}
+
+	/**
+	 * @method recup22: Temporisation entre récuperation de données depuis le serveur
+	 * et leur conversion au format JSON.
+	 * 
+	 */
+	$scope.recup22 = function () {
+		$scope.config()
+		setTimeout($scope.getData, 3000);
+		setTimeout($scope.$apply, 3000);
+	}
+
+	/**
+	 * @method recup3: récupération de la liste de configuration depuis la base de données
+	 * @param id : process séléctionné
+	 */
+
+	$scope.recup3 = function (id) {
+		$scope.result4 = null;
+		$scope.result5 = id
+		var boite = document.getElementById('toto')
+
+		while (boite.firstChild) {
+			// Suppression des child à chaque fois 
+			boite.removeChild(boite.firstChild);
+		}
+
+		if (id != null) {
+			console.log("llkkk", id)
+			console.log("process", id.inputs)
+			console.log("process", id.inputs.length)
+
+			for (i = 0; i &lt; id.inputs.length; i++) {
+
+				if (id.typeinputs[i] == "(integer)") {
+					document.getElementById('toto').innerHTML +=
+						'&lt;div id="contenu' + i + '">' + id.nameinputs[i] + '&lt;/div>'
+					document.getElementById('toto').innerHTML +=
+						'&lt;div id="type' + i + '">' + id.typeinputs[i] + '&lt;/div>'
+					document.getElementById('toto').innerHTML +=
+						'&lt;div>&lt;input type="range" id="myInputs1' + i + '"value="' + id.inputs[i] + ' "max="100" min="0" step="' + id.step + '"/>&lt;/div>'
+					document.getElementById('myInputs1' + i).disabled = id.config[i]
+				}
+
+				else {
+					document.getElementById('toto').innerHTML +=
+						'&lt;div id="contenu' + i + '">' + id.nameinputs[i] + '&lt;/div>'
+					document.getElementById('toto').innerHTML +=
+						'&lt;div id="type' + i + '">' + id.typeinputs[i] + '&lt;/div>'
+					document.getElementById('toto').innerHTML +=
+						'&lt;div>&lt;input type="text" id="myInputs1' + i + '"value="' + id.inputs[i] + '"/>&lt;/div>'
+					document.getElementById('myInputs1' + i).disabled = id.config[i]
+				}
+			}
+		}
+
+		else console.log("process séléctionné null")
+	}
+
+	// On appel refresh ici pour rafrichir recuperation liste serveurs 
+	refresh();
+
+	/**
+	 * @method remove : suppression d'un serveur 
+	 * @argument id : id d'un serveur dans la vase de données 
+	 */
+
+	$scope.remove = function (id) {
+		console.log(id);
+		$http.delete('/items/' + id).success(function (response) {
+			window.alert('serveur supprimé avec succès !')
+			refresh();
+		});
+	};
+
+
+	/**
+	 * @method remove2 : suppression de process 
+	 * @argument item : represente le serveur relié aux process 
+	 */
+	$scope.remove2 = function (item) {
+		console.log(item._id);
+		angular.forEach($scope.checked2, function (val) {
+			$http.post('/items2/' + item._id + '/' + val.name).success(function (response) {
+				//window.alert('process supprimé avec succès !')
+				console.log("====> zakaria", item._id)
+				refresh();
+				$scope.checked2 = [];
+			});
+		})
+	};
+
+	/**
+	 * @method removeCheked: Suppresion serveur avec cases à cocher
+	 */
+
+	$scope.removeChecked = function () {
+		angular.forEach($scope.checked, function (val) {
+			$http.delete('/items/' + val._id).success(function (response) {
+				//	window.alert('serveur supprimé avec succès !')
+				refresh();
+				$scope.checked = [];
+			});
+		})
+	}
+
+	/**
+	 * @method removeAll : Suppresion de tous les serveurs
+	 */
+
+	$scope.removeAll = function () {
+		angular.forEach($scope.items, function (val) {
+			$http.delete('/items/' + val._id).success(function (response) {
+				//	window.alert('serveur supprimé avec succès !')
+				refresh();
+				$scope.checked = [];
+			});
+		})
+	}
+
+	// Affichage Welcome au lancement de l'application
+	document.getElementById('info').innerHTML = "&lt;h1>Welcome !&lt;/h1>";
+	temp = document.getElementById('info')
+	setTimeout('temp.style.display="none"', 3000);
+
+	// Déclaration des variables
+	$scope.selectedconf = null
+	$scope.selected = null;
+	$scope.select = null;
+	$scope.result = null;
+	$scope.good = null;
+	$scope.wps = null;
+	$scope.processes = null;
+	$scope.process = null;
+	$scope.selectedprocess = null;
+	$scope.result2 = null;
+	$scope.descriptionProcess = null;
+	$scope.inputs = false;
+	$scope.resultverif = null
+	$scope.checked = null;
+	$scope.checked2 = null;
+	$scope.selectAll = null;
+
+	// Variable verfication entier 
+	$scope.min = 0;
+	$scope.max = 100;
+	$scope.step = 50;
+	$scope.step2 = 2;
+
+	// Tableau entrees
+	var pp = null
+
+	// variables cheked
+	$scope.checked = [];
+	$scope.checked2 = [];
+
+	// variables references
+	$scope.typeGeom = 'text';
+	$scope.typeGeom1 = 'text';
+	$scope.options = ['text', 'reference'];
+
+	/**
+	 * Fonction exist1/2: relié aux cases à cocher
+	 */
+
+	$scope.exist = function (item) {
+		return $scope.checked.indexOf(item) > -1;
+	}
+
+	$scope.exist2 = function (item) {
+		return $scope.checked2.indexOf(item) > -1;
+	}
+
+	// Selectionner toute la liste de serveurs
+	$scope.checkAll = function () {
+		if ($scope.selectAll) {
+			angular.forEach($scope.items, function (item) {
+				var idx = $scope.checked.indexOf(item);
+				if (idx >= 0) {
+					return true;
+				}
+				else {
+					$scope.checked.push(item);
+				}
+			})
+		}
+
+		else {
+			$scope.checked = [];
+		}
+	}
+
+	/**
+	 * @method toggleSelection : relié à la méthode suppresionn avec 
+	 * cases à cocher (serveur)
+	 */
+
+	$scope.toggleSelection = function (item) {
+		var idx = $scope.checked.indexOf(item);
+		if (idx > -1) {
+			$scope.checked.splice(idx, 1);
+		}
+		else {
+			$scope.checked.push(item);
+		}
+	}
+
+	// toggle de processs
+	$scope.toggleSelection2 = function (item) {
+		var idx = $scope.checked2.indexOf(item);
+		if (idx > -1) {
+			$scope.checked2.splice(idx, 1);
+			console.log("====> checked2", $scope.checked2)
+		}
+		else {
+			$scope.checked2.push(item);
+			console.log("====> checked2", $scope.checked2)
+		}
+	}
+
+	$scope.check = function (event) {
+		if (this.checked == true)
+			alert(event.target.checked);
+	};
+
+	/**
+	 * @method displayinfo : afficher informations (erreurs / success)
+	 */
+	displayinfo = function (a) {
+		document.getElementById('info').innerHTML = "&lt;h2>" + a + "&lt;/h2>";
+		temp = document.getElementById('info')
+		temp.style.display = "block";
+		setTimeout('temp.style.display="none"', 3000);
+	}
+
+	/**
+	 * @method verification : verification de la validité d'un serveur
+	 */
+
+	$scope.verification = function () {
+		if ($scope.monServeur == null || document.getElementById('serveur').value == null
+			&amp;&amp; document.getElementById('serveur').value == ""
+			&amp;&amp; document.getElementById('serveur').value == undefined) {
+			displayinfo("champ vide" + "\n" + "veuillez entrer une URL ")
+		}
+
+		if ($scope.monServeur != null &amp;&amp; document.getElementById('serveur').value != null
+			&amp;&amp; document.getElementById('serveur').value != ""
+			&amp;&amp; document.getElementById('serveur').value != undefined) {
+
+			$http.get($scope.monServeur.label + '?service=WPS&amp;version=1.0.0&amp;request=GetCapabilities').success(function (response) {
+				displayinfo("serveur valide !")
+				document.getElementById("ajout").disabled = false
+				//window.alert('serveur correcte !');
+				$scope.resultverif = response;
+				$scope.resultv = response;
+				console.log('ll', response)
+				console.log("verification serveur ");
+				$scope.good = true;
+			}).error(function (response) {
+				displayinfo("Serveur non valide !")
+				//window.alert("Bad request " + "\n" + "put an valid server" );
+				$scope.good = false;
+				$scope.resultverif = response;
+				$scope.resultv = response;
+			});
+		}
+	}
+
+	/**
+	 * @method ajout: fonction ajout d'un serveur valide
+	 */
+
+	$scope.ajout = function () {
+		if ($scope.monServeur != null &amp;&amp; document.getElementById('serveur').value != null
+			&amp;&amp; document.getElementById('serveur').value != ""
+			&amp;&amp; document.getElementById('serveur').value != undefined) {
+			if ($scope.good === true) {
+
+				$http.get($scope.monServeur.label + '?service=WPS&amp;version=1.0.0&amp;request=GetCapabilities').success(function (response) {
+					$http.post('/items', $scope.monServeur).then(function (response) {
+						//window.alert("Ajout server SUCCEED !!");
+						displayinfo("Ajout server réussi !!")
+						$scope.monServeur = null;
+						document.getElementById("ajout").disabled = true
+						refresh();
+					});
+				}).error(function (response) {
+					//	window.alert("vous avez modifié l' URL du serveur aprés vérfication" );
+					displayinfo("vous avez modifié l' URL du serveur aprés vérfication !")
+					document.getElementById("ajout").disabled = true
+					$scope.good = false;
+				});
+			}
+			else {
+				//window.alert("verifier votre serveur !")
+				displayinfo("verifier votre serveur !")
+				document.getElementById("ajout").disabled = true
+			}
+
+		} else {
+			displayinfo("nom vide !")
+			document.getElementById("ajout").disabled = true
+			//window.alert(" nom vide !")
+		}
+	}
+
+	/**
+	 *@method: config : Récuperation de données depuis serveur (GetCapabilties)
+	 */
+
+	$scope.config = function () {
+		if ($scope.selected == null) {
+			displayinfo("Veuillez séléctionné un serveur !")
+		}
+
+		else {
+			$http.get($scope.selected.label + '?service=WPS&amp;version=1.0.0&amp;request=GetCapabilities').then(function (response) {
+				console.log("===>CC", response);
+				if (response)
+					displayinfo("données recupérés")
+				$scope.result = response.data;
+				console.log("===>DATA ", response.data);
+			});
+		}
+	};
+
+	/**
+	 * @method getData : Conversion en format JSON réponse GetCapabilities
+	 */
+
+	$scope.getData = function () {
+		var x2js = new X2JS();
+		var aftCnv = x2js.xml_str2json($scope.result);
+		console.log("===>DATA CONVERTED ", aftCnv.Capabilities);
+		$scope.processes = aftCnv.Capabilities.ProcessOfferings.Process;
+		$scope.wps = aftCnv.Capabilities;
+	};
+
+	/**
+	 * @method getDescriptionProcess : Récupération données relié à un process
+	 * d'un serveur WPS.
+	 */
+
+	$scope.getDescriptionProcess = function (id) {
+		$scope.descriptionProcess = null
+		$scope.result4 = null;
+		if (id === undefined) {
+			displayinfo("Veuillez séléctionné un process !")
+
+		}
+		else {
+			console.log("===>DATA ");
+			$http.get($scope.selected.label + '?service=WPS&amp;version=1.0.0&amp;request=DescribeProcess&amp;Identifier=' + id).then(function (response) {
+				console.log("===>CC", response);
+				if (response)
+					displayinfo("Données récupérés !")
+				$scope.result2 = response.data;
+				console.log("===>DATA ", response.data);
+			});
+		}
+	};
+
+	// Conversion en format JSON Reponse DescribeProcess 
+	$scope.getData2 = function () {
+		var x2js = new X2JS();
+		var aftCnv = x2js.xml_str2json($scope.result2);
+		console.log("===>DATA CONVERTED ", aftCnv);
+		$scope.descriptionProcess = aftCnv;
+		$scope.inputs = $scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input;
+		pp = $scope.inputs;
+		console.log("inputs test :", pp)
+	};
+
+	/**
+	 * @method ajoutprobdd: Ajour d'un process à la base de données
+	 * @param _id : id du serveur
+	 * @param process : Process séléctionné à ajouter
+	 */
+	$scope.ajoutprobdd = function (_id, process) {
+		if (process === undefined) {
+			displayinfo("Veuillez séléctionner un process !")
+			//window.alert(" veuillez séléctionnez un process !")
+		}
+		else {
+			console.log(_id);
+			$http.put('/items/' + _id, { process }).then(function (response) {
+				displayinfo("Ajout process réussi !")
+				//window.alert("Ajout process SUCCEED !!");
+				//$scope.monServeur = "";
+				refresh();
+			});
+		}
+	}
+
+	/**
+	 * @method ExecuteProcess : exécution d'un process sur le serveur WPS
+	 * @param id : represente un process
+	 */
+	$scope.ExecuteProcess = function (id) {
+
+		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title) {
+			var texRef = document.getElementById('typeGeom').value;
+			console.log("===> type geom " + document.getElementById('typeGeom').value);
+			console.log("===>DATA EXECUTION ");
+
+			if (texRef == 0) {
+				{
+					var nominput = document.getElementById('contenu').innerHTML;
+					var valeurtext = document.getElementById('myInputs').value;
+					console.log('txt>>>', valeurtext);
+					console.log('txt input>>>', nominput);
+
+					// exéctution de requete avec une seule entrée
+					$http.get($scope.selected.label + '?service=WPS&amp;version=1.0.0&amp;request=Execute&amp;Identifier=' + id + '&amp;DataInputs=' + nominput + "=" + valeurtext).then(function (response) {
+						console.log("===>CC", response);
+						if (response)
+							window.alert("Requête exécuté !")
+						$scope.result3 = response.data;
+						console.log("===>DATA ", response.data);
+					});
+				}
+			}
+
+			else if (texRef == 1) {
+				var nominput = document.getElementById('contenu').innerHTML;
+				var valeurtext = document.getElementById('myInputs').value;
+
+				$http({
+					method: 'GET', url: "http://portail.indigeo.fr/geoserver/LETG-BREST/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=LETG-BREST%3AREF_VOUG&amp;maxFeatures=50&amp;outputFormat=application%2Fjson"
+
+				}).then(function (response) {
+					console.log("===>CC ref", response);
+					$scope.result = response.data;
+					console.log("===>DATA ref ", response.data);
+					var x = response.data.features[0].geometry.coordinates[0][0];
+					var y = response.data.features[0].geometry.coordinates[0][1];
+					console.log("===>DATA x ", x);
+
+					$http.get($scope.selected.label + '?service=WPS&amp;version=1.0.0&amp;request=Execute&amp;Identifier=' + 'JTS:getX' + '&amp;DataInputs=geom=point(' + x + ' ' + y + ')'
+					).then(function (response) {
+						console.log("===>CC", response);
+						$scope.result3 = response.data;
+						console.log("===>DATA ", response.data);
+					});
+				});
+			}
+		}
+		else {
+			var requestinput = ""
+			console.log("mmm" + $scope.inputs)
+			for (i = 0; i &lt; pp.length; i++) {
+				var nominput = document.getElementById('contenu' + i).innerHTML;
+				var valeurtext = document.getElementById('myInputs' + i).value;
+				console.log('txt input>>>', nominput);
+				console.log('txt input>>>', valeurtext);
+				requestinput += nominput + "=" + valeurtext + ";"
+				requestinput.trim()
+				console.log(requestinput)
+			}
+
+			// Execution requête avec plusieurs entrées
+			$http.get($scope.selected.label + '?service=WPS&amp;version=1.0.0&amp;request=Execute&amp;Identifier=' + id + '&amp;DataInputs=' + requestinput).then(function (response) {
+				console.log("===>CC", response);
+				$scope.result3 = response.data;
+				console.log("===>DATA ", response.data);
+			});
+		}
+	};
+
+	/**
+	 *@method sauvgardeconf : Sauvegarder une configuration dans la base de données
+	 */
+
+	$scope.sauvgardeconf = function (id) {
+		console.log("===>DATA ");
+		// cas une seule entrée
+		if ($scope.descriptionProcess.ProcessDescriptions.ProcessDescription.DataInputs.Input.Title) {
+			var bool = new Array();
+			var b
+			var requestinput = new Array();
+			var nominputs = new Array();
+			var typeentre = new Array();
+			var valeurtype = document.getElementById('type').innerHTML;
+			console.log('txt>>>', valeurtype);
+			var valeurtext = document.getElementById('myInputs').value;
+			console.log('txt>>>', valeurtext);
+			var nominput = document.getElementById('contenu').innerHTML;
+			nominputs.push(nominput)
+			console.log('txt input>>>', nominput);
+			requestinput.push(valeurtext);
+			b = document.getElementById('myInputs').disabled
+			bool.push(b)
+			typeentre.push(valeurtype)
+			$http.post('/configuration/' + id, { bool, nominputs, typeentre, requestinput }).then(function (response) {
+				displayinfo("Ajout à la base de données réussi !")
+				refresh2();
+			});
+		}
+
+		// Cas plusieures entrées
+		else {
+			var typeentre = new Array();
+			var requestinput = new Array()
+			var nominputs = new Array()
+			var valeurtext
+			var b
+			var nominput
+			var valeurtype
+			var step = null
+			var bool = new Array()
+			for (i = 0; i &lt; pp.length; i++) {
+				nominput = document.getElementById('contenu' + i).innerHTML;
+				valeurtext = document.getElementById('myInputs' + i).value;
+				valeurtype = document.getElementById('type' + i).innerHTML;
+				console.log('txt>>>', valeurtype);
+				if (document.getElementById('type' + i).innerHTML == "(integer)")
+					step = document.getElementById('step2' + i).value;
+				requestinput.push(valeurtext)  // changement ici
+				b = document.getElementById('myInputs' + i).disabled
+				bool.push(b)
+				nominputs.push(nominput);
+				typeentre.push(valeurtype)
+				console.log("mmmm", bool)
+				console.log("reqqq", requestinput)
+			}
+			console.log("conf" + requestinput)
+			$http.post('/configuration2/' + id, { bool, nominputs, typeentre, step, requestinput }).then(function (response) {
+				displayinfo("Ajout à la base de données réussi !")
+				refresh2();
+			});
+		}
+	};
+
+	// Conversion résultat exécution en format JSON
+	$scope.getData3 = function () {
+		var x3js = new X2JS();
+		var aftCnv3 = x3js.xml_str2json($scope.result3);
+		$scope.result4 = aftCnv3;
+		console.log("===>DATA CONVERTED 3 ", aftCnv3);
+		$scope.resProcess = aftCnv3;
+	};
+
+	/**
+	 * @method verifEntier : Vérification d'un entier
+	 */
+
+	$scope.verifEntier = function (a) {
+		console.log("mm" + a)
+		var min = parseInt(document.getElementById('minint' + a).value, 10)
+		var input = parseInt(document.getElementById('myInputs' + a).value, 10)
+		var max = parseInt(document.getElementById('maxint' + a).value, 10)
+
+		if (input > max || input &lt; min) {
+			window.alert("L'entree doit être entre min et max ");
+		}
+
+		else if (min > max) {
+			window.alert("Warning" + "\n " + "min est supérieur à max");
+		}
+
+		else if (min &lt; 0 || max &lt; 0)
+			displayinfo("Valeur min ou max négatif !")
+
+		else if (isNaN(min) || isNaN(max) || isNaN(input)) {
+			window.alert("vous avez laissé un champs vide ou erreur saisie !!")
+		}
+
+		else
+			window.alert("Entier correcte!!")
+	}
+
+	/**
+	 * @method activer/desactiver : Activer modification / Non modification d'une entrée
+	 * @param a : index de l'entrée
+	 */
+
+	$scope.activer = function (a) {
+		if (pp[a].LiteralData) {
+			document.getElementById('step2' + a).disabled = false;
+			document.getElementById('myInputs' + a).disabled = false
+		} else {
+			document.getElementById('myInputs' + a).disabled = false
+		}
+	}
+
+	$scope.activer2 = function () {
+		document.getElementById('myInputs').disabled = false
+	}
+
+	$scope.desactiver = function (a) {
+		if (pp[a].LiteralData) {
+
+			document.getElementById('step2' + a).disabled = true;
+			document.getElementById('myInputs' + a).disabled = true
+		} else {
+			document.getElementById('myInputs' + a).disabled = true
+		}
+
+	}
+	$scope.desactiver2 = function () {
+		document.getElementById('myInputs').disabled = true
+	}
+
+	/**
+	 * @method changstep: changement du step
+	 */
+	$scope.changestep = function (a) {
+		var s = parseInt(document.getElementById('step2' + a).value, 10)
+		document.getElementById('myInputs' + a).step = s;
+		displayinfo("configuration pris en compte !")
+	}
+
+	//**********Cas configuration*********//
+
+	/**
+	 * Vérification d'un entrier dans le cans modification 
+	 */
+	$scope.verifEntier1 = function (a) {
+		var min = parseInt(document.getElementById('minint' + a).value, 10)
+		var input = parseInt(document.getElementById('myInputs1' + a).value, 10)
+		var max = parseInt(document.getElementById('maxint' + a).value, 10)
+
+		if (input > max || input &lt; min) {
+			window.alert("L'entrée doit être entre min et max ");
+		}
+
+		else if (min > max) {
+			window.alert("Warning" + "\n " + "min est supérieur à max");
+		}
+
+		else if (min &lt; 0 || max &lt; 0)
+			displayinfo("Valeur min ou max négatif !")
+
+		else if (isNaN(min) || isNaN(max) || isNaN(input)) {
+			window.alert("vous avez laisser un champs vide ou érreur saisie !!")
+		}
+
+		else
+			window.alert("Entier corrêcte !")
+	}
+
+	// Exécute process configuration //  
+
+	/**
+	 * @method ExecuteProcess1 : exécution d'un process sur le serveur WPS
+	 * @param id : represente un process
+	 */
+
+	$scope.ExecuteProcess1 = function (id) {
+		var requestinput = ""
+		console.log("mmm" + $scope.inputs)
+		for (i = 0; i &lt; id.inputs.length; i++) {
+			var nominput = document.getElementById('contenu' + i).innerHTML;
+			var valeurtext = document.getElementById('myInputs1' + i).value;
+			console.log('txt input>>>', nominput);
+			console.log('txt input>>>', valeurtext);
+			requestinput += nominput + "=" + valeurtext + ";"
+			requestinput.trim()
+			console.log(requestinput)
+		}
+
+		// Execution requête avec plusieurs entrées
+		$http.get($scope.selected.label + '?service=WPS&amp;version=1.0.0&amp;request=Execute&amp;Identifier=' + id.process + '&amp;DataInputs=' + requestinput).then(function (response) {
+			console.log("===>CC", response);
+			$scope.result3 = response.data;
+			if (response)
+				window.alert("Requête exécuté !")
+			console.log("===>DATA ", response.data);
+		});
+	};
+});
+
+
+
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#activer/desactiver:Activermodification/Nonmodificationd'uneentr%25C3%25A9e">activer/desactiver : Activer modification / Non modification d'une entrée</a></li><li><a href="global.html#ajout:fonctionajoutd'unserveurvalide">ajout: fonction ajout d'un serveur valide</a></li><li><a href="global.html#ajoutprobdd:Ajourd'unprocess%25C3%25A0labasededonn%25C3%25A9es">ajoutprobdd: Ajour d'un process à la base de données</a></li><li><a href="global.html#changstep:changementdustep">changstep: changement du step</a></li><li><a href="global.html#displayinfo:afficherinformationserreurs/success">displayinfo : afficher informations </a></li><li><a href="global.html#ExecuteProcess1:ex%25C3%25A9cutiond'unprocesssurleserveurWPS">ExecuteProcess1 : exécution d'un process sur le serveur WPS</a></li><li><a href="global.html#ExecuteProcess:ex%25C3%25A9cutiond'unprocesssurleserveurWPS">ExecuteProcess : exécution d'un process sur le serveur WPS</a></li><li><a href="global.html#getData:ConversionenformatJSONr%25C3%25A9ponseGetCapabilities">getData : Conversion en format JSON réponse GetCapabilities</a></li><li><a href="global.html#getDescriptionProcess:R%25C3%25A9cup%25C3%25A9rationdonn%25C3%25A9esreli%25C3%25A9%25C3%25A0unprocessd'unserveurWPS.">getDescriptionProcess : Récupération données relié à un process
+d'un serveur WPS.</a></li><li><a href="global.html#myApp">myApp</a></li><li><a href="global.html#recup3:r%25C3%25A9cup%25C3%25A9rationdelalistedeconfigurationdepuislabasededonn%25C3%25A9es">recup3: récupération de la liste de configuration depuis la base de données</a></li><li><a href="global.html#recup21:Temporisationentrer%25C3%25A9cuperationdedonn%25C3%25A9esdepuisleserveuretleurconversionauformatJSON.">recup21: Temporisation entre récuperation de données depuis le serveur
+et leur conversion au format JSON.</a></li><li><a href="global.html#recup22:Temporisationentrer%25C3%25A9cuperationdedonn%25C3%25A9esdepuisleserveuretleurconversionauformatJSON.">recup22: Temporisation entre récuperation de données depuis le serveur
+et leur conversion au format JSON.</a></li><li><a href="global.html#refresh2:Raffrichissementapr%25C3%25A8sr%25C3%25A9cup%25C3%25A9rationdonn%25C3%25A9esdebasededonn%25C3%25A9esconfiguration.">refresh2 : Raffrichissement après récupération données 
+de base de données configuration.</a></li><li><a href="global.html#refresh:Raffrichissementapr%25C3%25A8sr%25C3%25A9cup%25C3%25A9rationdonn%25C3%25A9esdebasededonn%25C3%25A9esitems.">refresh : Raffrichissement après récupération données 
+de base de données items.</a></li><li><a href="global.html#remove2:suppressiondeprocess">remove2 : suppression de process</a></li><li><a href="global.html#remove:suppressiond'unserveur">remove : suppression d'un serveur</a></li><li><a href="global.html#removeAll:Suppresiondetouslesserveurs">removeAll : Suppresion de tous les serveurs</a></li><li><a href="global.html#removeCheked:Suppresionserveuraveccases%25C3%25A0cocher">removeCheked: Suppresion serveur avec cases à cocher</a></li><li><a href="global.html#sauvgardeconf:Sauvegarderuneconfigurationdanslabasededonn%25C3%25A9es">sauvgardeconf : Sauvegarder une configuration dans la base de données</a></li><li><a href="global.html#toggleSelection:reli%25C3%25A9%25C3%25A0lam%25C3%25A9thodesuppresionnaveccases%25C3%25A0cocher(serveur)">toggleSelection : relié à la méthode suppresionn avec 
+cases à cocher (serveur)</a></li><li><a href="global.html#verifEntier:V%25C3%25A9rificationd'unentier">verifEntier : Vérification d'un entier</a></li><li><a href="global.html#verification:verificationdelavalidit%25C3%25A9d'unserveur">verification : verification de la validité d'un serveur</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 10 2018 21:32:56 GMT+0100 (Paris, Madrid)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
