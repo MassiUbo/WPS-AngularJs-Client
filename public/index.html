@@ -269,9 +269,9 @@
 																<input type='text' name='maxint' id="{{'maxint'+$index}}" size="1" disabled="true" ng-value="max" />
 																<b>step</b>
 																<input type="text" name="force" id="{{'step2'+$index}}" step="2" size="1" max="100" min="0" ng-model="step2" />
-																<input id="oui" type="radio" name="inscription" value="oui" checked="checked" ng-click="activer($index)" />
+																<input id="{{'oui'+ $index }}" type="radio" name="{{'inscription'+ $index }}" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
-																<input id="non" type="radio" name="inscription" value="non" ng-click="desactiver($index)" />
+																<input id="{{'non'+ $index }}" type="radio" name="{{'inscription'+ $index }}" value="non" ng-click="desactiver($index)" />
 																<b>static</b>
 																<br>
 																<br>
@@ -288,9 +288,9 @@
 
 
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
-																<input id="oui1" type="radio" name="inscription1" value="oui" checked="checked" ng-click="activer($index)" />
+																<input id="{{'oui'+ $index }}" type="radio" name="{{'inscription'+ $index }}" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
-																<input id="non1" type="radio" name="inscription1" value="non" ng-click="desactiver($index)" />
+																<input id="{{'non'+ $index }}" type="radio" name="{{'inscription'+ $index }}" value="non" ng-click="desactiver($index)" />
 																<b>static</b>
 
 																<br>
@@ -305,9 +305,9 @@
 
 
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
-																<input id="oui2" type="radio" name="inscription2" value="oui" checked="checked" ng-click="activer($index)" />
+																<input id="{{'oui'+ $index }}" type="radio" name="{{'inscription'+ $index }}" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
-																<input id="non2" type="radio" name="inscription2" value="non" ng-click="desactiver($index)" />
+																<input id="{{'oui'+ $index }}" type="radio" name="{{'inscription'+ $index }}" value="non" ng-click="desactiver($index)" />
 																<b>static</b>
 
 																<br>
@@ -318,9 +318,9 @@
 																<div id="{{'contenu'+ $index }}">{{obj.Identifier.__text}}</div>
 																<div id="{{'type'+ $index }}">(ComplexeData)</div>
 																<input type="text" name='myInputs' id="{{'myInputs'+$index}}" />
-																<input id="oui3" type="radio" name="inscription3" value="oui" checked="checked" ng-click="activer($index)" />
+																<input id="{{'oui'+ $index }}" type="radio" name="{{'inscription'+ $index }}" value="oui" checked="checked" ng-click="activer($index)" />
 																<b>modif</b>
-																<input id="non3" type="radio" name="inscription3" value="non" ng-click="desactiver($index)" />
+																<input id="{{'non'+ $index }}" type="radio" name="{{'inscription'+ $index }}" value="non" ng-click="desactiver($index)" />
 																<b>static</b>
 																<br>
 															</div>
@@ -351,9 +351,9 @@
 													</div>
 
 
-													<input id="oui4" type="radio" name="inscription4" value="oui" checked="checked" ng-click="activer2()" />
+													<input id="{{'oui'+ $index }}" type="radio" name="inscription4" value="oui" checked="checked" ng-click="activer2()" />
 													<b>modif</b>
-													<input id="non4" type="radio" name="inscription4" value="non" ng-click="desactiver2()" />
+													<input id="{{'oui'+ $index }}" type="radio" name="inscription4" value="non" ng-click="desactiver2()" />
 													<b>static</b>
 													<br>
 
