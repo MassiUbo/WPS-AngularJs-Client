@@ -609,7 +609,7 @@ myApp.controller("myController", function ($scope, $http) {   // controller
 				var valeurtext = document.getElementById('myInputs').value;
 
 				$http({
-					method: 'GET', url: "http://portail.indigeo.fr/geoserver/LETG-BREST/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LETG-BREST%3AREF_VOUG&maxFeatures=50&outputFormat=application%2Fjson"
+					method: 'GET', url: valeurtext
 
 				}).then(function (response) {
 					console.log("===>CC ref", response);
