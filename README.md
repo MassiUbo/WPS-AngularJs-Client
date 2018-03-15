@@ -20,7 +20,7 @@
    Follow these steps
 
 	- Clone the repository
-    - Create two MongoDB Databases (items & configuration) 
+    - Run MongoDB and Create two Databases (items & configuration) 
     - run the command line : node server.js
     - open http://localhost:8082
 
